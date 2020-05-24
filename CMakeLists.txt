@@ -19,6 +19,9 @@ set(HDR_FILES
     ${HDR_DIR}/VertexBufferLayout.h 
     ${HDR_DIR}/Shader.h 
     ${HDR_DIR}/Texture.h
+        ${HDR_DIR}/Assert.h
+        ${HDR_DIR}/Logger.h
+        ${HDR_DIR}/Macros.h
     ${STB_DIR}/stb_image.h)
 
 set(SRC_FILES 
@@ -28,7 +31,8 @@ set(SRC_FILES
     ${SRC_DIR}/IndexBuffer.cpp
     ${SRC_DIR}/VertexArray.cpp 
     ${SRC_DIR}/Shader.cpp
-    ${SRC_DIR}/Texture.cpp
+        ${SRC_DIR}/Texture.cpp
+        ${SRC_DIR}/Logger.cpp
     ${STB_DIR}/stb_image.cpp)
 
 add_subdirectory(${GLFW_DIR})
