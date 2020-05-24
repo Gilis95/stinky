@@ -1,4 +1,4 @@
-#include "../include/VertexBufferLayout.h"
+#include "VertexBufferLayout.h"
 
 template<>
 void VertexBufferLayout::push<unsigned int>(unsigned int count) {

@@ -1,10 +1,16 @@
 cmake_minimum_required(VERSION 3.16)
-project(engine)
+project(stinky-engine)
 
 set (CMAKE_CXX_STANDARD 17)
 
 set(HDR_DIR ${PROJECT_SOURCE_DIR}/include)
 set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
+
+set(GLFW_DIR ${PROJECT_SOURCE_DIR}/vendor/glfw/)
+set(GLAD_DIR ${PROJECT_SOURCE_DIR}/vendor/glad/)
+set(GLM_DIR ${PROJECT_SOURCE_DIR}/vendor/glm/)
+set(SPDLOG_DIR ${PROJECT_SOURCE_DIR}/vendor/spdlog)
+set(STB_DIR ${PROJECT_SOURCE_DIR}/vendor/stb_image)
 
 set(HDR_FILES 
     ${HDR_DIR}/Renderer.h 
@@ -12,7 +18,8 @@ set(HDR_FILES
     ${HDR_DIR}/VertexArray.h
     ${HDR_DIR}/VertexBufferLayout.h 
     ${HDR_DIR}/Shader.h 
-    include/Texture.h)
+    ${HDR_DIR}/Texture.h
+    ${STB_DIR}/stb_image.h)
 
 set(SRC_FILES 
     ${SRC_DIR}/main.cpp  
@@ -20,29 +27,29 @@ set(SRC_FILES
     ${SRC_DIR}/VertexBuffer.cpp 
     ${SRC_DIR}/IndexBuffer.cpp
     ${SRC_DIR}/VertexArray.cpp 
-    ${SRC_DIR}/VertexBufferLayout.cpp  
     ${SRC_DIR}/Shader.cpp
-    ${SRC_DIR}/Texture.cpp)
+    ${SRC_DIR}/Texture.cpp
+    ${STB_DIR}/stb_image.cpp)
 
-include_directories(include)
+add_subdirectory(${GLFW_DIR})
+add_subdirectory(${GLAD_DIR})
+add_subdirectory(${GLM_DIR})
+add_subdirectory(${SPDLOG_DIR})
 
-add_executable(engine ${SRC_FILES} ${HDR_FILES})
+add_executable(stinky-engine ${SRC_FILES} ${HDR_FILES})
 
-target_include_directories(engine PRIVATE 
-    ${PROJECT_SOURCE_DIR}/vendor/glfw/include
-    ${PROJECT_SOURCE_DIR}/vendor/glm/gtx
-    ${PROJECT_SOURCE_DIR}/vendor/glm/simd
-    ${PROJECT_SOURCE_DIR}/vendor/glm/gtc
-    ${PROJECT_SOURCE_DIR}/vendor/glm/ext
-    ${PROJECT_SOURCE_DIR}/vendor/glm/detail
-    ${PROJECT_SOURCE_DIR}/vendor/spdlog/include
-    ${PROJECT_SOURCE_DIR}/vendor/stb
-    )
+target_include_directories(stinky-engine PRIVATE 
+                            ${HDR_DIR}
+                            ${STB_DIR}
+                            ${GLAD_INCLUDE_DIRS}
+                            ${GLFW_DIR}/include
+                            ${GLM_DIR}/glm
+                            ${SPDLOG_DIR}/include
+                            )
 
-target_link_directories(engine PRIVATE 
-    ${PROJECT_SOURCE_DIR}/vendor/glfw/
-    ${PROJECT_SOURCE_DIR}/vendor/glm/
-    ${PROJECT_SOURCE_DIR}/vendor/spdlog/
-    )
-
-target_link_libraries(engine glfw3 )
+target_link_libraries(stinky-engine PRIVATE 
+                     glad
+                     glm
+                     glfw
+                     spdlog
+                     )

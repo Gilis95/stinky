@@ -1,13 +1,12 @@
 //
 // Created by christian on 1/26/20.
 //
-
-#include <GL/glew.h>
+#include <glad/glad.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "../include/Shader.h"
-#include "../include/Renderer.h"
+#include "Shader.h"
+#include "Renderer.h"
 
 
 Shader::Shader(std::string filePath) : m_FilePath(filePath) {

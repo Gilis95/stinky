@@ -1,9 +1,7 @@
 //
 // Created by christian on 09/02/2020.
 //
-
-#ifndef ENGINE_TEXTURE_H
-#define ENGINE_TEXTURE_H
+#pragma once
 
 #include <string>
 
@@ -29,6 +27,3 @@ public:
         return m_Height;
     };
 };
-
-
-#endif //ENGINE_TEXTURE_H

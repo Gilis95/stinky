@@ -1,7 +1,6 @@
 //
 // Created by christian on 1/19/20.
 //
-
 #pragma once
 
 #include "VertexArray.h"

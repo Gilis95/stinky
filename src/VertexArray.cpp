@@ -1,9 +1,8 @@
 //
 // Created by christian on 1/19/20.
 //
-
-#include "../include/VertexArray.h"
-#include "../include/Renderer.h"
+#include "VertexArray.h"
+#include "Renderer.h"
 
 VertexArray::VertexArray() {
     GLCall(glGenVertexArrays(1, &m_RendererID));

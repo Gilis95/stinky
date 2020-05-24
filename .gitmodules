@@ -10,3 +10,6 @@
 [submodule "vendor/stb"]
 	path = vendor/stb
 	url = git@github.com:nothings/stb.git
+[submodule "vendor/glad"]
+	path = vendor/glad
+	url = git@github.com:Dav1dde/glad.git

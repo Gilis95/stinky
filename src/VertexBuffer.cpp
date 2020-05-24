@@ -1,11 +1,9 @@
 //
 // Created by christian on 1/19/20.
 //
-
-
-#include <GL/glew.h>
-#include "../include/VertexBuffer.h"
-#include "../include/Renderer.h"
+#include <glad/glad.h>
+#include "VertexBuffer.h"
+#include "Renderer.h"
 
 VertexBuffer::VertexBuffer(const void *data, unsigned int size) {
     GLCall(glGenBuffers(1, &m_RendererID));

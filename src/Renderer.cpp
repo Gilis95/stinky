@@ -1,10 +1,9 @@
 //
 // Created by christian on 1/19/20.
 //
-
-#include <GL/glew.h>
+#include <glad/glad.h>
 #include <iostream>
-#include "../include/Renderer.h"
+#include "Renderer.h"
 
 
 void GLClearError() {

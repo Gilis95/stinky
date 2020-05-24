@@ -1,24 +1,22 @@
 #include <iostream>
-#include <GL/glew.h>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <alloca.h>
+#include <malloc.h>
 #include <fstream>
 #include <sstream>
-#include "../include/Renderer.h"
-#include "../include/VertexBuffer.h"
-#include "../include/IndexBuffer.h"
-#include "../include/VertexArray.h"
-#include "../include/Shader.h"
-#include "../include/Texture.h"
-
-using namespace std;
+#include "Renderer.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
+#include "VertexArray.h"
+#include "Shader.h"
+#include "Texture.h"
 
 
 int main() {
     GLFWwindow *window;
 
     if (!glfwInit()) {
-        cout << "Maikata si eba eii!" << endl;
+        std::cout << "Maikata si eba eii!" << std::endl;
     }
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -28,7 +26,7 @@ int main() {
     window = glfwCreateWindow(640, 640, "Na maikati monitora", NULL, NULL);
     if (!window) {
         glfwTerminate();
-        cout << "Maikata si eba eii!" << endl;
+        std::cout << "Maikata si eba eii!" << std::endl;
         return -1;
     }
 
@@ -37,9 +35,9 @@ int main() {
 
     glfwSwapInterval(5);
 
-    if (glewInit() != GLEW_OK) {
+    if (!gladLoadGL()) {
         glfwTerminate();
-        cout << "Maikata si eba eii!" << endl;
+        std::cout << "Maikata si eba eii!" << std::endl;
         return -1;
     }
 
@@ -74,7 +72,7 @@ int main() {
         IndexBuffer indexBuffer(indeces, 6);
 
         //Parse fragment and vertex shader and bind them
-        Shader shader("/home/christian/workspace/opengl/engine/resources/shaders/basic.shader");
+        Shader shader("resources/shaders/basic.shader");
         Texture texture("/home/christian/workspace/opengl/engine/resources/mb.png");
 
         texture.bind();
