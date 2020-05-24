@@ -2,7 +2,10 @@
 // Created by christian on 1/19/20.
 //
 #include "VertexArray.h"
+
+#include "Logger.h"
 #include "Renderer.h"
+#include "glad/glad.h"
 
 VertexArray::VertexArray() {
     GLCall(glGenVertexArrays(1, &m_RendererID));

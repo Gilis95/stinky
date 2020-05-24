@@ -9,6 +9,7 @@
 
 bool GLLogCall(const char *functionName, const char *fileName, int line);
 
+void GLClearError();
 
 class Log {
 public:

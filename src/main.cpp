@@ -7,6 +7,7 @@
 #include "Renderer.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "Logger.h"
 #include "VertexArray.h"
 #include "Shader.h"
 #include "Texture.h"
@@ -72,8 +73,8 @@ int main() {
         IndexBuffer indexBuffer(indeces, 6);
 
         //Parse fragment and vertex shader and bind them
-        Shader shader("resources/shaders/basic.shader");
-        Texture texture("/home/christian/workspace/opengl/engine/resources/mb.png");
+        Shader shader("../resources/shaders/basic.shader");
+        Texture texture("../resources/mb.png");
 
         texture.bind();
         shader.bind();

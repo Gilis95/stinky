@@ -3,8 +3,9 @@
 //
 #pragma once
 
+#include <glad/glad.h>
 #include <string>
-#include <map>
+#include <unordered_map>
 
 struct ShaderElements {
     std::string vertex;
@@ -13,11 +14,12 @@ struct ShaderElements {
 
 class Shader {
 private:
-    unsigned int m_RendererID;
+    GLuint m_RendererID;
     std::string m_FilePath;
-    std::map<std::string, int> uniformLocationsCache;
+    std::unordered_map<GLenum, std::string> m_ShaderSources;
+    std::unordered_map<std::string, int> m_UniformLocationsCache;
 public:
-    Shader(std::string filePath);
+    Shader(const std::string& filePath);
 
     ~Shader();
 
@@ -25,17 +27,16 @@ public:
 
     void unbind() const;
 
-    int getUniformLocation(const std::string &name) const;
+    int getUniformLocation(const std::string& name);
 
-    void setUniform4f(const std::string &name, float f0, float f1, float f2, float f3);
+    void setUniform4f(const std::string& name, float f0, float f1, float f2, float f3);
 
-    void setUniform1i(const std::string &name, int i);
+    void setUniform1i(const std::string& name, int i);
 
 private:
-    ShaderElements parseShaders(const std::string &filePath);
+    void parseShaders(const std::string& source);
 
-    unsigned int compileShader(unsigned int type, std::string &shaderCode);
+    static GLuint compileShader(GLenum type, const std::string& shaderCode);
 
-
-    unsigned int createProgram(ShaderElements &&shaders);
+    void createProgram();
 };

@@ -2,8 +2,9 @@
 // Created by christian on 1/19/20.
 //
 #include <glad/glad.h>
-#include "Renderer.h"
 #include "IndexBuffer.h"
+
+#include "Logger.h"
 
 IndexBuffer::IndexBuffer(const void *data, unsigned int count) : m_Count(count) {
     GLCall(glGenBuffers(1, &m_RendererID));

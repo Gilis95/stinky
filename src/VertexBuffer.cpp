@@ -3,6 +3,8 @@
 //
 #include <glad/glad.h>
 #include "VertexBuffer.h"
+
+#include "Logger.h"
 #include "Renderer.h"
 
 VertexBuffer::VertexBuffer(const void *data, unsigned int size) {

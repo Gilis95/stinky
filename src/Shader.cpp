@@ -2,20 +2,19 @@
 // Created by christian on 1/26/20.
 //
 
-#include <glad/glad.h>
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <unordered_map>
 #include <cstring>
-#include <vector>
+#include <glad/glad.h>
+#include <array>
 #include "Macros.h"
-#include "Assert.h"
 #include "Shader.h"
-#include "Renderer.h"
+
+#include "Logger.h"
 
 
-static GLenum ShaderTypeFromString(const std::string &type) {
+static GLenum ShaderTypeFromString(const std::string& type) {
     if (type == "vertex")
         return GL_VERTEX_SHADER;
     if (type == "fragment" || type == "pixel")
@@ -25,7 +24,7 @@ static GLenum ShaderTypeFromString(const std::string &type) {
     return 0;
 }
 
-static std::string readFile(const std::string &filepath) {
+static std::string readFile(const std::string& filepath) {
     std::string result;
     std::ifstream in(filepath, std::ios::in | std::ios::binary);
     if (in) {
@@ -36,17 +35,19 @@ static std::string readFile(const std::string &filepath) {
             in.seekg(0, std::ios::beg);
             in.read(&result[0], size);
             in.close();
-        } else {
+        }
+        else {
             ASSERT("Could not read from file '{0}'", filepath);
         }
-    } else {
+    }
+    else {
         ASSERT(false, "Could not open file '{0}'", filepath);
     }
 
     return result;
 }
 
-Shader::Shader(const std::string &filePath) : m_RendererID(0) {
+Shader::Shader(const std::string& filePath) : m_RendererID(0) {
     parseShaders(readFile(filePath));
     createProgram();
 }
@@ -59,27 +60,28 @@ Shader::~Shader() {
 }
 
 
-int Shader::getUniformLocation(const std::string &name) {
+int Shader::getUniformLocation(const std::string& name) {
     if (m_UniformLocationsCache.find(name) != m_UniformLocationsCache.end()) {
         return m_UniformLocationsCache[name];
     }
 
-    GLCall(int uniformLocation = glGetUniformLocation(m_RendererID, name.c_str()));
+    GLCall(const int uniformLocation = glGetUniformLocation(m_RendererID, name.c_str()));
+    m_UniformLocationsCache[name] = uniformLocation;
 
     return uniformLocation;
 }
 
-void Shader::bind() {
+void Shader::bind() const {
     GLCall(glUseProgram(m_RendererID))
 }
 
-void Shader::unbind() {
+void Shader::unbind() const {
     GLCall(glUseProgram(0))
 }
 
 
-void Shader::parseShaders(const std::string &source) {
-    const char *typeToken = "#type";
+void Shader::parseShaders(const std::string& source) {
+    const char* typeToken = "#type";
     size_t typeTokenLength = strlen(typeToken);
     size_t pos = source.find(typeToken, 0); //Start of shader type declaration line
 
@@ -91,44 +93,43 @@ void Shader::parseShaders(const std::string &source) {
         ASSERT(ShaderTypeFromString(type), "Invalid shader type specified");
 
         size_t nextLinePos = source.find_first_not_of("\r\n",
-                                                      eol); //Start of shader code after shader type declaration line
+            eol); //Start of shader code after shader type declaration line
         ASSERT(nextLinePos != std::string::npos, "Syntax error");
         pos = source.find(typeToken, nextLinePos); //Start of next shader type declaration line
 
         m_ShaderSources[ShaderTypeFromString(type)] = (pos == std::string::npos) ? source.substr(nextLinePos)
-                                                                                 : source.substr(nextLinePos,
-                                                                                                 pos - nextLinePos);
+            : source.substr(nextLinePos,
+                pos - nextLinePos);
     }
 }
 
 void Shader::createProgram() {
     m_RendererID = glCreateProgram();
-    std::array<GLenum, 2> glShaderIDs;
+    std::array<GLenum, 2> glShaderIDs{};
     int glShaderIDIndex = 0;
 
-    for (auto &kv : m_ShaderSources) {
-        unsigned int shaderId = compileShader(kv.first, kv.second);
+    for (auto& kv : m_ShaderSources) {
+        GLuint shaderId = compileShader(kv.first, kv.second);
         if (shaderId == 0) {
             break;
         }
 
         GLCall(glAttachShader(m_RendererID, shaderId));
         glShaderIDs[glShaderIDIndex++] = shaderId;
-
     }
 
     GLCall(glLinkProgram(m_RendererID));
 
     GLint isLinked = 0;
-    glGetProgramiv(m_RendererID, GL_LINK_STATUS, (int *) &isLinked);
+    glGetProgramiv(m_RendererID, GL_LINK_STATUS, &isLinked);
 
     if (isLinked == GL_FALSE) {
         GLint maxLength = 0;
         glGetProgramiv(m_RendererID, GL_INFO_LOG_LENGTH, &maxLength);
 
         // The maxLength includes the NULL character
-        GLchar *log;
-        log = (GLchar *) alloca(maxLength * sizeof(GLchar));
+        GLchar* log;
+        log = (GLchar*)alloca(maxLength * sizeof(GLchar));
 
         glGetProgramInfoLog(m_RendererID, maxLength, &maxLength, log);
 
@@ -143,16 +144,15 @@ void Shader::createProgram() {
         return;
     }
 
-    for (auto &id: glShaderIDs) {
+    for (auto& id : glShaderIDs) {
         GLCall(glDetachShader(m_RendererID, id));
         GLCall(glDeleteShader(id));
-
     }
 }
 
-unsigned int Shader::compileShader(GLenum type, const std::string &shaderCode) {
+GLuint Shader::compileShader(GLenum type, const std::string& shaderCode) {
     unsigned int shaderId = glCreateShader(type);
-    const char *shaderCStr = shaderCode.c_str();
+    const char* shaderCStr = shaderCode.c_str();
 
     glShaderSource(shaderId, 1, &shaderCStr, nullptr);
     glCompileShader(shaderId);
@@ -164,8 +164,8 @@ unsigned int Shader::compileShader(GLenum type, const std::string &shaderCode) {
         int length;
         glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &length);
 
-        char *log;
-        log = (char *) alloca(length * sizeof(char));
+        char* log;
+        log = (char*)alloca(length * sizeof(char));
 
         glGetShaderInfoLog(shaderId, length, &length, log);
         glDeleteShader(shaderId);
@@ -179,7 +179,12 @@ unsigned int Shader::compileShader(GLenum type, const std::string &shaderCode) {
     return shaderId;
 }
 
-void Shader::setUniform4f(const std::string &name, float f0, float f1, float f2, float f3) {
+void Shader::setUniform4f(const std::string& name, float f0, float f1, float f2, float f3) {
     GLCall(glUniform4f(getUniformLocation(name), f0, f1, f2, f3));
 }
 
+
+void Shader::setUniform1i(const std::string& name, int i)
+{
+    GLCall(glUniform1i(getUniformLocation(name), i));
+}

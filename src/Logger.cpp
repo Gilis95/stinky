@@ -2,13 +2,13 @@
 // Created by christian on 5/3/20.
 //
 
-#include <GL/glew.h>
-#include <iostream>
 #include "Logger.h"
+#include <iostream>
+#include <glad/glad.h>
 
-#include <spdlog/sinks/stdout_color_sinks.h>
-#include <spdlog/sinks/basic_file_sink.h>
 #include <sstream>
+#include <spdlog/sinks/basic_file_sink.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
 
 Ref<spdlog::logger> Log::s_Logger;
 
@@ -25,6 +25,10 @@ void Log::init() {
     Log::s_Logger->set_level(spdlog::level::trace);
     Log::s_Logger->flush_on(spdlog::level::trace);
 
+}
+
+void GLClearError() {
+    while (glGetError() != GL_NO_ERROR);
 }
 
 
