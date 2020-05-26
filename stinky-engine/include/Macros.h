@@ -62,8 +62,26 @@
 #define DEBUGBREAK()
 #endif
 
-template<typename T>
-using Ref = std::shared_ptr<T>;
+namespace stinky {
+    template<typename T>
+    using Ref = std::shared_ptr<T>;
+
+    template<typename T>
+    using Scope = std::unique_ptr<T>;
+    template<typename T, typename ... Args>
+    constexpr Scope<T> createScope(Args&& ... args)
+    {
+        return std::make_unique<T>(std::forward<Args>(args)...);
+    }
+
+    template<typename T>
+    using Ref = std::shared_ptr<T>;
+    template<typename T, typename ... Args>
+    constexpr Ref<T> createRef(Args&& ... args)
+    {
+        return std::make_shared<T>(std::forward<Args>(args)...);
+    }
+}
 
 #ifdef ENABLE_ASSERTS
 #define ASSERT(x, ...) { if(!(x)) { ERROR("Assertion Failed: {0}", __VA_ARGS__); DEBUGBREAK(); } }
