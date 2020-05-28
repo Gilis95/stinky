@@ -21,6 +21,9 @@ namespace stinky {
     }
 
     void Renderer::draw(const Ref<VertexArray>& va,  const Ref<Shader>& shader) const {
+        shader->bind();
+        va->bind();
+
         m_RendererApi->drawIndexed(va);
     }
 }

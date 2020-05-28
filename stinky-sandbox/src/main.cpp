@@ -17,10 +17,10 @@ int main() {
         });
 
     float positions[16] = {
-        1.0f, -1.0f,  1.0f, -1.0f, //0
-        1.0f, 1.0f, 1.0f, 1.0f, //1
-        -1.0f, 1.0f, -1.0f, 1.0f, //2
-        -1.0f, -1.0f, -1.0f, -1.0f, //3
+        0.7f, -1.0f,  1.0f, -1.0f, //0
+        0.7f, 1.0f, 1.0f, 1.0f, //1
+        -0.7f, 1.0f, -1.0f, 1.0f, //2
+        -0.7f, -1.0f, -1.0f, -1.0f, //3
     };
 
     unsigned int indices[6] = {
@@ -52,13 +52,12 @@ int main() {
 
         //Parse fragment and vertex shader and bind them
 
-        auto shader = factory->createShader("D:\\workspace\\stinky\\stinky-sandbox\\resources\\shaders\\basic.shader");
-        shader->bind();
-        shader->setInteger("u_Texture", 0);
-
         const auto texture = factory->createTexture("D:\\workspace\\stinky\\stinky-sandbox\\resources\\mb.png");
         texture->bind(0);
 
+        auto shader = factory->createShader("D:\\workspace\\stinky\\stinky-sandbox\\resources\\shaders\\basic.shader");
+        shader->bind();
+        shader->setInteger("u_Texture", 0);
 
         while (!closed) {
             renderer.clear();

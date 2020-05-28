@@ -46,6 +46,7 @@ namespace stinky {
     }
 
     void OpenGLVertexArray::bind() const {
+        m_IndexBuffer->bind();
         glBindVertexArray(m_RendererID);
     }
 

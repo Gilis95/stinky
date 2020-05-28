@@ -47,8 +47,6 @@ namespace stinky {
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-        glEnable(GL_DEPTH_TEST);
     }
 
     void OpenGLRenderer::drawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount) const
@@ -56,7 +54,6 @@ namespace stinky {
         uint32_t count = indexCount ? indexCount : vertexArray->getIndexBuffer()->getCount();
 
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
-        glBindTexture(GL_TEXTURE_2D, 0);
     }
 
 }
