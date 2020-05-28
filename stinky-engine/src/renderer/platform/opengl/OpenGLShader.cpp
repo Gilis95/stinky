@@ -2,16 +2,13 @@
 // Created by christian on 1/26/20.
 //
 
-#include <iostream>
-#include <fstream>
-#include <unordered_map>
-#include <cstring>
-#include <glad/glad.h>
-#include <array>
-#include "Macros.h"
-#include "renderer/platform/opengl/OpenGLShader.h"
 
-#include "Logger.h"
+#include <glad/glad.h>
+#include <fstream>
+
+#include "StinkyMacros.h"
+#include "renderer/platform/opengl/OpenGLShader.h"
+#include "stinkypch.h"
 
 namespace stinky {
 
@@ -38,23 +35,23 @@ namespace stinky {
                 in.close();
             }
             else {
-                ASSERT("Could not read from file '{0}'", filepath);
+                STINKY_ERROR("Could not read from file {0}", filepath);
             }
         }
         else {
-            ASSERT(false, "Could not open file '{0}'", filepath);
+            STINKY_ERROR("Could not open file {0}", filepath);
         }
 
         return result;
     }
 
-    OpenGLShader::OpenGLShader(const std::string& filePath) : m_RendererID(0) {
+    OpenGLShader::OpenGLShader(const std::string& filePath) {
         parseShaders(readFile(filePath));
         createProgram();
     }
 
     OpenGLShader::~OpenGLShader() {
-        GLCall(glDeleteProgram(m_RendererID));
+        glDeleteProgram(m_RendererID);
     }
 
 
@@ -63,18 +60,18 @@ namespace stinky {
             return m_UniformLocationsCache[name];
         }
 
-        GLCall(const int uniformLocation = glGetUniformLocation(m_RendererID, name.c_str()));
+        const int uniformLocation = glGetUniformLocation(m_RendererID, name.c_str());
         m_UniformLocationsCache[name] = uniformLocation;
 
         return uniformLocation;
     }
 
     void OpenGLShader::bind() const {
-        GLCall(glUseProgram(m_RendererID))
+        glUseProgram(m_RendererID);
     }
 
     void OpenGLShader::unbind() const {
-        GLCall(glUseProgram(0))
+        glUseProgram(0);
     }
 
 
@@ -112,11 +109,11 @@ namespace stinky {
                 break;
             }
 
-            GLCall(glAttachShader(m_RendererID, shaderId));
+            glAttachShader(m_RendererID, shaderId);
             glShaderIDs[glShaderIDIndex++] = shaderId;
         }
 
-        GLCall(glLinkProgram(m_RendererID));
+        glLinkProgram(m_RendererID);
 
         GLint isLinked = 0;
         glGetProgramiv(m_RendererID, GL_LINK_STATUS, &isLinked);
@@ -137,14 +134,14 @@ namespace stinky {
             for (auto id : glShaderIDs)
                 glDeleteShader(id);
 
-            ERROR("{0}", log);
+            STINKY_ERROR("{0}", log);
             ASSERT(false, "Shader link failure!");
             return;
         }
 
         for (auto& id : glShaderIDs) {
-            GLCall(glDetachShader(m_RendererID, id));
-            GLCall(glDeleteShader(id));
+            glDetachShader(m_RendererID, id);
+            glDeleteShader(id);
         }
     }
 
@@ -168,7 +165,7 @@ namespace stinky {
             glGetShaderInfoLog(shaderId, length, &length, log);
             glDeleteShader(shaderId);
 
-            ERROR("{0}", log);
+            STINKY_ERROR("{0}", log);
             ASSERT(false, "Shader compilation failure!");
 
             return 0;
@@ -180,10 +177,10 @@ namespace stinky {
 
     void OpenGLShader::setInteger(const std::string& name, int i)
     {
-        GLCall(glUniform1i(getUniformLocation(name), i));
+        glUniform1i(getUniformLocation(name), i);
     }
 
     void OpenGLShader::setFloat4(const std::string& name, float f0, float f1, float f2, float f3) {
-        GLCall(glUniform4f(getUniformLocation(name), f0, f1, f2, f3));
+        glUniform4f(getUniformLocation(name), f0, f1, f2, f3);
     }
 }

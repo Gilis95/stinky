@@ -4,9 +4,9 @@
 #pragma once
 
 #include <glad/glad.h>
-#include <string>
-#include <unordered_map>
+
 #include "renderer/Shader.h"
+#include "stinkypch.h"
 
 namespace stinky {
     struct ShaderElements {
@@ -20,17 +20,16 @@ namespace stinky {
 
         ~OpenGLShader();
 
-        virtual void bind() const = 0;
+        void bind() const override;
 
-        virtual void unbind() const = 0;
+        void unbind() const override;
 
-        void setInteger(const std::string& name, int i);
+        void setInteger(const std::string& name, int i) override;
 
-        void setFloat4(const std::string& name, float f0, float f1, float f2, float f3);
+        void setFloat4(const std::string& name, float f0, float f1, float f2, float f3) override;
 
     private:
         GLuint m_RendererID;
-        std::string m_FilePath;
         std::unordered_map<GLenum, std::string> m_ShaderSources;
         std::unordered_map<std::string, int> m_UniformLocationsCache;
 

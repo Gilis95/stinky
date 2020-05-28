@@ -3,7 +3,7 @@
 //
 #pragma once
 
-#include <string>
+#include "stinkypch.h"
 
 namespace stinky {
     class Shader {

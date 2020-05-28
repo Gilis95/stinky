@@ -19,7 +19,7 @@ namespace stinky {
 
         ~WindowsWindow();
 
-        void init(const WindowProperties& properties) override;
+        void init() override;
 
         void setCloseCallback(const std::function<void()>& callback) override;
 

@@ -3,8 +3,8 @@
 //
 #pragma once
 
-#include <string>
 #include "renderer/Texture.h"
+#include "stinkypch.h"
 
 namespace stinky {
     class OpenGLTexture : public Texture {
@@ -24,7 +24,7 @@ namespace stinky {
             return m_Height;
         };
     private:
-        unsigned int m_RendererID;
+        GLuint m_RendererID;
         std::string m_FilePath;
         unsigned char* m_LocalBuffer;
         int m_Width, m_Height, m_BPP;

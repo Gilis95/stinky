@@ -1,29 +1,42 @@
-#include <GLFW/glfw3.h>
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 #include "window/glfw/WindowsWindow.h"
-#include "Logger.h"
+
+#include "stinkypch.h"
 
 
 namespace stinky {
 
     static void GLFWErrorCallback(int error, const char* description)
     {
-        ERROR("GLFW Error ({0}): {1}", error, description);
+        STINKY_ERROR("GLFW Error ({0}): {1}", error, description);
     }
 
     WindowsWindow::WindowsWindow(const WindowProperties& properties) {
-
-    }
-
-    void WindowsWindow::init(const WindowProperties& properties) {
-
         m_Data.height = properties.m_Height;
         m_Data.width = properties.m_Width;
         m_Data.titile = properties.m_Title;
 
-        ASSERT(glfwInit(), "Maikata si eba eii!");
+        init();
+    }
+
+    WindowsWindow::~WindowsWindow()
+    {
+        shutdown();
+    };
+
+    void WindowsWindow::init() {
+
+        int status = glfwInit();
+
+        ASSERT(status, "Maikata si eba eii!");
         glfwSetErrorCallback(GLFWErrorCallback);
+        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
+
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
         m_Window = glfwCreateWindow(m_Data.width, m_Data.height, m_Data.titile.c_str(), NULL, NULL);
 
@@ -32,11 +45,10 @@ namespace stinky {
 
         glfwSwapInterval(5);
 
-        ASSERT(gladLoadGL(), "Maikata si eba eii!");
-
+        //ASSERT(gladLoadGL(), "Maikata si eba eii!");
+        ASSERT(gladLoadGLLoader((GLADloadproc)glfwGetProcAddress), "Maikata si eba eii!");
 
         glfwSetWindowUserPointer(m_Window, &m_Data);
-
 
         glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
             {
@@ -44,6 +56,7 @@ namespace stinky {
                 data.closeCallback();
             }
         );
+
     }
 
     void WindowsWindow::setCloseCallback(const std::function<void()>& callback) {
@@ -60,8 +73,9 @@ namespace stinky {
         glfwPollEvents();
     }
 
-    void shutdown()
+    void WindowsWindow::shutdown()
     {
+        glfwDestroyWindow(m_Window);
         glfwTerminate();
     }
 }

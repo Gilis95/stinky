@@ -3,10 +3,7 @@
 //
 #pragma once
 
-#include <iostream>
-#include <vector>
-
-#include "Macros.h"
+#include "stinkypch.h"
 
 
 namespace stinky {

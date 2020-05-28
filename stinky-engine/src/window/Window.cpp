@@ -6,7 +6,7 @@ namespace stinky {
     {
         switch (api)
         {
-        case Window::API::GLFW:
+        case API::GLFW:
             return createScope<WindowsWindow>(properties);
         default:
             ASSERT(false, "Wrong window abstraction used");

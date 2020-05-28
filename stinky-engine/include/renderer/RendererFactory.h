@@ -7,7 +7,7 @@
 #include "renderer/Shader.h"
 #include "renderer/Texture.h"
 
-#include "Macros.h"
+#include "stinkypch.h"
 
 namespace stinky {
     class RendererFactory
@@ -18,13 +18,16 @@ namespace stinky {
             none, OpenGL
         };
 
-        static Ref<RendererFactory> create(API api = API::OpenGL);
+        virtual ~RendererFactory() = default;
 
-        virtual Ref<RendererApi> createRendererApi() = 0;
-        virtual Ref<IndexBuffer> createIndexBuffer(const void* data, unsigned int count) = 0;
-        virtual Ref<VertexBuffer> createVertexBuffer(const BufferLayout& layout = {}) = 0;
-        virtual Ref<VertexArray> createVertexArray() = 0;
-        virtual Ref<Shader> createShader(const std::string& filePath) = 0;
-        virtual Ref<Texture> createTexture(const std::string& path) = 0;
+        static Ref<RendererFactory> create(const API& api = API::OpenGL);
+
+        [[nodiscard]] virtual Ref<RendererApi> createRendererApi() const = 0;
+        [[nodiscard]] virtual Ref<IndexBuffer> createIndexBuffer(const void* data, unsigned int count) const = 0;
+        [[nodiscard]] virtual Ref<VertexBuffer> createVertexBuffer(unsigned int size, const BufferLayout& layout) const  = 0;
+        [[nodiscard]] virtual Ref<VertexBuffer> createVertexBuffer(const void* data, unsigned int size, const BufferLayout& layout) const = 0;
+        [[nodiscard]] virtual Ref<VertexArray> createVertexArray() const = 0;
+        [[nodiscard]] virtual Ref<Shader> createShader(const std::string& filePath) const = 0;
+        [[nodiscard]] virtual Ref<Texture> createTexture(const std::string& path) const = 0;
     };
 }

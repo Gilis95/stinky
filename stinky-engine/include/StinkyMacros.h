@@ -84,7 +84,7 @@ namespace stinky {
 }
 
 #ifdef ENABLE_ASSERTS
-#define ASSERT(x, ...) { if(!(x)) { ERROR("Assertion Failed: {0}", __VA_ARGS__); DEBUGBREAK(); } }
+#define ASSERT(x, ...) { if(!(x)) { STINKY_ERROR("Assertion Failed: {0}", __VA_ARGS__); DEBUGBREAK(); } }
 #else
 #define ASSERT(x, ...)
 #endif

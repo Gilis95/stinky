@@ -2,17 +2,17 @@
 #include "renderer/platform/opengl/OpenGLRendererFactory.h"
 
 namespace stinky {
-    Ref<RendererFactory> RendererFactory::create(API api) {
+    Ref<RendererFactory> RendererFactory::create(const API& api) {
         switch (api)
         {
-        case stinky::RendererFactory::API::none:
+        case API::none:
             ASSERT(false, "No Graphic API has been choosen");
-            break;
-        case stinky::RendererFactory::API::OpenGL:
+            return nullptr;
+        case API::OpenGL:
             return createRef<OpenGLRendererFactory>();
         default:
             ASSERT(false, "No Graphic API has been choosen");
-            break;
+            return nullptr;
         }
     }
 }

@@ -15,14 +15,15 @@ set(SRC_FILES
     ${SRC_DIR}/main.cpp
    )
 
-
 add_executable(stinky-sandbox ${SRC_FILES} ${HDR_FILES})
 
 target_include_directories(stinky-sandbox PRIVATE 
                             ${HDR_DIR}
                             ${STINKY_ENGINE_DIR}/include
+                            ${SPDLOG_DIR}/include
                             )
 
 target_link_libraries(stinky-sandbox PRIVATE 
-		      stinky::stinky-engine
-                     )
+                      stinky::stinky-engine
+                      spdlog
+                      )

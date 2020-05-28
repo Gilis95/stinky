@@ -3,20 +3,18 @@
 //
 #pragma once
 
-#include <iostream>
-#include <vector>
+#include <glad/glad.h>
 
-#include "Macros.h"
 #include "renderer/VertexBuffer.h"
 
 
 namespace stinky {
-    class OpenGLVertexBuffer : VertexBuffer {
-    private:
-        unsigned int m_RendererID;
-        BufferLayout m_Layout;
+    class OpenGLVertexBuffer : public VertexBuffer {
     public:
-        OpenGLVertexBuffer(BufferLayout& layout);
+        OpenGLVertexBuffer(const BufferLayout& layout, unsigned int size);
+
+        OpenGLVertexBuffer(const BufferLayout& layout, const void* data, unsigned int size);
+
         ~OpenGLVertexBuffer();
 
         void bind() const override;
@@ -33,6 +31,9 @@ namespace stinky {
         {
             m_Layout = layout;
         }
+    private:
+        GLuint m_RendererID;
+        BufferLayout m_Layout;
     };
 
 }

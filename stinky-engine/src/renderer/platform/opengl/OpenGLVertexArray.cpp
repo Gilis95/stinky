@@ -3,8 +3,6 @@
 //
 #include <glad/glad.h>
 
-#include "Logger.h"
-
 #include "renderer/platform/opengl/OpenGLVertexArray.h"
 
 
@@ -40,22 +38,20 @@ namespace stinky {
     }
 
     OpenGLVertexArray::OpenGLVertexArray() {
-        GLCall(glGenVertexArrays(1, &m_RendererID));
-        bind();
+        glCreateVertexArrays(1, &m_RendererID);
     }
 
     OpenGLVertexArray::~OpenGLVertexArray() {
-        unbind();
+        glDeleteVertexArrays(1, &m_RendererID);
     }
 
     void OpenGLVertexArray::bind() const {
-        GLCall(glBindVertexArray(m_RendererID));
+        glBindVertexArray(m_RendererID);
     }
 
     void OpenGLVertexArray::unbind() const {
-        GLCall(glBindVertexArray(0));
+        glBindVertexArray(0);
     }
-
 
     void OpenGLVertexArray::setIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
     {
@@ -66,8 +62,8 @@ namespace stinky {
     }
 
     void OpenGLVertexArray::addVertexBuffer(const Ref<VertexBuffer>& vb) {
+        glBindVertexArray(m_RendererID);
         vb->bind();
-
 
         const auto& layout = vb->getBufferLayout();
         for (const auto& element : layout)

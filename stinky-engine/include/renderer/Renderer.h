@@ -16,7 +16,7 @@ namespace stinky {
         void init() const;
 
         void clear() const;
-        void draw(const Ref<VertexArray>& va, const Ref<IndexBuffer>& ib, const Ref<Shader>& shader) const;
+        void draw(const Ref<VertexArray>& va, const Ref<Shader>& shader) const;
     private:
         const Ref<RendererApi> m_RendererApi;
     };

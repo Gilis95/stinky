@@ -3,7 +3,7 @@ project(stinky-engine)
 
 set (CMAKE_CXX_STANDARD 17)
 
-add_definitions(-DENABLE_LOG)
+add_definitions(-DENABLE_LOG -DENABLE_ASSERTS -D_CRT_SECURE_NO_WARNINGS)
 
 #Project Header directory
 set(HDR_DIR ${PROJECT_SOURCE_DIR}/include)
@@ -21,7 +21,6 @@ set(WINDOW_SRC_DIR ${SRC_DIR}/window)
 set(GLFW_DIR ${PROJECT_SOURCE_DIR}/vendor/glfw/)
 set(GLAD_DIR ${PROJECT_SOURCE_DIR}/vendor/glad/)
 set(GLM_DIR ${PROJECT_SOURCE_DIR}/vendor/glm/)
-set(SPDLOG_DIR ${PROJECT_SOURCE_DIR}/vendor/spdlog)
 set(STB_DIR ${PROJECT_SOURCE_DIR}/vendor/stb_image)
 
 set(HDR_FILES 
@@ -41,12 +40,15 @@ set(HDR_FILES
     ${OPENGL_HDR_DIR}/OpenGLVertexArray.h 
     ${OPENGL_HDR_DIR}/OpenGLShader.h 
     ${OPENGL_HDR_DIR}/OpenGLTexture.h 
-    
+
+    #Window submodule
     ${WINDOW_HDR_DIR}/Window.h
     ${WINDOW_HDR_DIR}/glfw/WindowsWindow.h
 
-    ${HDR_DIR}/Logger.h
-    ${HDR_DIR}/Macros.h
+    ${HDR_DIR}/StinkyLogger.h
+    ${HDR_DIR}/StinkyMacros.h
+    ${HDR_DIR}/stinkypch.h
+
     ${STB_DIR}/stb_image.h
     )
 
@@ -64,18 +66,19 @@ set(SRC_FILES
     ${OPENGL_SRC_DIR}/OpenGLShader.cpp
     ${OPENGL_SRC_DIR}/OpenGLTexture.cpp
 
+    #Window submodule
     ${WINDOW_SRC_DIR}/Window.cpp
     ${WINDOW_SRC_DIR}/glfw/WindowsWindow.cpp
 
-    ${SRC_DIR}/Logger.cpp
-    ${STB_DIR}/stb_image.cpp)
+    ${SRC_DIR}/StinkyLogger.cpp
+    ${STB_DIR}/stb_image.cpp
+    )
 
 add_subdirectory(${GLFW_DIR})
 add_subdirectory(${GLAD_DIR})
 add_subdirectory(${GLM_DIR})
-add_subdirectory(${SPDLOG_DIR})
 
-add_library(stinky-engine SHARED ${SRC_FILES} ${HDR_FILES})
+add_library(stinky-engine STATIC ${SRC_FILES} ${HDR_FILES})
 
 target_include_directories(stinky-engine PRIVATE 
                             ${HDR_DIR}

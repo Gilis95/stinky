@@ -1,4 +1,5 @@
 #pragma once
+
 #include "renderer/VertexArray.h"
 
 namespace stinky
@@ -12,8 +13,7 @@ namespace stinky
 
         virtual void clear() const = 0;
 
-
-        virtual void drawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount) const = 0;
+        virtual void drawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0) const = 0;
     };
 
 }

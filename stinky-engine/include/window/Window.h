@@ -1,7 +1,6 @@
 #pragma once
-#include <string>
-#include <functional>
-#include "Macros.h"
+
+#include "stinkypch.h"
 
 namespace stinky {
     struct WindowProperties
@@ -25,7 +24,7 @@ namespace stinky {
 
         virtual ~Window() = default;
 
-        virtual void init(const WindowProperties& properties) = 0;
+        virtual void init() = 0;
 
         virtual void setCloseCallback(const std::function<void()>& callback) = 0;
 

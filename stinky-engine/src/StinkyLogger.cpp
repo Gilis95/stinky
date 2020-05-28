@@ -2,7 +2,7 @@
 // Created by christian on 5/3/20.
 //
 
-#include "Logger.h"
+#include "StinkyLogger.h"
 #include <iostream>
 #include <glad/glad.h>
 
@@ -21,10 +21,10 @@ namespace stinky {
         logSinks[0]->set_pattern("%^[%T] %n: %v%$");
         logSinks[1]->set_pattern("[%T] [%l] %n: %v");
 
-        Log::s_Logger = std::make_shared<spdlog::logger>("Engine", begin(logSinks), end(logSinks));
-        spdlog::register_logger(Log::s_Logger);
-        Log::s_Logger->set_level(spdlog::level::trace);
-        Log::s_Logger->flush_on(spdlog::level::trace);
+        s_Logger = std::make_shared<spdlog::logger>("Engine", begin(logSinks), end(logSinks));
+        register_logger(s_Logger);
+        s_Logger->set_level(spdlog::level::trace);
+        s_Logger->flush_on(spdlog::level::trace);
 
     }
 
