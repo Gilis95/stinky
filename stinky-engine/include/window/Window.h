@@ -30,7 +30,7 @@ namespace stinky {
 
         virtual void SetEventCallback(EventHandler::EventHandlerFn callback) = 0;
 
-        virtual void OnUpdate() = 0;
+        virtual void OnUpdate(const Event& ) = 0;
 
         virtual void Shutdown() = 0;
     };

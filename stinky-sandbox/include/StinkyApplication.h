@@ -3,6 +3,7 @@
 namespace stinky {
     class StinkyApplication : public Application
     {
+    public:
         StinkyApplication();
     };
 

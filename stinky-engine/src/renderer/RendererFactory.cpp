@@ -9,7 +9,7 @@ namespace stinky {
             ASSERT(false, "No Graphic API has been choosen");
             return nullptr;
         case API::OpenGL:
-            return createRef<OpenGLRendererFactory>();
+            return CreateRef<OpenGLRendererFactory>();
         default:
             ASSERT(false, "No Graphic API has been choosen");
             return nullptr;

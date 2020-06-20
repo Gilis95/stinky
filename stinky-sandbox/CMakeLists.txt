@@ -15,7 +15,6 @@ set(HDR_FILES
     )
 
 set(SRC_FILES 
-    ${SRC_DIR}/main.cpp
     ${SRC_DIR}/StinkyApplication.cpp
     ${SRC_DIR}/StinkyLayer.cpp
     )

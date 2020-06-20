@@ -25,7 +25,7 @@ namespace stinky {
 
         void SetEventCallback(EventHandler::EventHandlerFn callback) override;
 
-        void OnUpdate() override;
+        void OnUpdate(const Event&) override;
 
         void Shutdown() override;
     private:

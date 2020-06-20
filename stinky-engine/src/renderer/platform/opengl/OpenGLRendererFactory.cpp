@@ -8,30 +8,30 @@
 
 namespace stinky {
     Ref<RendererApi> OpenGLRendererFactory::createRendererApi() const {
-        return createRef<OpenGLRenderer>();
+        return CreateRef<OpenGLRenderer>();
     }
 
     Ref<IndexBuffer> OpenGLRendererFactory::createIndexBuffer(const void* data, unsigned int count) const {
-        return createRef<OpenGLIndexBuffer>(data, count);
+        return CreateRef<OpenGLIndexBuffer>(data, count);
     }
 
     Ref<VertexBuffer> OpenGLRendererFactory::createVertexBuffer(unsigned int size, const BufferLayout& layout) const {
-        return createRef<OpenGLVertexBuffer>(layout, size);
+        return CreateRef<OpenGLVertexBuffer>(layout, size);
     }
 
     Ref<VertexBuffer> OpenGLRendererFactory::createVertexBuffer(const void* data, unsigned int size, const BufferLayout& layout) const {
-        return createRef<OpenGLVertexBuffer>(layout, data, size);
+        return CreateRef<OpenGLVertexBuffer>(layout, data, size);
     }
 
     Ref<VertexArray> OpenGLRendererFactory::createVertexArray() const {
-        return createRef<OpenGLVertexArray>();
+        return CreateRef<OpenGLVertexArray>();
     }
 
     Ref<Shader> OpenGLRendererFactory::createShader(const std::string& filePath) const {
-        return createRef<OpenGLShader>(filePath);
+        return CreateRef<OpenGLShader>(filePath);
     }
 
     Ref<Texture> OpenGLRendererFactory::createTexture(const std::string& filePath) const {
-        return createRef<OpenGLTexture>(filePath);
+        return CreateRef<OpenGLTexture>(filePath);
     }
 }

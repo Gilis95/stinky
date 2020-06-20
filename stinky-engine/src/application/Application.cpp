@@ -2,6 +2,7 @@
 
 
 #include "stinkypch.h"
+#include "event/ApplicationEvent.h"
 
 #include "event/Event.h"
 #include "GLFW/glfw3.h"
@@ -9,8 +10,8 @@
 namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    Application::Application() : m_IsRunning(false){
-        Init();
+    Application::Application(Window::API windowApi) : m_IsRunning(false){
+        Init(windowApi);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -18,8 +19,13 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void Application::Init()
+    void Application::Init(Window::API windowApi)
     {
+
+        m_Window = Window::Create(windowApi);
+
+        m_Window->SetEventCallback(STINKY_BIND(Application::OnEvent));
+
         // KeyPressed, KeyReleased, KeyTyped,
         RegisterEvent(EventType::KeyPressed);
         RegisterEvent(EventType::KeyReleased);
@@ -46,9 +52,14 @@ namespace stinky {
 
         RegisterEventHandler({ 
             EventType::WindowClose,
-            STINKY_BIND(Close)
+            STINKY_BIND(Application::Close)
         });
-    }                                        
+
+        RegisterEventHandler({
+            EventType::AppUpdate,
+            std::bind(&Window::OnUpdate, m_Window.get(), std::placeholders::_1)
+        });
+    }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void Application::Close(const Event& closeEvent)
@@ -75,6 +86,8 @@ namespace stinky {
                 {
                     layer->OnUpdate(timestep);
                 });
+
+            OnEvent(AppUpdateEvent());
         }
 
     }

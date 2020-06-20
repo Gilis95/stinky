@@ -63,7 +63,7 @@ namespace stinky {
         m_Data.eventHandlerFn = eventHandlerFn;
     }
 
-    void WindowsWindow::OnUpdate()
+    void WindowsWindow::OnUpdate(const Event& onUpdateEvent)
     {
 
         // swap front and back buffer

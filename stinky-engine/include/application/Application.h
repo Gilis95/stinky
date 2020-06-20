@@ -5,6 +5,7 @@
 #include "event/Event.h"
 #include "event/Layer.h"
 #include "event/LayerStack.h"
+#include "window/Window.h"
 
 namespace stinky {
 
@@ -13,10 +14,10 @@ namespace stinky {
     private:
         using EventHandlers = std::vector<EventHandler::EventHandlerFn>;
     public:
-        Application();
+        Application(Window::API);
         virtual ~Application();
 
-        void Init();
+        void Init(Window::API);
         void Close(const Event&);
         void Run();
 
@@ -30,6 +31,8 @@ namespace stinky {
         void OnEvent(const Event&);
 
     private:
+        Scope<Window> m_Window;
+
         LayerStack m_LayerStack;
         std::unordered_map <EventType, EventHandlers> m_EventHandlers;
         float m_LastFrameTime = 0.0f;
