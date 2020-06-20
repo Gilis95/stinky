@@ -1,7 +1,9 @@
 #pragma once
 
 #include <GLFW/glfw3.h>
+
 #include "window/Window.h"
+#include "event/Event.h"
 
 namespace stinky {
 
@@ -12,20 +14,20 @@ namespace stinky {
         {
             std::string titile;
             int width, height;
-            std::function<void()> closeCallback;
+            EventHandler::EventHandlerFn eventHandlerFn;
         };
 
         WindowsWindow(const WindowProperties& properties);
 
         ~WindowsWindow();
 
-        void init() override;
+        void Init() override;
 
-        void setCloseCallback(const std::function<void()>& callback) override;
+        void SetEventCallback(EventHandler::EventHandlerFn callback) override;
 
-        void onUpdate() override;
+        void OnUpdate() override;
 
-        void shutdown() override;
+        void Shutdown() override;
     private:
         WindowData m_Data;
         GLFWwindow* m_Window;

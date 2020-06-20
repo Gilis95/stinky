@@ -2,6 +2,8 @@
 
 #include "stinkypch.h"
 
+#include "event/Event.h"
+
 namespace stinky {
     struct WindowProperties
     {
@@ -20,16 +22,16 @@ namespace stinky {
             none, GLFW
         };
 
-        static Scope<Window> create(const API& api , const WindowProperties& properties = {});
+        static Scope<Window> Create(const API& api , const WindowProperties& properties = {});
 
         virtual ~Window() = default;
 
-        virtual void init() = 0;
+        virtual void Init() = 0;
 
-        virtual void setCloseCallback(const std::function<void()>& callback) = 0;
+        virtual void SetEventCallback(EventHandler::EventHandlerFn callback) = 0;
 
-        virtual void onUpdate() = 0;
+        virtual void OnUpdate() = 0;
 
-        virtual void shutdown() = 0;
+        virtual void Shutdown() = 0;
     };
 }

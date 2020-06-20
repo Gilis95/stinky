@@ -9,9 +9,9 @@ int main() {
     stinky::Log::init();
 
 
-    auto window = stinky::Window::create(stinky::Window::API::GLFW);
+    auto window = stinky::Window::Create(stinky::Window::API::GLFW);
 
-    window->setCloseCallback([&]()
+    window->SetEventCallback([&]()
         {
             closed = true;
         });
@@ -63,7 +63,7 @@ int main() {
             renderer.clear();
             renderer.draw(vertexArray, shader);
 
-            window->onUpdate();
+            window->OnUpdate();
         }
     }
 

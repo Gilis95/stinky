@@ -9,11 +9,16 @@ set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
 
 set(STINKY_ENGINE_DIR ${PROJECT_SOURCE_DIR}/../stinky-engine)
 
-set(HDR_FILES )
+set(HDR_FILES  
+    ${HDR_DIR}/StinkyApplication.h 
+    ${HDR_DIR}/StinkyLayer.h
+    )
 
 set(SRC_FILES 
     ${SRC_DIR}/main.cpp
-   )
+    ${SRC_DIR}/StinkyApplication.cpp
+    ${SRC_DIR}/StinkyLayer.cpp
+    )
 
 add_executable(stinky-sandbox ${SRC_FILES} ${HDR_FILES})
 

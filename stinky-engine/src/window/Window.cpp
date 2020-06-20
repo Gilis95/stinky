@@ -2,7 +2,7 @@
 #include "window/glfw/WindowsWindow.h"
 
 namespace stinky {
-    Scope<Window> Window::create(const API& api, const WindowProperties& properties)
+    Scope<Window> Window::Create(const API& api, const WindowProperties& properties)
     {
         switch (api)
         {

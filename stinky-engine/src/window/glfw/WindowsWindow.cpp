@@ -1,6 +1,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "event/ApplicationEvent.h"
 #include "window/glfw/WindowsWindow.h"
 
 #include "stinkypch.h"
@@ -18,15 +19,15 @@ namespace stinky {
         m_Data.width = properties.m_Width;
         m_Data.titile = properties.m_Title;
 
-        init();
+        Init();
     }
 
     WindowsWindow::~WindowsWindow()
     {
-        shutdown();
+        Shutdown();
     };
 
-    void WindowsWindow::init() {
+    void WindowsWindow::Init() {
 
         int status = glfwInit();
 
@@ -45,7 +46,6 @@ namespace stinky {
 
         glfwSwapInterval(5);
 
-        //ASSERT(gladLoadGL(), "Maikata si eba eii!");
         ASSERT(gladLoadGLLoader((GLADloadproc)glfwGetProcAddress), "Maikata si eba eii!");
 
         glfwSetWindowUserPointer(m_Window, &m_Data);
@@ -53,17 +53,17 @@ namespace stinky {
         glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
             {
                 WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-                data.closeCallback();
+                data.eventHandlerFn(WindowCloseEvent());
             }
         );
 
     }
 
-    void WindowsWindow::setCloseCallback(const std::function<void()>& callback) {
-        m_Data.closeCallback = callback;
+    void WindowsWindow::SetEventCallback(EventHandler::EventHandlerFn eventHandlerFn) {
+        m_Data.eventHandlerFn = eventHandlerFn;
     }
 
-    void WindowsWindow::onUpdate()
+    void WindowsWindow::OnUpdate()
     {
 
         // swap front and back buffer
@@ -73,7 +73,7 @@ namespace stinky {
         glfwPollEvents();
     }
 
-    void WindowsWindow::shutdown()
+    void WindowsWindow::Shutdown()
     {
         glfwDestroyWindow(m_Window);
         glfwTerminate();

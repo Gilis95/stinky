@@ -5,23 +5,37 @@ set (CMAKE_CXX_STANDARD 17)
 
 add_definitions(-DENABLE_LOG -DENABLE_ASSERTS -D_CRT_SECURE_NO_WARNINGS)
 
+################################################################################################
+
 #Project Header directory
 set(HDR_DIR ${PROJECT_SOURCE_DIR}/include)
+
+set(APPLICAITON_HDR_DIR ${HDR_DIR}/application)
+set(EVENT_HDR_DIR ${HDR_DIR}/event)
 set(RENDERER_HDR_DIR ${HDR_DIR}/renderer)
 set(OPENGL_HDR_DIR ${RENDERER_HDR_DIR}/platform/opengl)
 set(WINDOW_HDR_DIR ${HDR_DIR}/window)
 
+################################################################################################
+
 #Projetc source directory
 set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
+
+set(APPLICAITON_SRC_DIR ${SRC_DIR}/application)
+set(EVENT_SRC_DIR ${SRC_DIR}/event)
 set(RENDERER_SRC_DIR ${SRC_DIR}/renderer)
 set(OPENGL_SRC_DIR ${RENDERER_SRC_DIR}/platform/opengl)
 set(WINDOW_SRC_DIR ${SRC_DIR}/window)
+
+################################################################################################
 
 #Dependecies directory
 set(GLFW_DIR ${PROJECT_SOURCE_DIR}/vendor/glfw/)
 set(GLAD_DIR ${PROJECT_SOURCE_DIR}/vendor/glad/)
 set(GLM_DIR ${PROJECT_SOURCE_DIR}/vendor/glm/)
 set(STB_DIR ${PROJECT_SOURCE_DIR}/vendor/stb_image)
+
+################################################################################################
 
 set(HDR_FILES 
     # Renderer API
@@ -45,14 +59,30 @@ set(HDR_FILES
     ${WINDOW_HDR_DIR}/Window.h
     ${WINDOW_HDR_DIR}/glfw/WindowsWindow.h
 
+    #Event submodul
+    ${EVENT_HDR_DIR}/Event.h
+    ${EVENT_HDR_DIR}/Layer.h
+    ${EVENT_HDR_DIR}/LayerStack.h
+    ${EVENT_HDR_DIR}/Timestep.h
+    ${EVENT_HDR_DIR}/ApplicationEvent.h
+
     ${HDR_DIR}/StinkyLogger.h
     ${HDR_DIR}/StinkyMacros.h
     ${HDR_DIR}/stinkypch.h
+    
+    ${APPLICAITON_HDR_DIR}/Application.h
+    ${APPLICAITON_HDR_DIR}/EntryPoint.h
 
     ${STB_DIR}/stb_image.h
-    )
+      
+      )
+
+################################################################################################
 
 set(SRC_FILES 
+    #Application 
+    ${APPLICAITON_SRC_DIR}/Application.cpp
+    
     #Rendere API
     ${RENDERER_SRC_DIR}/RendererFactory.cpp
     ${RENDERER_SRC_DIR}/Renderer.cpp 
@@ -71,8 +101,9 @@ set(SRC_FILES
     ${WINDOW_SRC_DIR}/glfw/WindowsWindow.cpp
 
     ${SRC_DIR}/StinkyLogger.cpp
+    
     ${STB_DIR}/stb_image.cpp
-    )
+      "src/event/LayerStack.cpp" "src/event/Layer.cpp")
 
 add_subdirectory(${GLFW_DIR})
 add_subdirectory(${GLAD_DIR})
