@@ -4,8 +4,10 @@
 
 #include "event/Layer.h"
 
-namespace stinky {
-
+namespace stinky
+{
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
     class LayerStack
     {
     public:
@@ -30,5 +32,4 @@ namespace stinky {
         std::vector<Layer*> m_Layers;
         unsigned int m_LayerInsertIndex = 0;
     };
-
 }

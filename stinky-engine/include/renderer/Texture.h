@@ -3,17 +3,21 @@
 //
 #pragma once
 
-namespace stinky {
-    class Texture {
+namespace stinky
+{
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
+    class Texture
+    {
     public:
         virtual ~Texture() = default;
 
-        virtual void bind(unsigned int slot) const = 0;
+        virtual void Bind(unsigned int slot) const = 0;
 
-        virtual void unbind() const = 0;
+        virtual void Unbind() const = 0;
 
-        [[nodiscard]] virtual int getWidth() const = 0;
+        [[nodiscard]] virtual int GetWidth() const = 0;
 
-        [[nodiscard]] virtual int getHeight() const = 0;
+        [[nodiscard]] virtual int GetHeight() const = 0;
     };
 }

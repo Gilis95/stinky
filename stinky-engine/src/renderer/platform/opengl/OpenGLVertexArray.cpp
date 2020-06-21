@@ -6,9 +6,10 @@
 #include "renderer/platform/opengl/OpenGLVertexArray.h"
 
 
-namespace stinky {
+namespace stinky
+{
 
-
+    /////////////////////////////////////////////////////////////////////////////////////////
     static GLenum ShaderDataTypeToOpenGLBaseType(const ShaderDataType& type)
     {
         switch (type)
@@ -37,36 +38,47 @@ namespace stinky {
         return 0;
     }
 
-    OpenGLVertexArray::OpenGLVertexArray() {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    OpenGLVertexArray::OpenGLVertexArray()
+    {
         glCreateVertexArrays(1, &m_RendererID);
     }
 
-    OpenGLVertexArray::~OpenGLVertexArray() {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    OpenGLVertexArray::~OpenGLVertexArray()
+    {
         glDeleteVertexArrays(1, &m_RendererID);
     }
 
-    void OpenGLVertexArray::bind() const {
-        m_IndexBuffer->bind();
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void OpenGLVertexArray::Bind() const
+    {
+        m_IndexBuffer->Bind();
         glBindVertexArray(m_RendererID);
     }
 
-    void OpenGLVertexArray::unbind() const {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void OpenGLVertexArray::Unbind() const
+    {
         glBindVertexArray(0);
     }
 
-    void OpenGLVertexArray::setIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
     {
         glBindVertexArray(m_RendererID);
-        indexBuffer->bind();
+        indexBuffer->Bind();
 
         m_IndexBuffer = indexBuffer;
     }
 
-    void OpenGLVertexArray::addVertexBuffer(const Ref<VertexBuffer>& vb) {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vb)
+    {
         glBindVertexArray(m_RendererID);
-        vb->bind();
+        vb->Bind();
 
-        const auto& layout = vb->getBufferLayout();
+        const auto& layout = vb->GetBufferLayout();
         for (const auto& element : layout)
         {
             switch (element.m_Type)

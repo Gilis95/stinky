@@ -1,8 +1,10 @@
 #pragma once
 
 
-namespace stinky {
-
+namespace stinky
+{
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
     enum class EventType
     {
         None = 0,
@@ -12,11 +14,14 @@ namespace stinky {
         MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
     };
 
-#define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::type; }\
-                               virtual EventType GetEventType() const override { return GetStaticType(); }\
-                               virtual const char* GetName() const override { return #type; }
+
+#define EVENT_OVERRIDE_FUNCTIONS(type) [[nodiscard]] static EventType GetStaticType() { return EventType::type; }\
+                               [[nodiscard]] virtual EventType GetEventType() const override { return GetStaticType(); }\
+                               [[nodiscard]] virtual const char* GetName() const override { return #type; }
 
 
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
     class Event
     {
     public:
@@ -35,6 +40,8 @@ namespace stinky {
     }
 
 
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
     struct EventHandler
     {
         using EventHandlerFn = std::function<void(const Event&)>;
@@ -42,7 +49,5 @@ namespace stinky {
         EventType m_EventType;
         EventHandlerFn m_EventHandlerFunction;
     };
-
-
 }
 

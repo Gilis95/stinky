@@ -7,21 +7,23 @@
 #include "event/Event.h"
 #include "GLFW/glfw3.h"
 
-namespace stinky {
-
+namespace stinky
+{
     /////////////////////////////////////////////////////////////////////////////////////////
-    Application::Application(Window::API windowApi) : m_IsRunning(false){
+    Application::Application(Window::API windowApi) : m_IsRunning(false)
+    {
         Init(windowApi);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    Application::~Application() {
+    Application::~Application()
+    {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void Application::Init(Window::API windowApi)
     {
-        Log::init();
+        Log::Init();
 
         m_Window = Window::Create(windowApi);
 
@@ -51,15 +53,15 @@ namespace stinky {
         RegisterEvent(EventType::AppTick);
         RegisterEvent(EventType::AppUpdate);
 
-        RegisterEventHandler({ 
+        RegisterEventHandler({
             EventType::WindowClose,
             STINKY_BIND(Application::Close)
-        });
+            });
 
         RegisterEventHandler({
             EventType::AppUpdate,
             std::bind(&Window::OnUpdate, m_Window.get(), std::placeholders::_1)
-        });
+            });
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -81,8 +83,8 @@ namespace stinky {
             m_LastFrameTime = time;
 
             std::for_each(
-                m_LayerStack.begin(), 
-                m_LayerStack.end(), 
+                m_LayerStack.begin(),
+                m_LayerStack.end(),
                 [&](Layer* layer)->void
                 {
                     layer->OnUpdate(timestep);
@@ -109,7 +111,7 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     void Application::RegisterEvent(EventType type)
     {
-        if(m_EventHandlers.find(type) == m_EventHandlers.end())
+        if (m_EventHandlers.find(type) == m_EventHandlers.end())
         {
             m_EventHandlers[type] = EventHandlers();
         }
@@ -126,15 +128,15 @@ namespace stinky {
     {
         auto handlers = m_EventHandlers.find(event.GetEventType());
 
-        if(handlers!=m_EventHandlers.end())
+        if (handlers != m_EventHandlers.end())
         {
             std::for_each(
-                handlers->second.begin(), 
-                handlers->second.end(), 
+                handlers->second.begin(),
+                handlers->second.end(),
                 [&](EventHandler::EventHandlerFn& handlerFunction) -> void
-            {
+                {
                     handlerFunction(event);
-            });
+                });
         }
     }
 }

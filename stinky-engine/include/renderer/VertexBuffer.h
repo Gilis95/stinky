@@ -6,13 +6,16 @@
 #include "stinkypch.h"
 
 
-namespace stinky {
-
+namespace stinky
+{
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
     enum class ShaderDataType
     {
         None = 0, Float, Float2, Float3, Float4, Mat3, Mat4, Int, Int2, Int3, Int4, Bool
     };
 
+    /////////////////////////////////////////////////////////////////////////////////////////
     static uint32_t ShaderDataTypeSize(ShaderDataType type)
     {
         switch (type)
@@ -34,21 +37,21 @@ namespace stinky {
         return 0;
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
     struct BufferElement
     {
-        std::string m_Name;
-        ShaderDataType m_Type;
-        uint32_t m_Size;
-        size_t m_Offset;
-        bool m_Normalized;
-
+    public:
+        /////////////////////////////////////////////////////////////////////////////////////////
         BufferElement() = default;
 
+        /////////////////////////////////////////////////////////////////////////////////////////
         BufferElement(ShaderDataType type, const std::string& name, const bool normalized = false)
             : m_Name(name), m_Type(type), m_Size(ShaderDataTypeSize(type)), m_Offset(0), m_Normalized(normalized)
         {
         }
 
+        /////////////////////////////////////////////////////////////////////////////////////////
         [[nodiscard]] uint32_t GetComponentCount() const
         {
             switch (m_Type)
@@ -69,9 +72,16 @@ namespace stinky {
             ASSERT(false, "Unknown ShaderDataType!");
             return 0;
         }
+    public:
+        std::string m_Name;
+        ShaderDataType m_Type;
+        uint32_t m_Size;
+        size_t m_Offset;
+        bool m_Normalized;
     };
 
-
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
     class BufferLayout
     {
     public:
@@ -105,18 +115,19 @@ namespace stinky {
         uint32_t m_Stride = 0;
     };
 
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
     class VertexBuffer {
     public:
         virtual ~VertexBuffer() = default;
 
-        virtual void bind() const = 0;
-        virtual void unbind() const = 0;
+        virtual void Bind() const = 0;
+        virtual void Unbind() const = 0;
 
-        virtual void setData(const void* data, unsigned int size) = 0;
+        virtual void SetData(const void* data, unsigned int size) = 0;
 
-        [[nodiscard]] virtual const BufferLayout& getBufferLayout() const = 0;
+        [[nodiscard]] virtual const BufferLayout& GetBufferLayout() const = 0;
 
-        virtual void setBufferLayout(BufferLayout& layout) = 0;
+        virtual void SetBufferLayout(BufferLayout& layout) = 0;
     };
-
 }

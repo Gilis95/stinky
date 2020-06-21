@@ -2,8 +2,9 @@
 #include "event/LayerStack.h"
 #include "event/Layer.h"
 
-namespace stinky {
-
+namespace stinky
+{
+    /////////////////////////////////////////////////////////////////////////////////////////
     LayerStack::~LayerStack()
     {
         for (Layer* layer : m_Layers)
@@ -13,6 +14,7 @@ namespace stinky {
         }
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////
     void LayerStack::PushLayer(Layer* layer)
     {
         m_Layers.emplace(m_Layers.begin() + m_LayerInsertIndex, layer);
@@ -20,12 +22,14 @@ namespace stinky {
         layer->OnAttach();
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////
     void LayerStack::PushOverlay(Layer* overlay)
     {
         m_Layers.emplace_back(overlay);
         overlay->OnAttach();
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////
     void LayerStack::PopLayer(Layer* layer)
     {
         auto it = std::find(m_Layers.begin(), m_Layers.begin() + m_LayerInsertIndex, layer);
@@ -37,6 +41,7 @@ namespace stinky {
         }
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////
     void LayerStack::PopOverlay(Layer* overlay)
     {
         auto it = std::find(m_Layers.begin() + m_LayerInsertIndex, m_Layers.end(), overlay);

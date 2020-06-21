@@ -1,7 +1,9 @@
 #include "window/Window.h"
 #include "window/glfw/WindowsWindow.h"
 
-namespace stinky {
+namespace stinky
+{
+    /////////////////////////////////////////////////////////////////////////////////////////
     Scope<Window> Window::Create(const API& api, const WindowProperties& properties)
     {
         switch (api)

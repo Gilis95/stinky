@@ -10,9 +10,12 @@
 #include "renderer/platform/opengl/OpenGLShader.h"
 #include "stinkypch.h"
 
-namespace stinky {
+namespace stinky
+{
 
-    static GLenum ShaderTypeFromString(const std::string& type) {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    [[ nodiscard ]] static GLenum ShaderTypeFromString(const std::string& type)
+    {
         if (type == "vertex")
             return GL_VERTEX_SHADER;
         if (type == "fragment" || type == "pixel")
@@ -22,41 +25,54 @@ namespace stinky {
         return 0;
     }
 
-    static std::string readFile(const std::string& filepath) {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    [[ nodiscard ]] static std::string readFile(const std::string& filepath)
+    {
         std::string result;
         std::ifstream in(filepath, std::ios::in | std::ios::binary);
-        if (in) {
+        if (in)
+        {
             in.seekg(0, std::ios::end);
             size_t size = in.tellg();
-            if (size != -1) {
+            if (size != -1)
+            {
                 result.resize(size);
                 in.seekg(0, std::ios::beg);
                 in.read(&result[0], size);
                 in.close();
             }
-            else {
+            else
+            {
                 STINKY_ERROR("Could not read from file {0}", filepath);
             }
         }
-        else {
+        else
+        {
             STINKY_ERROR("Could not open file {0}", filepath);
         }
 
         return result;
     }
 
-    OpenGLShader::OpenGLShader(const std::string& filePath) {
-        parseShaders(readFile(filePath));
-        createProgram();
+    /////////////////////////////////////////////////////////////////////////////////////////
+    OpenGLShader::OpenGLShader(const std::string& filePath)
+    {
+        ParseShaders(readFile(filePath));
+        CreateProgram();
     }
 
-    OpenGLShader::~OpenGLShader() {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    OpenGLShader::~OpenGLShader()
+    {
         glDeleteProgram(m_RendererID);
     }
 
 
-    int OpenGLShader::getUniformLocation(const std::string& name) {
-        if (m_UniformLocationsCache.find(name) != m_UniformLocationsCache.end()) {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    int OpenGLShader::GetUniformLocation(const std::string& name)
+    {
+        if (m_UniformLocationsCache.find(name) != m_UniformLocationsCache.end())
+        {
             return m_UniformLocationsCache[name];
         }
 
@@ -66,21 +82,27 @@ namespace stinky {
         return uniformLocation;
     }
 
-    void OpenGLShader::bind() const {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void OpenGLShader::Bind() const
+    {
         glUseProgram(m_RendererID);
     }
 
-    void OpenGLShader::unbind() const {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void OpenGLShader::Unbind() const
+    {
         glUseProgram(0);
     }
 
-
-    void OpenGLShader::parseShaders(const std::string& source) {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void OpenGLShader::ParseShaders(const std::string& source)
+    {
         const char* typeToken = "#type";
         size_t typeTokenLength = strlen(typeToken);
         size_t pos = source.find(typeToken, 0); //Start of shader type declaration line
 
-        while (pos != std::string::npos) {
+        while (pos != std::string::npos)
+        {
             size_t eol = source.find_first_of("\r\n", pos); //End of shader type declaration line
             ASSERT(eol != std::string::npos, "Syntax error");
             size_t begin = pos + typeTokenLength + 1; //Start of shader type name (after "#type " keyword)
@@ -98,14 +120,18 @@ namespace stinky {
         }
     }
 
-    void OpenGLShader::createProgram() {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void OpenGLShader::CreateProgram()
+    {
         m_RendererID = glCreateProgram();
         std::array<GLenum, 2> glShaderIDs{};
         int glShaderIDIndex = 0;
 
-        for (auto& kv : m_ShaderSources) {
-            GLuint shaderId = compileShader(kv.first, kv.second);
-            if (shaderId == 0) {
+        for (auto& kv : m_ShaderSources)
+        {
+            GLuint shaderId = CompileShader(kv.first, kv.second);
+            if (shaderId == 0)
+            {
                 break;
             }
 
@@ -118,7 +144,8 @@ namespace stinky {
         GLint isLinked = 0;
         glGetProgramiv(m_RendererID, GL_LINK_STATUS, &isLinked);
 
-        if (isLinked == GL_FALSE) {
+        if (isLinked == GL_FALSE)
+        {
             GLint maxLength = 0;
             glGetProgramiv(m_RendererID, GL_INFO_LOG_LENGTH, &maxLength);
 
@@ -139,13 +166,16 @@ namespace stinky {
             return;
         }
 
-        for (auto& id : glShaderIDs) {
+        for (auto& id : glShaderIDs)
+        {
             glDetachShader(m_RendererID, id);
             glDeleteShader(id);
         }
     }
 
-    GLuint OpenGLShader::compileShader(GLenum type, const std::string& shaderCode) {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    GLuint OpenGLShader::CompileShader(GLenum type, const std::string& shaderCode)
+    {
         unsigned int shaderId = glCreateShader(type);
         const char* shaderCStr = shaderCode.c_str();
 
@@ -155,7 +185,8 @@ namespace stinky {
         int compileResult;
         glGetShaderiv(shaderId, GL_COMPILE_STATUS, &compileResult);
 
-        if (compileResult == GL_FALSE) {
+        if (compileResult == GL_FALSE)
+        {
             int length;
             glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &length);
 
@@ -174,13 +205,15 @@ namespace stinky {
         return shaderId;
     }
 
-
-    void OpenGLShader::setInteger(const std::string& name, int i)
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void OpenGLShader::SetInteger(const std::string& name, int i)
     {
-        glUniform1i(getUniformLocation(name), i);
+        glUniform1i(GetUniformLocation(name), i);
     }
 
-    void OpenGLShader::setFloat4(const std::string& name, float f0, float f1, float f2, float f3) {
-        glUniform4f(getUniformLocation(name), f0, f1, f2, f3);
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void OpenGLShader::SetFloat4(const std::string& name, float f0, float f1, float f2, float f3)
+    {
+        glUniform4f(GetUniformLocation(name), f0, f1, f2, f3);
     }
 }

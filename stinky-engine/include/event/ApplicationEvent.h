@@ -1,16 +1,20 @@
 #pragma once
 
+#include "event/Event.h"
 #include "stinkypch.h"
 
-#include "event/Event.h"
+namespace stinky
+{
 
-namespace stinky {
-
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
     class WindowResizeEvent : public Event
     {
     public:
         WindowResizeEvent(unsigned int width, unsigned int height)
-            : m_Width(width), m_Height(height) {}
+            : m_Width(width), m_Height(height)
+        {
+        }
 
         unsigned int GetWidth() const { return m_Width; }
         unsigned int GetHeight() const { return m_Height; }
@@ -22,40 +26,48 @@ namespace stinky {
             return ss.str();
         }
 
-        EVENT_CLASS_TYPE(WindowResize)
+        EVENT_OVERRIDE_FUNCTIONS(WindowResize)
     private:
         unsigned int m_Width, m_Height;
     };
 
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
     class WindowCloseEvent : public Event
     {
     public:
         WindowCloseEvent() = default;
 
-        EVENT_CLASS_TYPE(WindowClose)
+        EVENT_OVERRIDE_FUNCTIONS(WindowClose)
     };
 
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
     class AppTickEvent : public Event
     {
     public:
         AppTickEvent() = default;
 
-        EVENT_CLASS_TYPE(AppTick)
+        EVENT_OVERRIDE_FUNCTIONS(AppTick)
     };
 
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
     class AppUpdateEvent : public Event
     {
     public:
         AppUpdateEvent() = default;
 
-        EVENT_CLASS_TYPE(AppUpdate)
+        EVENT_OVERRIDE_FUNCTIONS(AppUpdate)
     };
 
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
     class AppRenderEvent : public Event
     {
     public:
         AppRenderEvent() = default;
 
-        EVENT_CLASS_TYPE(AppRender)
+        EVENT_OVERRIDE_FUNCTIONS(AppRender)
     };
-}
+}  // namespace stinky

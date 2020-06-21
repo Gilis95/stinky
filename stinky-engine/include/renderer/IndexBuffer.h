@@ -4,15 +4,19 @@
 
 #pragma once
 
-namespace stinky {
-    class IndexBuffer {
+namespace stinky
+{
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
+    class IndexBuffer
+    {
     public:
         virtual ~IndexBuffer() = default;
 
-        virtual void bind() const = 0;
+        virtual void Bind() const = 0;
 
-        virtual void unbind() const = 0;
+        virtual void Unbind() const = 0;
 
-        virtual unsigned int getCount() const = 0;
+        virtual unsigned int GetCount() const = 0;
     };
 }

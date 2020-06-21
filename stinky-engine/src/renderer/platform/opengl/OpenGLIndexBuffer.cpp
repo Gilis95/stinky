@@ -4,8 +4,11 @@
 #include <glad/glad.h>
 #include "renderer/platform/opengl/OpenGLIndexBuffer.h"
 
-namespace stinky {
-    OpenGLIndexBuffer::OpenGLIndexBuffer(const void* data, unsigned int count) : m_Count(count) {
+namespace stinky
+{
+    /////////////////////////////////////////////////////////////////////////////////////////
+    OpenGLIndexBuffer::OpenGLIndexBuffer(const void* data, unsigned int count) : m_Count(count)
+    {
         glCreateBuffers(1, &m_RendererID);
 
         // GL_ELEMENT_ARRAY_BUFFER is not valid without an actively bound VAO
@@ -14,15 +17,21 @@ namespace stinky {
         glBufferData(GL_ARRAY_BUFFER, m_Count * sizeof(unsigned int), data, GL_STATIC_DRAW);
     }
 
-    OpenGLIndexBuffer::~OpenGLIndexBuffer() {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    OpenGLIndexBuffer::~OpenGLIndexBuffer()
+    {
         glDeleteBuffers(1, &m_RendererID);
     }
 
-    void OpenGLIndexBuffer::bind() const {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void OpenGLIndexBuffer::Bind() const
+    {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
     }
 
-    void OpenGLIndexBuffer::unbind() const {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void OpenGLIndexBuffer::Unbind() const
+    {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 }

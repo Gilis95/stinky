@@ -8,8 +8,12 @@
 #include "renderer/VertexBuffer.h"
 
 
-namespace stinky {
-    class OpenGLVertexBuffer : public VertexBuffer {
+namespace stinky
+{
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
+    class OpenGLVertexBuffer : public VertexBuffer
+    {
     public:
         OpenGLVertexBuffer(const BufferLayout& layout, unsigned int size);
 
@@ -17,17 +21,17 @@ namespace stinky {
 
         ~OpenGLVertexBuffer();
 
-        void bind() const override;
-        void unbind() const override;
+        void Bind() const override;
+        void Unbind() const override;
 
-        void setData(const void* data, unsigned int size) override;
+        void SetData(const void* data, unsigned int size) override;
 
-        [[nodiscard]] const BufferLayout& getBufferLayout() const override
+        [[nodiscard]] const BufferLayout& GetBufferLayout() const override
         {
             return m_Layout;
         }
 
-        void setBufferLayout(BufferLayout& layout) override
+        void SetBufferLayout(BufferLayout& layout) override
         {
             m_Layout = layout;
         }
@@ -35,5 +39,4 @@ namespace stinky {
         GLuint m_RendererID;
         BufferLayout m_Layout;
     };
-
 }

@@ -5,16 +5,21 @@
 #include "renderer/RendererFactory.h"
 #include "renderer/VertexBuffer.h"
 
-namespace stinky {
+namespace stinky
+{
 
+    /////////////////////////////////////////////////////////////////////////////////////////
     StinkyLayer::StinkyLayer()
         : Layer("Stinky Layer")
         , m_RendererFactory(RendererFactory::create(RendererFactory::API::OpenGL))
         , m_Renderer(m_RendererFactory->createRendererApi())
-        , m_VertexArray(m_RendererFactory->createVertexArray()) {
+        , m_VertexArray(m_RendererFactory->createVertexArray())
+    {
     }
 
-    void StinkyLayer::OnAttach() {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void StinkyLayer::OnAttach()
+    {
 
         float positions[16] = {
         0.7f, -1.0f,  1.0f, -1.0f, //0
@@ -36,26 +41,29 @@ namespace stinky {
             });
 
         //bind currently bound array buffer to first element of currently bound vertex array
-        m_VertexArray->addVertexBuffer(vertexBuffer);
+        m_VertexArray->AddVertexBuffer(vertexBuffer);
 
         //Create index buffer, that will define shape vertex positions
         const auto indexBuffer = m_RendererFactory->createIndexBuffer(indices, 6);
 
-        m_VertexArray->setIndexBuffer(indexBuffer);
+        m_VertexArray->SetIndexBuffer(indexBuffer);
 
         //Parse fragment and vertex shader and bind them
         m_Texture = m_RendererFactory->createTexture("D:\\workspace\\stinky\\stinky-sandbox\\resources\\mb.png");
-        m_Texture->bind(0);
+        m_Texture->Bind(0);
 
         m_Shader = m_RendererFactory->createShader("D:\\workspace\\stinky\\stinky-sandbox\\resources\\shaders\\basic.shader");
-        m_Shader->bind();
-        m_Shader->setInteger("u_Texture", 0);
+        m_Shader->Bind();
+        m_Shader->SetInteger("u_Texture", 0);
     }
 
-    void StinkyLayer::OnDetach() {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void StinkyLayer::OnDetach()
+    {
 
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////
     void StinkyLayer::OnUpdate(Timestep ts)
     {
         m_Renderer.clear();

@@ -2,7 +2,11 @@
 
 #include "renderer/RendererFactory.h"
 
-namespace stinky {
+namespace stinky
+{
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
     class OpenGLRendererFactory :public RendererFactory
     {
     public:
@@ -17,4 +21,5 @@ namespace stinky {
         [[nodiscard]] Ref<Shader> createShader(const std::string& filePath) const override;
         [[nodiscard]] Ref<Texture> createTexture(const std::string& path) const override;
     };
+
 }

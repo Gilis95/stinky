@@ -7,14 +7,18 @@
 #include "stinkypch.h"
 
 
-namespace stinky {
+namespace stinky
+{
 
+    /////////////////////////////////////////////////////////////////////////////////////////
     static void GLFWErrorCallback(int error, const char* description)
     {
         STINKY_ERROR("GLFW Error ({0}): {1}", error, description);
     }
 
-    WindowsWindow::WindowsWindow(const WindowProperties& properties) {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    WindowsWindow::WindowsWindow(const WindowProperties& properties)
+    {
         m_Data.height = properties.m_Height;
         m_Data.width = properties.m_Width;
         m_Data.titile = properties.m_Title;
@@ -22,12 +26,15 @@ namespace stinky {
         Init();
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////
     WindowsWindow::~WindowsWindow()
     {
         Shutdown();
     };
 
-    void WindowsWindow::Init() {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void WindowsWindow::Init()
+    {
 
         int status = glfwInit();
 
@@ -59,10 +66,13 @@ namespace stinky {
 
     }
 
-    void WindowsWindow::SetEventCallback(EventHandler::EventHandlerFn eventHandlerFn) {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void WindowsWindow::SetEventCallback(EventHandler::EventHandlerFn eventHandlerFn)
+    {
         m_Data.eventHandlerFn = eventHandlerFn;
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////
     void WindowsWindow::OnUpdate(const Event& onUpdateEvent)
     {
 
@@ -73,6 +83,7 @@ namespace stinky {
         glfwPollEvents();
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////
     void WindowsWindow::Shutdown()
     {
         glfwDestroyWindow(m_Window);

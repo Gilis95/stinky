@@ -10,10 +10,13 @@
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 
-namespace stinky {
+namespace stinky
+{
     Ref<spdlog::logger> Log::s_Logger;
 
-    void Log::init() {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void Log::Init()
+    {
         std::vector<spdlog::sink_ptr> logSinks;
         logSinks.emplace_back(std::make_shared<spdlog::sinks::stdout_color_sink_mt>());
         logSinks.emplace_back(std::make_shared<spdlog::sinks::basic_file_sink_mt>("Engine.log", true));
@@ -28,14 +31,19 @@ namespace stinky {
 
     }
 
-    void GLClearError() {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void GLClearError()
+    {
         while (glGetError() != GL_NO_ERROR);
     }
 
 
-    bool GLLogCall(const char* functionName, const char* fileName, int line) {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    bool GLLogCall(const char* functionName, const char* fileName, int line)
+    {
 #if defined(ENABLE_LOG)
-        while (GLenum err = glGetError()) {
+        while (GLenum err = glGetError())
+        {
             std::stringstream ss;
             ss << "[ OpenGL Error] (" << err << "): " <<
                 functionName << " " << fileName << ":" << line;

@@ -2,8 +2,12 @@
 
 #include "renderer/IndexBuffer.h"
 
-namespace stinky {
-    class OpenGLIndexBuffer : public IndexBuffer {
+namespace stinky
+{
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
+    class OpenGLIndexBuffer : public IndexBuffer
+    {
     private:
         unsigned int m_RendererID;
         const unsigned int m_Count;
@@ -12,11 +16,12 @@ namespace stinky {
 
         ~OpenGLIndexBuffer();
 
-        void bind() const override;
+        void Bind() const override;
 
-        void unbind() const override;
+        void Unbind() const override;
 
-        unsigned int getCount() const override {
+        unsigned int GetCount() const override
+        {
             return m_Count;
         }
     };

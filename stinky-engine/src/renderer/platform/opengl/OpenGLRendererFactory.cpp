@@ -6,32 +6,47 @@
 #include "renderer/platform/opengl/OpenGLShader.h"
 #include "renderer/platform/opengl/OpenGLTexture.h"
 
-namespace stinky {
-    Ref<RendererApi> OpenGLRendererFactory::createRendererApi() const {
+namespace stinky
+{
+    /////////////////////////////////////////////////////////////////////////////////////////
+    Ref<RendererApi> OpenGLRendererFactory::createRendererApi() const
+    {
         return CreateRef<OpenGLRenderer>();
     }
 
-    Ref<IndexBuffer> OpenGLRendererFactory::createIndexBuffer(const void* data, unsigned int count) const {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    Ref<IndexBuffer> OpenGLRendererFactory::createIndexBuffer(const void* data, unsigned int count) const
+    {
         return CreateRef<OpenGLIndexBuffer>(data, count);
     }
 
-    Ref<VertexBuffer> OpenGLRendererFactory::createVertexBuffer(unsigned int size, const BufferLayout& layout) const {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    Ref<VertexBuffer> OpenGLRendererFactory::createVertexBuffer(unsigned int size, const BufferLayout& layout) const
+    {
         return CreateRef<OpenGLVertexBuffer>(layout, size);
     }
 
-    Ref<VertexBuffer> OpenGLRendererFactory::createVertexBuffer(const void* data, unsigned int size, const BufferLayout& layout) const {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    Ref<VertexBuffer> OpenGLRendererFactory::createVertexBuffer(const void* data, unsigned int size, const BufferLayout& layout) const
+    {
         return CreateRef<OpenGLVertexBuffer>(layout, data, size);
     }
 
-    Ref<VertexArray> OpenGLRendererFactory::createVertexArray() const {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    Ref<VertexArray> OpenGLRendererFactory::createVertexArray() const
+    {
         return CreateRef<OpenGLVertexArray>();
     }
 
-    Ref<Shader> OpenGLRendererFactory::createShader(const std::string& filePath) const {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    Ref<Shader> OpenGLRendererFactory::createShader(const std::string& filePath) const
+    {
         return CreateRef<OpenGLShader>(filePath);
     }
 
-    Ref<Texture> OpenGLRendererFactory::createTexture(const std::string& filePath) const {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    Ref<Texture> OpenGLRendererFactory::createTexture(const std::string& filePath) const
+    {
         return CreateRef<OpenGLTexture>(filePath);
     }
 }

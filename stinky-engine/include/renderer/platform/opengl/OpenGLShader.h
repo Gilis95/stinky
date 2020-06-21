@@ -8,38 +8,46 @@
 #include "renderer/Shader.h"
 #include "stinkypch.h"
 
-namespace stinky {
-    struct ShaderElements {
+namespace stinky
+{
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
+    struct ShaderElements
+    {
         std::string vertex;
         std::string fragment;
     };
 
-    class OpenGLShader : public Shader {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
+    class OpenGLShader : public Shader
+    {
     public:
         OpenGLShader(const std::string& filePath);
 
         ~OpenGLShader();
 
-        void bind() const override;
+        void Bind() const override;
 
-        void unbind() const override;
+        void Unbind() const override;
 
-        void setInteger(const std::string& name, int i) override;
+        void SetInteger(const std::string& name, int i) override;
 
-        void setFloat4(const std::string& name, float f0, float f1, float f2, float f3) override;
+        void SetFloat4(const std::string& name, float f0, float f1, float f2, float f3) override;
 
     private:
         GLuint m_RendererID;
         std::unordered_map<GLenum, std::string> m_ShaderSources;
         std::unordered_map<std::string, int> m_UniformLocationsCache;
 
-        void createProgram();
+        void CreateProgram();
 
-        void parseShaders(const std::string& source);
+        void ParseShaders(const std::string& source);
 
-        int getUniformLocation(const std::string& name);
+        int GetUniformLocation(const std::string& name);
 
-        static GLuint compileShader(GLenum type, const std::string& shaderCode);
+        static GLuint CompileShader(GLenum type, const std::string& shaderCode);
 
     };
 }

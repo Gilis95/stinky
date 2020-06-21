@@ -3,8 +3,10 @@
 #include "stinkypch.h"
 #include "event/Timestep.h"
 
-namespace stinky {
-
+namespace stinky
+{
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
     class Layer
     {
     public:
@@ -19,5 +21,4 @@ namespace stinky {
     protected:
         std::string m_DebugName;
     };
-
 }

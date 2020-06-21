@@ -5,17 +5,21 @@
 
 #include "stinkypch.h"
 
-namespace stinky {
-    class Shader {
+namespace stinky
+{
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
+    class Shader
+    {
     public:
         virtual ~Shader() = default;
 
-        virtual void bind() const = 0;
+        virtual void Bind() const = 0;
 
-        virtual void unbind() const = 0;
+        virtual void Unbind() const = 0;
 
-        virtual void setInteger(const std::string& name, int i) = 0;
+        virtual void SetInteger(const std::string& name, int i) = 0;
 
-        virtual void setFloat4(const std::string& name, float f0, float f1, float f2, float f3) = 0;
+        virtual void SetFloat4(const std::string& name, float f0, float f1, float f2, float f3) = 0;
     };
 }

@@ -5,7 +5,9 @@
 
 #include "renderer/platform/opengl/OpenGLVertexBuffer.h"
 
-namespace stinky {
+namespace stinky
+{
+    /////////////////////////////////////////////////////////////////////////////////////////
     OpenGLVertexBuffer::OpenGLVertexBuffer(const BufferLayout& layout, unsigned int size) : m_Layout(layout)
     {
         glCreateBuffers(1, &m_RendererID);
@@ -13,6 +15,7 @@ namespace stinky {
         glBufferData(GL_ARRAY_BUFFER, size, NULL, GL_DYNAMIC_DRAW);
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////
     OpenGLVertexBuffer::OpenGLVertexBuffer(const BufferLayout& layout, const void* data, unsigned int size) : m_Layout(layout)
     {
         glCreateBuffers(1, &m_RendererID);
@@ -20,20 +23,28 @@ namespace stinky {
         glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
     }
 
-    OpenGLVertexBuffer::~OpenGLVertexBuffer() {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    OpenGLVertexBuffer::~OpenGLVertexBuffer()
+    {
         glDeleteBuffers(1, &m_RendererID);
     }
 
-    void OpenGLVertexBuffer::bind() const {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void OpenGLVertexBuffer::Bind() const
+    {
         glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
     }
 
-    void OpenGLVertexBuffer::unbind() const {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void OpenGLVertexBuffer::Unbind() const
+    {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
-    void OpenGLVertexBuffer::setData(const void* data, unsigned int size) {
-        bind();
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void OpenGLVertexBuffer::SetData(const void* data, unsigned int size)
+    {
+        Bind();
         glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
     }
 }

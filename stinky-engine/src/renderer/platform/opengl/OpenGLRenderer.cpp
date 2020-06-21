@@ -1,8 +1,9 @@
 #include <glad/glad.h>
 #include "renderer/platform/opengl/OpenGLRenderer.h"
 
-namespace stinky {
-
+namespace stinky
+{
+    /////////////////////////////////////////////////////////////////////////////////////////
     void OpenGLMessageCallback(
         unsigned source,
         unsigned type,
@@ -33,13 +34,14 @@ namespace stinky {
 
     }
 
-    void OpenGLRenderer::clear() const
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void OpenGLRenderer::Clear() const
     {
         glClear(GL_COLOR_BUFFER_BIT);
     }
 
-
-    void OpenGLRenderer::init() const
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void OpenGLRenderer::Init() const
     {
         glEnable(GL_DEBUG_OUTPUT);
         glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
@@ -49,9 +51,10 @@ namespace stinky {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
-    void OpenGLRenderer::drawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount) const
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void OpenGLRenderer::DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount) const
     {
-        uint32_t count = indexCount ? indexCount : vertexArray->getIndexBuffer()->getCount();
+        uint32_t count = indexCount ? indexCount : vertexArray->getIndexBuffer()->GetCount();
 
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
     }

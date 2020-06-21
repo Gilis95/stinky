@@ -7,8 +7,10 @@
 #include "event/LayerStack.h"
 #include "window/Window.h"
 
-namespace stinky {
-
+namespace stinky
+{
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
     class Application
     {
     private:
@@ -43,4 +45,4 @@ namespace stinky {
 
     extern Application* CreateApplication();
 
-}
+} //namespace stinky

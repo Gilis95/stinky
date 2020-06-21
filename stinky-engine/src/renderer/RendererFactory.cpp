@@ -1,8 +1,12 @@
 #include "renderer/RendererFactory.h"
 #include "renderer/platform/opengl/OpenGLRendererFactory.h"
 
-namespace stinky {
-    Ref<RendererFactory> RendererFactory::create(const API& api) {
+namespace stinky
+{
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    Ref<RendererFactory> RendererFactory::create(const API& api)
+    {
         switch (api)
         {
         case API::none:

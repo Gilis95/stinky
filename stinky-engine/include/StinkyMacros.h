@@ -62,7 +62,8 @@
 #define DEBUGBREAK()
 #endif
 
-namespace stinky {
+namespace stinky
+{
     template<typename T>
     using Ref = std::shared_ptr<T>;
 
