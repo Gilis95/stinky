@@ -17,9 +17,10 @@ namespace stinky {
     private:
         Ref<RendererFactory> m_RendererFactory;
 
-        Ref<Renderer> m_Renderer;
+        Renderer m_Renderer;
         Ref<VertexArray> m_VertexArray;
         Ref<Shader> m_Shader;
+        Ref<Texture> m_Texture;
     };
 
 }

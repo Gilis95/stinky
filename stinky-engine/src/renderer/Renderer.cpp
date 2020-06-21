@@ -1,10 +1,11 @@
 //
 // Created by christian on 1/19/20.
 //
+#include "stinkypch.h"
 #include "renderer/Renderer.h"
 
 namespace stinky {
-    Renderer::Renderer(const Ref<RendererApi>& rendererApi) : m_RendererApi(rendererApi)
+    Renderer::Renderer(const Ref<RendererApi>& rendererApi) : m_RendererApi(std::move(rendererApi))
     {
         init();
     }

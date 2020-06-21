@@ -21,6 +21,7 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     void Application::Init(Window::API windowApi)
     {
+        Log::init();
 
         m_Window = Window::Create(windowApi);
 
@@ -74,7 +75,7 @@ namespace stinky {
 
         while (m_IsRunning)
         {
-
+            //TODO:: Use platform independent tool
             float time = (float)glfwGetTime();
             Timestep timestep = time - m_LastFrameTime;
             m_LastFrameTime = time;

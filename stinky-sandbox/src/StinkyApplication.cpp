@@ -9,8 +9,6 @@ namespace stinky {
 
     Application* CreateApplication()
     {
-        Log::init();
-
         return new StinkyApplication();
     }
 
