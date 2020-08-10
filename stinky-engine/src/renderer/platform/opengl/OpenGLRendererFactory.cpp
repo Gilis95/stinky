@@ -49,4 +49,10 @@ namespace stinky
     {
         return CreateRef<OpenGLTexture>(filePath);
     }
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    Ref<Texture> OpenGLRendererFactory::createTexture(uint32_t width, uint32_t height) const
+    {
+        return CreateRef<OpenGLTexture>(width, height);
+    }
 }

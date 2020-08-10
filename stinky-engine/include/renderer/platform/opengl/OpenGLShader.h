@@ -36,6 +36,7 @@ namespace stinky
 
         void SetFloat4(const std::string& name, float f0, float f1, float f2, float f3) override;
 
+        void SetMat4(const std::string& name, glm::mat4 matrix) override;
     private:
         GLuint m_RendererID;
         std::unordered_map<GLenum, std::string> m_ShaderSources;

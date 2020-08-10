@@ -5,12 +5,11 @@
 
 #include "stinkypch.h"
 
-namespace stinky
-{
+#include <glm/glm.hpp>
+
+namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////
-    class Shader
-    {
+    class Shader {
     public:
         virtual ~Shader() = default;
 
@@ -18,8 +17,11 @@ namespace stinky
 
         virtual void Unbind() const = 0;
 
-        virtual void SetInteger(const std::string& name, int i) = 0;
+        virtual void SetInteger(const std::string &name, int i) = 0;
 
-        virtual void SetFloat4(const std::string& name, float f0, float f1, float f2, float f3) = 0;
+        virtual void SetFloat4(const std::string &name, float f0, float f1, float f2, float f3) = 0;
+
+        virtual void SetMat4(const std::string &name, glm::mat4 matrix) = 0;
     };
+    /////////////////////////////////////////////////////////////////////////////////////////
 }

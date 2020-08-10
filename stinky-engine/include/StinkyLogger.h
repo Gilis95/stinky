@@ -39,15 +39,12 @@ namespace stinky
 #define STINKY_WARN(...)          stinky::Log::getClientLogger()->warn(__VA_ARGS__)
 #define STINKY_ERROR(...)         stinky::Log::getClientLogger()->error(__VA_ARGS__)
 #define STINKY_CRITICAL(...)      stinky::Log::getClientLogger()->critical(__VA_ARGS__)
-
-
 #else
 #define STINKY_TRACE(...)
 #define STINKY_INFO(...)
 #define STINKY_WARN(...)
 #define STINKY_ERROR(...)
 #define STINKY_CRITICAL(...)
-
 #endif
 
 

@@ -6,33 +6,32 @@
 #include "renderer/Texture.h"
 #include "stinkypch.h"
 
-namespace stinky
-{
+namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    class OpenGLTexture : public Texture
-    {
+    class OpenGLTexture : public Texture {
     public:
-        OpenGLTexture(const std::string& path);
+        OpenGLTexture(const std::string &path);
+
+        OpenGLTexture(uint32_t width, uint32_t height);
+
         ~OpenGLTexture();
 
         void Bind(unsigned int slot = 0) const override;
 
         void Unbind() const override;
 
-        [[nodiscard]] int GetWidth() const override
-        {
+        void SetData(void *data) override;
+
+        [[nodiscard]] int GetWidth() const override {
             return m_Width;
         };
 
-        [[nodiscard]] int GetHeight() const override
-        {
+        [[nodiscard]] int GetHeight() const override {
             return m_Height;
         };
     private:
         GLuint m_RendererID;
-        std::string m_FilePath;
-        unsigned char* m_LocalBuffer;
-        int m_Width, m_Height, m_BPP;
+        int m_Width, m_Height;
     };
 }

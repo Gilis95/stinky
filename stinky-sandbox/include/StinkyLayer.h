@@ -1,7 +1,7 @@
 #pragma once
 
 #include "event/Layer.h"
-#include "renderer/Renderer.h"
+#include "renderer/Renderer2D.h"
 #include "renderer/RendererFactory.h"
 
 namespace stinky
@@ -19,11 +19,9 @@ namespace stinky
 
     private:
         Ref<RendererFactory> m_RendererFactory;
-
-        Renderer m_Renderer;
-        Ref<VertexArray> m_VertexArray;
-        Ref<Shader> m_Shader;
-        Ref<Texture> m_Texture;
+        Renderer2D m_Renderer;
+        glm::mat4 m_ViewProjection;
+        Renderer::SceneNodes m_SceneNodes;
     };
 
 }

@@ -1,5 +1,5 @@
 #include "window/Window.h"
-#include "window/glfw/WindowsWindow.h"
+#include "window/glfw/PlatformIndependentWindow.h"
 
 namespace stinky
 {
@@ -9,9 +9,9 @@ namespace stinky
         switch (api)
         {
         case API::GLFW:
-            return createScope<WindowsWindow>(properties);
+            return createScope<PlatformIndependentWindow>(properties);
         default:
-            ASSERT(false, "Wrong window abstraction used");
+            STINKY_ASSERT_LOG("Wrong window abstraction used");
             return nullptr;
         }
 

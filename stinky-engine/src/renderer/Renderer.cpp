@@ -1,37 +1,33 @@
 //
-// Created by christian on 1/19/20.
+// Created by christian on 06/08/2020.
 //
-#include "stinkypch.h"
 #include "renderer/Renderer.h"
 
-namespace stinky
-{
+namespace stinky {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    Renderer::Renderer(const Ref<RendererApi> &rendererApi)
+            : m_RendererApi(rendererApi) {}
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    Renderer::Renderer(const Ref<RendererApi>& rendererApi) : m_RendererApi(std::move(rendererApi))
-    {
-        init();
+    Renderer::~Renderer() {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void Renderer::init() const
-    {
-        m_RendererApi->Init();
+    void Renderer::BeginScene(glm::mat4 viewProjection) {
+        m_ViewProjection = viewProjection;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void Renderer::clear() const
-    {
-        m_RendererApi->Clear();
+    void Renderer::EndScene() {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void Renderer::draw(const Ref<VertexArray>& va, const Ref<Shader>& shader) const
-    {
-        shader->Bind();
-        va->Bind();
+    void Renderer::Draw(const SceneNode &sceneNode) const {
+        sceneNode.shader->SetMat4("u_ViewProjection", m_ViewProjection);
+        sceneNode.shader->Bind();
+        sceneNode.vertexArray->Bind();
 
-        m_RendererApi->DrawIndexed(va);
+        m_RendererApi->DrawIndexed(sceneNode.vertexArray);
     }
 
 }

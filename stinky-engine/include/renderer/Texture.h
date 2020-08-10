@@ -3,18 +3,18 @@
 //
 #pragma once
 
-namespace stinky
-{
+namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    class Texture
-    {
+    class Texture {
     public:
         virtual ~Texture() = default;
 
         virtual void Bind(unsigned int slot) const = 0;
 
         virtual void Unbind() const = 0;
+
+        virtual void SetData(void *data) = 0;
 
         [[nodiscard]] virtual int GetWidth() const = 0;
 

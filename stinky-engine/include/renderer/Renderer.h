@@ -1,27 +1,42 @@
 //
-// Created by christian on 1/19/20.
+// Created by christian on 06/08/2020.
 //
+
 #pragma once
 
-#include "renderer/VertexArray.h"
+#include "stinkypch.h"
+
 #include "renderer/IndexBuffer.h"
-#include "renderer/Shader.h"
 #include "renderer/RendererApi.h"
+#include "renderer/Shader.h"
+#include "renderer/Texture.h"
+#include "renderer/VertexArray.h"
 
-namespace stinky
-{
-    /////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////
-    class Renderer
-    {
+#include <glm/glm.hpp>
+
+namespace stinky {
+/////////////////////////////////////////////////////////////////////////////////////////
+    class Renderer {
     public:
-        Renderer(const Ref<RendererApi>& rendererApi);
+        struct SceneNode {
+            Ref<VertexArray> vertexArray;
+            Ref<Texture> texture;
+            Ref<Shader> shader;
+            glm::mat4 modelMatrix;
+        };
+        typedef std::vector<SceneNode> SceneNodes;
+    public:
+        Renderer(const Ref<RendererApi> &rendererApi);
 
-        void init() const;
+        virtual ~Renderer();
 
-        void clear() const;
-        void draw(const Ref<VertexArray>& va, const Ref<Shader>& shader) const;
-    private:
-        const Ref<RendererApi> m_RendererApi;
+        void BeginScene(glm::mat4 viewProjection);
+        void EndScene();
+
+        void Draw(const SceneNode& sceneNode) const;
+    protected:
+        Ref<RendererApi> m_RendererApi;
+        glm::mat4 m_ViewProjection;
     };
+/////////////////////////////////////////////////////////////////////////////////////////
 }

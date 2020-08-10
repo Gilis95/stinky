@@ -1,73 +1,41 @@
+#include <glm/ext.hpp>
 #include "StinkyLayer.h"
 
 
-#include "renderer/Renderer.h"
+#include "renderer/Renderer2D.h"
 #include "renderer/RendererFactory.h"
 #include "renderer/VertexBuffer.h"
 
-namespace stinky
-{
+namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     StinkyLayer::StinkyLayer()
-        : Layer("Stinky Layer")
-        , m_RendererFactory(RendererFactory::create(RendererFactory::API::OpenGL))
-        , m_Renderer(m_RendererFactory->createRendererApi())
-        , m_VertexArray(m_RendererFactory->createVertexArray())
-    {
+            : Layer("Stinky Layer"), m_RendererFactory(RendererFactory::create(RendererFactory::API::OpenGL)),
+              m_Renderer(m_RendererFactory),
+              m_ViewProjection(glm::ortho(-1.68f, 1.68f, -1.0f, 1.0f, -1.0f, 1.0f) ) {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void StinkyLayer::OnAttach()
-    {
-
-        float positions[16] = {
-        0.7f, -1.0f,  1.0f, -1.0f, //0
-        0.7f, 1.0f, 1.0f, 1.0f, //1
-        -0.7f, 1.0f, -1.0f, 1.0f, //2
-        -0.7f, -1.0f, -1.0f, -1.0f, //3
-        };
-
-        unsigned int indices[6] = {
-                0, 1, 2,
-                2, 3, 0
-        };
-
-
-        //create array buffer, containing shape positions and bind it
-        const auto vertexBuffer = m_RendererFactory->createVertexBuffer(positions, 16 * sizeof(float), {
-            {ShaderDataType::Float2,"position"},
-            {ShaderDataType::Float2,"texCoord"},
-            });
-
-        //bind currently bound array buffer to first element of currently bound vertex array
-        m_VertexArray->AddVertexBuffer(vertexBuffer);
-
-        //Create index buffer, that will define shape vertex positions
-        const auto indexBuffer = m_RendererFactory->createIndexBuffer(indices, 6);
-
-        m_VertexArray->SetIndexBuffer(indexBuffer);
-
-        //Parse fragment and vertex shader and bind them
-        m_Texture = m_RendererFactory->createTexture("D:\\workspace\\stinky\\stinky-sandbox\\resources\\mb.png");
-        m_Texture->Bind(0);
-
-        m_Shader = m_RendererFactory->createShader("D:\\workspace\\stinky\\stinky-sandbox\\resources\\shaders\\basic.shader");
-        m_Shader->Bind();
-        m_Shader->SetInteger("u_Texture", 0);
+    void StinkyLayer::OnAttach() {
+        m_SceneNodes.push_back(m_Renderer.CreateQuad({-0.5f, 0.5f}, {0.1f, 0.1f}, {1.0f, 0.0f, 0.0f, 1.0f}));
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void StinkyLayer::OnDetach()
-    {
+    void StinkyLayer::OnDetach() {
 
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void StinkyLayer::OnUpdate(Timestep ts)
-    {
-        m_Renderer.clear();
-        m_Renderer.draw(m_VertexArray, m_Shader);
+    void StinkyLayer::OnUpdate(Timestep ts) {
+        m_Renderer.Clear();
+
+        m_Renderer.BeginScene(m_ViewProjection);
+
+        std::for_each(m_SceneNodes.begin(), m_SceneNodes.end(), [&](const Renderer::SceneNode &sceneNode) -> void {
+            m_Renderer.Draw(sceneNode);
+        });
+
+        m_Renderer.EndScene();
     }
 
 }

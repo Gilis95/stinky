@@ -8,6 +8,7 @@ set(HDR_DIR ${PROJECT_SOURCE_DIR}/include)
 set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
 
 set(STINKY_ENGINE_DIR ${PROJECT_SOURCE_DIR}/../stinky-engine)
+set(GLM_DIR ${PROJECT_SOURCE_DIR}/../vendor/glm/)
 
 set(HDR_FILES  
     ${HDR_DIR}/StinkyApplication.h 
@@ -25,6 +26,7 @@ target_include_directories(stinky-sandbox PRIVATE
                             ${HDR_DIR}
                             ${STINKY_ENGINE_DIR}/include
                             ${SPDLOG_DIR}/include
+                            ${GLM_DIR}
                             )
 
 target_link_libraries(stinky-sandbox PRIVATE 
