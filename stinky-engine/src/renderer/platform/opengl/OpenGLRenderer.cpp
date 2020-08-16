@@ -27,13 +27,14 @@ namespace stinky {
             case GL_DEBUG_SEVERITY_NOTIFICATION:
                 STINKY_TRACE(message);
                 return;
-            default: STINKY_ASSERT_LOG("Unknown severity level: {0}", severity);
+            default: STINKY_LOG_ERROR_AND_BREAK("Unknown severity level: {0}", severity);
                 return;
         }
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void OpenGLRenderer::Clear() const {
+        glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 

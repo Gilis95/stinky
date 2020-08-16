@@ -21,7 +21,7 @@ namespace stinky {
         if (type == "fragment" || type == "pixel") {
             return GL_FRAGMENT_SHADER;
         } else {
-            STINKY_ASSERT_LOG("Unknown shader type!");
+            STINKY_LOG_ERROR_AND_BREAK("Unknown shader type!");
             return 0;
         }
     }
@@ -145,7 +145,7 @@ namespace stinky {
                 glDeleteShader(id);
 
             STINKY_ERROR("{0}", log);
-            STINKY_ASSERT_LOG("Shader link failure!");
+            STINKY_LOG_ERROR_AND_BREAK("Shader link failure!");
             return;
         }
 
@@ -177,7 +177,7 @@ namespace stinky {
             glDeleteShader(shaderId);
 
             STINKY_ERROR("{0}", log);
-            STINKY_ASSERT_LOG("Shader compilation failure!");
+            STINKY_LOG_ERROR_AND_BREAK("Shader compilation failure!");
 
             return 0;
         }

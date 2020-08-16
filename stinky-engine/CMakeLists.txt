@@ -18,7 +18,7 @@ set(WINDOW_HDR_DIR ${HDR_DIR}/window)
 
 ################################################################################################
 
-#Projetc source directory
+#Project source directory
 set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
 
 set(APPLICATION_SRC_DIR ${SRC_DIR}/application)
@@ -48,6 +48,7 @@ set(HDR_FILES
         ${RENDERER_HDR_DIR}/VertexArray.h
         ${RENDERER_HDR_DIR}/Shader.h
         ${RENDERER_HDR_DIR}/Texture.h
+        ${RENDERER_HDR_DIR}/FrameBuffer.h
 
         #Renderer OpenGL implementation
         ${OPENGL_HDR_DIR}/OpenGLRendererFactory.h
@@ -56,6 +57,7 @@ set(HDR_FILES
         ${OPENGL_HDR_DIR}/OpenGLVertexArray.h
         ${OPENGL_HDR_DIR}/OpenGLShader.h
         ${OPENGL_HDR_DIR}/OpenGLTexture.h
+        ${OPENGL_HDR_DIR}/OpenGlFrameBuffer.h
 
         #Window submodule
         ${WINDOW_HDR_DIR}/Window.h
@@ -96,6 +98,7 @@ set(SRC_FILES
         ${OPENGL_SRC_DIR}/OpenGLVertexArray.cpp
         ${OPENGL_SRC_DIR}/OpenGLShader.cpp
         ${OPENGL_SRC_DIR}/OpenGLTexture.cpp
+        ${OPENGL_SRC_DIR}/OpenGLFrameBuffer.cpp
 
         #Render API
         ${RENDERER_SRC_DIR}/Renderer.cpp

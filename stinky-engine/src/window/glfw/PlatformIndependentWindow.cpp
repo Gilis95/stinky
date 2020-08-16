@@ -23,13 +23,13 @@ namespace stinky
         m_Data.width = properties.m_Width;
         m_Data.titile = properties.m_Title;
 
-        Init();
+        PlatformIndependentWindow::Init();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     PlatformIndependentWindow::~PlatformIndependentWindow()
     {
-        Shutdown();
+        PlatformIndependentWindow::Shutdown();
     };
 
     /////////////////////////////////////////////////////////////////////////////////////////

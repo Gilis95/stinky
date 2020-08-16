@@ -11,7 +11,7 @@ namespace stinky
         case API::GLFW:
             return createScope<PlatformIndependentWindow>(properties);
         default:
-            STINKY_ASSERT_LOG("Wrong window abstraction used");
+            STINKY_LOG_ERROR_AND_BREAK("Wrong window abstraction used");
             return nullptr;
         }
 

@@ -15,7 +15,7 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     Renderer2D::Renderer2D(const Ref<RendererFactory> &rendererFactory)
-            : Renderer(rendererFactory->createRendererApi()), m_RendererFactory(rendererFactory) {
+            : Renderer(rendererFactory->CreateRendererApi()), m_RendererFactory(rendererFactory) {
         Init();
     }
 
@@ -63,9 +63,9 @@ namespace stinky {
                             * glm::scale(glm::mat4(1.0f), {scale.x, scale.y, 1.0f}) * i.coordinates;
         }
 
-        rendererData.vertexArray = m_RendererFactory->createVertexArray();
+        rendererData.vertexArray = m_RendererFactory->CreateVertexArray();
         //create array buffer, containing shape positions and bind it
-        const auto positionBuffer = m_RendererFactory->createVertexBuffer(&data, sizeof(data), {
+        const auto positionBuffer = m_RendererFactory->CreateVertexBuffer(&data, sizeof(data), {
                 {ShaderDataType::Float4, "position"},
                 {ShaderDataType::Float2, "texCoord"}
         });
@@ -74,21 +74,20 @@ namespace stinky {
         rendererData.vertexArray->AddVertexBuffer(positionBuffer);
 
         //Create index buffer, that will define shape vertex positions
-        const auto indexBuffer = m_RendererFactory->createIndexBuffer(indices, 6);
+        const auto indexBuffer = m_RendererFactory->CreateIndexBuffer(indices, 6);
 
         rendererData.vertexArray->SetIndexBuffer(indexBuffer);
 
         //Parse fragment and vertex shader and bind them
-        rendererData.texture = m_RendererFactory->createTexture(1, 1);
+        rendererData.texture = m_RendererFactory->CreateTexture(1, 1);
         uint32_t defaultWhiteTextureData = 0xffffffff;
         rendererData.texture->SetData(&defaultWhiteTextureData);
         rendererData.texture->Bind(0);
 
-        rendererData.shader = m_RendererFactory->createShader(
+        rendererData.shader = m_RendererFactory->CreateShader(
                 "/home/christian/workspace/stinky/stinky-sandbox/resources/shaders/basic.shader");
         rendererData.shader->Bind();
         rendererData.shader->SetInteger("u_Texture", 0);
-
 
 //        rendererData.modelMatrix = glm::translate(glm::mat4(1.0f), translate)
 //                                   * glm::scale(glm::mat4(1.0f), scale);

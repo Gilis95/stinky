@@ -39,7 +39,7 @@ namespace stinky {
             case ShaderDataType::Bool:
                 return 1;
             default:
-                STINKY_ASSERT_LOG("Unknown ShaderDataType!");
+                STINKY_LOG_ERROR_AND_BREAK("Unknown ShaderDataType!");
                 return 0;
         }
     }
@@ -86,7 +86,7 @@ namespace stinky {
                 case ShaderDataType::Bool:
                     return 1;
                 default:
-                    STINKY_ASSERT_LOG("Unknown ShaderDataType!");
+                    STINKY_LOG_ERROR_AND_BREAK("Unknown ShaderDataType!");
                     return 0;
             }
         }

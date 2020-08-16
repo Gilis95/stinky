@@ -8,7 +8,7 @@
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     Renderer3D::Renderer3D(const Ref <RendererFactory> &rendererFactory)
-            : Renderer(rendererFactory->createRendererApi()),
+            : Renderer(rendererFactory->CreateRendererApi()),
               m_RendererFactory(rendererFactory) {
 
     }
@@ -74,19 +74,19 @@ namespace stinky {
         Renderer::SceneNode rendererData;
 
         //create array buffer, containing shape positions and bind it
-        const auto vertexBuffer = m_RendererFactory->createVertexBuffer(cubeCoordinates, 24 * sizeof(float), {
+        const auto vertexBuffer = m_RendererFactory->CreateVertexBuffer(cubeCoordinates, 24 * sizeof(float), {
                 {ShaderDataType::Float2, "position"}
         });
-        rendererData.vertexArray = m_RendererFactory->createVertexArray();
+        rendererData.vertexArray = m_RendererFactory->CreateVertexArray();
         //bind currently bound array buffer to first element of currently bound vertex array
         rendererData.vertexArray->AddVertexBuffer(vertexBuffer);
 
         //Create index buffer, that will define shape vertex positions
-        const auto indexBuffer = m_RendererFactory->createIndexBuffer(indices, 36);
+        const auto indexBuffer = m_RendererFactory->CreateIndexBuffer(indices, 36);
 
         rendererData.vertexArray->SetIndexBuffer(indexBuffer);
 
-        rendererData.shader = m_RendererFactory->createShader(
+        rendererData.shader = m_RendererFactory->CreateShader(
                 "/home/christian/workspace/stinky/stinky-sandbox/resources/shaders/basic.shader");
         rendererData.shader->Bind();
         rendererData.shader->SetInteger("u_Texture", 0);
