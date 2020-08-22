@@ -7,7 +7,7 @@
 
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
-    Renderer3D::Renderer3D(const Ref <RendererFactory> &rendererFactory)
+    Renderer3D::Renderer3D(const Ref<RendererFactory> &rendererFactory)
             : Renderer(rendererFactory->CreateRendererApi()),
               m_RendererFactory(rendererFactory) {
 

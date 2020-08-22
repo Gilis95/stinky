@@ -196,8 +196,7 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void OpenGLShader::SetMat4(const std::string& name, glm::mat4 matrix)
-    {
+    void OpenGLShader::SetMat4(const std::string &name, glm::mat4 matrix) {
         glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix));
     }
 

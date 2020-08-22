@@ -8,23 +8,20 @@
 #include "renderer/Shader.h"
 #include "stinkypch.h"
 
-namespace stinky
-{
+namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    struct ShaderElements
-    {
+    struct ShaderElements {
         std::string vertex;
         std::string fragment;
     };
 
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    class OpenGLShader : public Shader
-    {
+    class OpenGLShader : public Shader {
     public:
-        OpenGLShader(const std::string& filePath);
+        OpenGLShader(const std::string &filePath);
 
         ~OpenGLShader();
 
@@ -32,11 +29,12 @@ namespace stinky
 
         void Unbind() const override;
 
-        void SetInteger(const std::string& name, int i) override;
+        void SetInteger(const std::string &name, int i) override;
 
-        void SetFloat4(const std::string& name, float f0, float f1, float f2, float f3) override;
+        void SetFloat4(const std::string &name, float f0, float f1, float f2, float f3) override;
 
-        void SetMat4(const std::string& name, glm::mat4 matrix) override;
+        void SetMat4(const std::string &name, glm::mat4 matrix) override;
+
     private:
         GLuint m_RendererID;
         std::unordered_map<GLenum, std::string> m_ShaderSources;
@@ -44,11 +42,11 @@ namespace stinky
 
         void CreateProgram();
 
-        void ParseShaders(const std::string& source);
+        void ParseShaders(const std::string &source);
 
-        int GetUniformLocation(const std::string& name);
+        int GetUniformLocation(const std::string &name);
 
-        static GLuint CompileShader(GLenum type, const std::string& shaderCode);
+        static GLuint CompileShader(GLenum type, const std::string &shaderCode);
 
     };
 }

@@ -7,23 +7,20 @@
 #include <spdlog/spdlog.h>
 #include "StinkyMacros.h"
 
-namespace stinky
-{
+namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
-    bool GLLogCall(const char* functionName, const char* fileName, int line);
+    bool GLLogCall(const char *functionName, const char *fileName, int line);
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void GLClearError();
 
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    class Log
-    {
+    class Log {
     public:
         static void Init();
 
-        static Ref<spdlog::logger>& getClientLogger()
-        {
+        static Ref<spdlog::logger> &getClientLogger() {
             return s_Logger;
         }
 

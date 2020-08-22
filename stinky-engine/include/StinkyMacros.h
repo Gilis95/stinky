@@ -50,6 +50,7 @@
 #define ENABLE_ASSERTS
 #define DEBUGBREAK() __debugbreak()
 #elif defined(PLATFORM_LINUX)
+
 #include <signal.h>
 #include <memory>
 

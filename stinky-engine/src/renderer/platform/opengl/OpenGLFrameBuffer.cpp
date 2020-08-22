@@ -3,26 +3,26 @@
 //
 
 #include "stinkypch.h"
-#include "renderer/platform/opengl/OpenGlFrameBuffer.h"
+#include "renderer/platform/opengl/OpenGLFrameBuffer.h"
 #include <glad/glad.h>
 
 namespace stinky {
     static const uint32_t s_MaxFrameBufferSize = 8192;
 
+    /////////////////////////////////////////////////////////////////////////////////////////
     OpenGLFrameBuffer::OpenGLFrameBuffer(const FrameBufferSpecification &spec)
-            : FrameBuffer(spec)
-            , m_RendererID(0)
-            , m_ColorAttachment(0)
-            , m_DepthAttachment(0) {
+            : FrameBuffer(spec), m_RendererID(0), m_ColorAttachment(0), m_DepthAttachment(0) {
         Invalidate();
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////
     OpenGLFrameBuffer::~OpenGLFrameBuffer() {
         glDeleteFramebuffers(1, &m_RendererID);
         glDeleteTextures(1, &m_ColorAttachment);
         glDeleteTextures(1, &m_DepthAttachment);
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////
     void OpenGLFrameBuffer::Invalidate() {
         if (m_RendererID) {
             glDeleteFramebuffers(1, &m_RendererID);
@@ -49,20 +49,23 @@ namespace stinky {
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, m_DepthAttachment, 0);
 
         AssertLogUnless(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE,
-                    "Frame buffer is incomplete!")
+                        "Frame buffer is incomplete!")
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////
     void OpenGLFrameBuffer::Bind() {
         glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
         glViewport(0, 0, m_Specification.Width, m_Specification.Height);
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////
     void OpenGLFrameBuffer::Unbind() {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////
     void OpenGLFrameBuffer::Resize(uint32_t width, uint32_t height) {
         ReturnIf(width == 0 || height == 0 || width > s_MaxFrameBufferSize || height > s_MaxFrameBufferSize)
 

@@ -7,18 +7,15 @@
 #include "stinkypch.h"
 
 
-namespace stinky
-{
+namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    static void GLFWErrorCallback(int error, const char* description)
-    {
+    static void GLFWErrorCallback(int error, const char *description) {
         STINKY_ERROR("GLFW Error ({0}): {1}", error, description);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    PlatformIndependentWindow::PlatformIndependentWindow(const WindowProperties& properties)
-    {
+    PlatformIndependentWindow::PlatformIndependentWindow(const WindowProperties &properties) {
         m_Data.height = properties.m_Height;
         m_Data.width = properties.m_Width;
         m_Data.titile = properties.m_Title;
@@ -27,14 +24,12 @@ namespace stinky
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    PlatformIndependentWindow::~PlatformIndependentWindow()
-    {
+    PlatformIndependentWindow::~PlatformIndependentWindow() {
         PlatformIndependentWindow::Shutdown();
     };
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void PlatformIndependentWindow::Init()
-    {
+    void PlatformIndependentWindow::Init() {
 
         int status = glfwInit();
 
@@ -53,28 +48,25 @@ namespace stinky
 
         glfwSwapInterval(5);
 
-        AssertReturnUnless(gladLoadGLLoader((GLADloadproc)glfwGetProcAddress));
+        AssertReturnUnless(gladLoadGLLoader((GLADloadproc) glfwGetProcAddress));
 
         glfwSetWindowUserPointer(m_Window, &m_Data);
 
-        glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
-            {
-                WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-                data.eventHandlerFn(WindowCloseEvent());
-            }
+        glfwSetWindowCloseCallback(m_Window, [](GLFWwindow *window) {
+                                       WindowData &data = *(WindowData *) glfwGetWindowUserPointer(window);
+                                       data.eventHandlerFn(WindowCloseEvent());
+                                   }
         );
 
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void PlatformIndependentWindow::SetEventCallback(EventHandler::EventHandlerFn eventHandlerFn)
-    {
+    void PlatformIndependentWindow::SetEventCallback(EventHandler::EventHandlerFn eventHandlerFn) {
         m_Data.eventHandlerFn = eventHandlerFn;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void PlatformIndependentWindow::OnUpdate(const Event& onUpdateEvent)
-    {
+    void PlatformIndependentWindow::OnUpdate(const Event &onUpdateEvent) {
 
         // swap front and back buffer
         glfwSwapBuffers(m_Window);
@@ -84,8 +76,7 @@ namespace stinky
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void PlatformIndependentWindow::Shutdown()
-    {
+    void PlatformIndependentWindow::Shutdown() {
         glfwDestroyWindow(m_Window);
         glfwTerminate();
     }

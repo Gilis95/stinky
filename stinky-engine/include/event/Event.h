@@ -2,12 +2,10 @@
 
 #include "stinkypch.h"
 
-namespace stinky
-{
+namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    enum class EventType
-    {
+    enum class EventType {
         None = 0,
         WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
         AppTick, AppUpdate, AppRender,
@@ -23,29 +21,28 @@ namespace stinky
 
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    class Event
-    {
+    class Event {
     public:
         virtual ~Event() = default;
 
         bool Handled = false;
 
         [[nodiscard]] virtual EventType GetEventType() const = 0;
-        [[nodiscard]] virtual const char* GetName() const = 0;
+
+        [[nodiscard]] virtual const char *GetName() const = 0;
+
         [[nodiscard]] virtual std::string ToString() const { return GetName(); }
     };
 
-    inline std::ostream& operator<<(std::ostream& os, const Event& e)
-    {
+    inline std::ostream &operator<<(std::ostream &os, const Event &e) {
         return os << e.ToString();
     }
 
 
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    struct EventHandler
-    {
-        using EventHandlerFn = std::function<void(const Event&)>;
+    struct EventHandler {
+        using EventHandlerFn = std::function<void(const Event &)>;
 
         EventType m_EventType;
         EventHandlerFn m_EventHandlerFunction;

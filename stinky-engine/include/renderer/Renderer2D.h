@@ -21,6 +21,7 @@ namespace stinky {
         void Clear() const;
 
         SceneNode CreateQuad(const glm::vec2 &translate, const glm::vec2 &scale, const glm::vec4 &color);
+
     private:
         Ref<RendererFactory> m_RendererFactory;
     };

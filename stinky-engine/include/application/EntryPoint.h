@@ -2,8 +2,7 @@
 
 #include "application/Application.h"
 
-int main(int argc, char** argv)
-{
+int main(int argc, char **argv) {
     auto app = stinky::CreateApplication();
 
     app->Run();

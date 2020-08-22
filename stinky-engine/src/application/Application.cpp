@@ -7,22 +7,18 @@
 #include "event/Event.h"
 #include "GLFW/glfw3.h"
 
-namespace stinky
-{
+namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
-    Application::Application(Window::API windowApi) : m_IsRunning(false)
-    {
+    Application::Application(Window::API windowApi) : m_IsRunning(false) {
         Init(windowApi);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    Application::~Application()
-    {
+    Application::~Application() {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void Application::Init(Window::API windowApi)
-    {
+    void Application::Init(Window::API windowApi) {
         Log::Init();
 
         m_Window = Window::Create(windowApi);
@@ -54,41 +50,37 @@ namespace stinky
         RegisterEvent(EventType::AppUpdate);
 
         RegisterEventHandler({
-            EventType::WindowClose,
-            STINKY_BIND(Application::Close)
-            });
+                                     EventType::WindowClose,
+                                     STINKY_BIND(Application::Close)
+                             });
 
         RegisterEventHandler({
-            EventType::AppUpdate,
-            std::bind(&Window::OnUpdate, m_Window.get(), std::placeholders::_1)
-            });
+                                     EventType::AppUpdate,
+                                     std::bind(&Window::OnUpdate, m_Window.get(), std::placeholders::_1)
+                             });
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void Application::Close(const Event& closeEvent)
-    {
+    void Application::Close(const Event &closeEvent) {
         m_IsRunning = false;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void Application::Run()
-    {
+    void Application::Run() {
         m_IsRunning = true;
 
-        while (m_IsRunning)
-        {
+        while (m_IsRunning) {
             //TODO:: Use platform independent tool
-            float time = (float)glfwGetTime();
+            float time = (float) glfwGetTime();
             Timestep timestep = time - m_LastFrameTime;
             m_LastFrameTime = time;
 
             std::for_each(
-                m_LayerStack.begin(),
-                m_LayerStack.end(),
-                [&](Layer* layer)->void
-                {
-                    layer->OnUpdate(timestep);
-                });
+                    m_LayerStack.begin(),
+                    m_LayerStack.end(),
+                    [&](Layer *layer) -> void {
+                        layer->OnUpdate(timestep);
+                    });
 
             OnEvent(AppUpdateEvent());
         }
@@ -96,47 +88,39 @@ namespace stinky
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void Application::PushLayer(Layer* layer)
-    {
+    void Application::PushLayer(Layer *layer) {
         m_LayerStack.PushLayer(layer);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void Application::PushOverlay(Layer* layer)
-    {
+    void Application::PushOverlay(Layer *layer) {
         m_LayerStack.PushOverlay(layer);
 
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void Application::RegisterEvent(EventType type)
-    {
-        if (m_EventHandlers.find(type) == m_EventHandlers.end())
-        {
+    void Application::RegisterEvent(EventType type) {
+        if (m_EventHandlers.find(type) == m_EventHandlers.end()) {
             m_EventHandlers[type] = EventHandlers();
         }
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void Application::RegisterEventHandler(EventHandler handler)
-    {
+    void Application::RegisterEventHandler(EventHandler handler) {
         m_EventHandlers[handler.m_EventType].push_back(handler.m_EventHandlerFunction);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void Application::OnEvent(const Event& event)
-    {
+    void Application::OnEvent(const Event &event) {
         auto handlers = m_EventHandlers.find(event.GetEventType());
 
-        if (handlers != m_EventHandlers.end())
-        {
+        if (handlers != m_EventHandlers.end()) {
             std::for_each(
-                handlers->second.begin(),
-                handlers->second.end(),
-                [&](EventHandler::EventHandlerFn& handlerFunction) -> void
-                {
-                    handlerFunction(event);
-                });
+                    handlers->second.begin(),
+                    handlers->second.end(),
+                    [&](EventHandler::EventHandlerFn &handlerFunction) -> void {
+                        handlerFunction(event);
+                    });
         }
     }
 }

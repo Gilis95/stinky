@@ -3,38 +3,35 @@
 #include "event/Event.h"
 #include "stinkypch.h"
 
-namespace stinky
-{
+namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    class WindowResizeEvent : public Event
-    {
+    class WindowResizeEvent : public Event {
     public:
         WindowResizeEvent(unsigned int width, unsigned int height)
-            : m_Width(width), m_Height(height)
-        {
+                : m_Width(width), m_Height(height) {
         }
 
         unsigned int GetWidth() const { return m_Width; }
+
         unsigned int GetHeight() const { return m_Height; }
 
-        std::string ToString() const override
-        {
+        std::string ToString() const override {
             std::stringstream ss;
             ss << "WindowResizeEvent: " << m_Width << ", " << m_Height;
             return ss.str();
         }
 
         EVENT_OVERRIDE_FUNCTIONS(WindowResize)
+
     private:
         unsigned int m_Width, m_Height;
     };
 
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    class WindowCloseEvent : public Event
-    {
+    class WindowCloseEvent : public Event {
     public:
         WindowCloseEvent() = default;
 
@@ -43,8 +40,7 @@ namespace stinky
 
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    class AppTickEvent : public Event
-    {
+    class AppTickEvent : public Event {
     public:
         AppTickEvent() = default;
 
@@ -53,8 +49,7 @@ namespace stinky
 
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    class AppUpdateEvent : public Event
-    {
+    class AppUpdateEvent : public Event {
     public:
         AppUpdateEvent() = default;
 
@@ -63,8 +58,7 @@ namespace stinky
 
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    class AppRenderEvent : public Event
-    {
+    class AppRenderEvent : public Event {
     public:
         AppRenderEvent() = default;
 

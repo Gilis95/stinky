@@ -31,9 +31,11 @@ namespace stinky {
         virtual ~Renderer();
 
         void BeginScene(glm::mat4 viewProjection);
+
         void EndScene();
 
-        void Draw(const SceneNode& sceneNode) const;
+        void Draw(const SceneNode &sceneNode) const;
+
     protected:
         Ref<RendererApi> m_RendererApi;
         glm::mat4 m_ViewProjection;

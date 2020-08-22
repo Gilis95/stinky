@@ -10,12 +10,10 @@
 #include "renderer/VertexArray.h"
 
 
-namespace stinky
-{
+namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    class OpenGLVertexArray : public VertexArray
-    {
+    class OpenGLVertexArray : public VertexArray {
     public:
         OpenGLVertexArray();
 
@@ -25,12 +23,15 @@ namespace stinky
 
         void Unbind() const override;
 
-        [[nodiscard]] const std::vector<Ref<VertexBuffer>>& GetVertexBuffers() const override { return m_VertexBuffers; }
-        [[nodiscard]] const Ref<IndexBuffer>& GetIndexBuffer() const override { return m_IndexBuffer; }
+        [[nodiscard]] const std::vector<Ref<VertexBuffer>> &
+        GetVertexBuffers() const override { return m_VertexBuffers; }
 
-        void SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer) override;
+        [[nodiscard]] const Ref<IndexBuffer> &GetIndexBuffer() const override { return m_IndexBuffer; }
 
-        void AddVertexBuffer(const Ref<VertexBuffer>& vb) override;
+        void SetIndexBuffer(const Ref<IndexBuffer> &indexBuffer) override;
+
+        void AddVertexBuffer(const Ref<VertexBuffer> &vb) override;
+
     private:
         GLuint m_RendererID;
         GLuint m_VertexBufferIndex = 0;

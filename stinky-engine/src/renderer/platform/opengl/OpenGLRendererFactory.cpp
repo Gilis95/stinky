@@ -1,6 +1,6 @@
 #include "renderer/platform/opengl/OpenGLRenderer.h"
 
-#include "renderer/platform/opengl/OpenGlFrameBuffer.h"
+#include "renderer/platform/opengl/OpenGLFrameBuffer.h"
 #include "renderer/platform/opengl/OpenGLIndexBuffer.h"
 #include "renderer/platform/opengl/OpenGLRendererFactory.h"
 #include "renderer/platform/opengl/OpenGLShader.h"

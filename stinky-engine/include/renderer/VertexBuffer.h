@@ -38,8 +38,7 @@ namespace stinky {
                 return 4 * 4;
             case ShaderDataType::Bool:
                 return 1;
-            default:
-                STINKY_LOG_ERROR_AND_BREAK("Unknown ShaderDataType!");
+            default: STINKY_LOG_ERROR_AND_BREAK("Unknown ShaderDataType!");
                 return 0;
         }
     }
@@ -53,11 +52,8 @@ namespace stinky {
 
         /////////////////////////////////////////////////////////////////////////////////////////
         BufferElement(ShaderDataType type, const std::string &name, bool normalized = false, size_t offset = 0)
-                : m_Name(name)
-                , m_Type(type)
-                , m_Size(ShaderDataTypeSize(type))
-                , m_Offset(offset)
-                , m_Normalized(normalized) {
+                : m_Name(name), m_Type(type), m_Size(ShaderDataTypeSize(type)), m_Offset(offset),
+                  m_Normalized(normalized) {
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////
@@ -85,8 +81,7 @@ namespace stinky {
                     return 4;
                 case ShaderDataType::Bool:
                     return 1;
-                default:
-                    STINKY_LOG_ERROR_AND_BREAK("Unknown ShaderDataType!");
+                default: STINKY_LOG_ERROR_AND_BREAK("Unknown ShaderDataType!");
                     return 0;
             }
         }

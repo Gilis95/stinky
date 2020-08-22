@@ -13,7 +13,7 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     class Renderer3D : public Renderer {
     public:
-        Renderer3D(const Ref<RendererFactory>& rendererFactory);
+        Renderer3D(const Ref<RendererFactory> &rendererFactory);
 
         void
         Init() const;
@@ -22,6 +22,7 @@ namespace stinky {
 
         [[nodiscard]] SceneNode
         DrawCube(const glm::vec3 &translate, const glm::vec3 &scale, const glm::vec4 &color) const;
+
     private:
         const Ref<RendererFactory> m_RendererFactory;
     };

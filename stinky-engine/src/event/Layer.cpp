@@ -2,12 +2,10 @@
 
 #include "event/Layer.h"
 
-namespace stinky
-{
+namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
-    Layer::Layer(const std::string& debugName)
-        : m_DebugName(debugName)
-    {
+    Layer::Layer(const std::string &debugName)
+            : m_DebugName(debugName) {
     }
 
 }

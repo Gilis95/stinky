@@ -5,21 +5,18 @@
 #include "window/Window.h"
 #include "event/Event.h"
 
-namespace stinky
-{
+namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    class PlatformIndependentWindow : public Window
-    {
+    class PlatformIndependentWindow : public Window {
     public:
-        struct WindowData
-        {
+        struct WindowData {
             std::string titile;
             int width, height;
             EventHandler::EventHandlerFn eventHandlerFn;
         };
 
-        PlatformIndependentWindow(const WindowProperties& properties);
+        PlatformIndependentWindow(const WindowProperties &properties);
 
         ~PlatformIndependentWindow();
 
@@ -27,11 +24,12 @@ namespace stinky
 
         void SetEventCallback(EventHandler::EventHandlerFn callback) override;
 
-        void OnUpdate(const Event&) override;
+        void OnUpdate(const Event &) override;
 
         void Shutdown() override;
+
     private:
         WindowData m_Data;
-        GLFWwindow* m_Window;
+        GLFWwindow *m_Window;
     };
 }

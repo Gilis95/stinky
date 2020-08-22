@@ -7,12 +7,10 @@
 #include "renderer/IndexBuffer.h"
 
 
-namespace stinky
-{
+namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    class VertexArray
-    {
+    class VertexArray {
     public:
         virtual ~VertexArray() = default;
 
@@ -20,10 +18,12 @@ namespace stinky
 
         virtual void Unbind() const = 0;
 
-        [[nodiscard]] virtual const std::vector<Ref<VertexBuffer>>& GetVertexBuffers() const = 0;
-        [[nodiscard]] virtual const Ref<IndexBuffer>& GetIndexBuffer() const = 0;
+        [[nodiscard]] virtual const std::vector<Ref<VertexBuffer>> &GetVertexBuffers() const = 0;
 
-        virtual void SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer) = 0;
-        virtual void AddVertexBuffer(const Ref<VertexBuffer>& vb) = 0;
+        [[nodiscard]] virtual const Ref<IndexBuffer> &GetIndexBuffer() const = 0;
+
+        virtual void SetIndexBuffer(const Ref<IndexBuffer> &indexBuffer) = 0;
+
+        virtual void AddVertexBuffer(const Ref<VertexBuffer> &vb) = 0;
     };
 }
