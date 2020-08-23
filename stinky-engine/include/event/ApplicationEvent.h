@@ -10,22 +10,15 @@ namespace stinky {
     class WindowResizeEvent : public Event {
     public:
         WindowResizeEvent(unsigned int width, unsigned int height)
-                : m_Width(width), m_Height(height) {
+                : EVENT_CONSTRUCTOR(WindowResize), m_Width(width), m_Height(height) {
         }
 
-        unsigned int GetWidth() const { return m_Width; }
-
-        unsigned int GetHeight() const { return m_Height; }
-
-        std::string ToString() const override {
+        [[nodiscard]] std::string ToString() const override {
             std::stringstream ss;
             ss << "WindowResizeEvent: " << m_Width << ", " << m_Height;
             return ss.str();
         }
 
-        EVENT_OVERRIDE_FUNCTIONS(WindowResize)
-
-    private:
         unsigned int m_Width, m_Height;
     };
 
@@ -33,35 +26,27 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     class WindowCloseEvent : public Event {
     public:
-        WindowCloseEvent() = default;
-
-        EVENT_OVERRIDE_FUNCTIONS(WindowClose)
+        WindowCloseEvent() : EVENT_CONSTRUCTOR(WindowClose) {}
     };
 
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
     class AppTickEvent : public Event {
     public:
-        AppTickEvent() = default;
-
-        EVENT_OVERRIDE_FUNCTIONS(AppTick)
+        AppTickEvent() : EVENT_CONSTRUCTOR(AppTick) {}
     };
 
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
     class AppUpdateEvent : public Event {
     public:
-        AppUpdateEvent() = default;
-
-        EVENT_OVERRIDE_FUNCTIONS(AppUpdate)
+        AppUpdateEvent() : EVENT_CONSTRUCTOR(AppUpdate) {}
     };
 
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
     class AppRenderEvent : public Event {
     public:
-        AppRenderEvent() = default;
-
-        EVENT_OVERRIDE_FUNCTIONS(AppRender)
+        AppRenderEvent() : EVENT_CONSTRUCTOR(AppRender) {}
     };
 }  // namespace stinky

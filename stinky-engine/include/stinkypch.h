@@ -13,9 +13,9 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "StinkyLogger.h"
+#include "core/StinkyLogger.h"
 
-#include "StinkyMacros.h"
+#include "core/StinkyMacros.h"
 
 #ifdef SK_PLATFORM_WINDOWS
 #include <Windows.h>

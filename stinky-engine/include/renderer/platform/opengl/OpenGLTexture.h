@@ -11,11 +11,11 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     class OpenGLTexture : public Texture {
     public:
-        OpenGLTexture(const std::string &path);
+        explicit OpenGLTexture(const std::string &path);
 
         OpenGLTexture(uint32_t width, uint32_t height);
 
-        ~OpenGLTexture();
+        ~OpenGLTexture() override;
 
         void Bind(unsigned int slot = 0) const override;
 

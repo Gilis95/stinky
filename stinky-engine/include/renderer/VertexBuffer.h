@@ -51,7 +51,8 @@ namespace stinky {
         BufferElement() = default;
 
         /////////////////////////////////////////////////////////////////////////////////////////
-        BufferElement(ShaderDataType type, const std::string &name, bool normalized = false, size_t offset = 0)
+        BufferElement(ShaderDataType type, const std::string &name, bool normalized = false,
+                      size_t offset = 0)
                 : m_Name(name), m_Type(type), m_Size(ShaderDataTypeSize(type)), m_Offset(offset),
                   m_Normalized(normalized) {
         }
@@ -111,9 +112,11 @@ namespace stinky {
 
         std::vector<BufferElement>::iterator end() { return m_Elements.end(); }
 
-        [[nodiscard]] std::vector<BufferElement>::const_iterator begin() const { return m_Elements.begin(); }
+        [[nodiscard]] std::vector<BufferElement>::const_iterator
+        begin() const { return m_Elements.begin(); }
 
-        [[nodiscard]] std::vector<BufferElement>::const_iterator end() const { return m_Elements.end(); }
+        [[nodiscard]] std::vector<BufferElement>::const_iterator
+        end() const { return m_Elements.end(); }
 
     private:
         void CalculateOffsetsAndStride() {

@@ -26,7 +26,8 @@ namespace stinky {
         [[nodiscard]] const std::vector<Ref<VertexBuffer>> &
         GetVertexBuffers() const override { return m_VertexBuffers; }
 
-        [[nodiscard]] const Ref<IndexBuffer> &GetIndexBuffer() const override { return m_IndexBuffer; }
+        [[nodiscard]] const Ref<IndexBuffer> &
+        GetIndexBuffer() const override { return m_IndexBuffer; }
 
         void SetIndexBuffer(const Ref<IndexBuffer> &indexBuffer) override;
 

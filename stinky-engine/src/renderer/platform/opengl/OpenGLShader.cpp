@@ -7,7 +7,7 @@
 #include <fstream>
 #include <glm/ext.hpp>
 
-#include "StinkyMacros.h"
+#include "core/StinkyMacros.h"
 #include "renderer/platform/opengl/OpenGLShader.h"
 #include "stinkypch.h"
 
@@ -88,7 +88,8 @@ namespace stinky {
             size_t eol = source.find_first_of("\r\n", pos); //End of shader type declaration line
             //Syntax error
             AssertReturnIf(eol == std::string::npos);
-            size_t begin = pos + typeTokenLength + 1; //Start of shader type name (after "#type " keyword)
+            size_t begin =
+                    pos + typeTokenLength + 1; //Start of shader type name (after "#type " keyword)
             std::string shaderTypeStr = source.substr(begin, eol - begin);
             GLenum shaderTypeEnum = ShaderTypeFromString(shaderTypeStr);
             //Invalid shader type specified
@@ -101,9 +102,11 @@ namespace stinky {
             AssertReturnIf(nextLinePos == std::string::npos);
             pos = source.find(typeToken, nextLinePos); //Start of next shader type declaration line
 
-            m_ShaderSources[shaderTypeEnum] = (pos == std::string::npos) ? source.substr(nextLinePos)
-                                                                         : source.substr(nextLinePos,
-                                                                                         pos - nextLinePos);
+            m_ShaderSources[shaderTypeEnum] = (pos == std::string::npos) ? source.substr(
+                    nextLinePos)
+                                                                         : source.substr(
+                            nextLinePos,
+                            pos - nextLinePos);
         }
     }
 

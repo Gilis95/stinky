@@ -8,12 +8,11 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     StinkyApplication::StinkyApplication() : Application(Window::API::GLFW) {
-        PushLayer(new StinkyLayer());
+        PushLayer(new StinkyLayer(Application::m_EventController));
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     Application *CreateApplication() {
-        std::cout << "Current path is " << std::filesystem::current_path() << '\n';
         return new StinkyApplication();
     }
 

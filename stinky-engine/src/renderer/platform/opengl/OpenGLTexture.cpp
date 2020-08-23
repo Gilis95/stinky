@@ -31,7 +31,8 @@ namespace stinky {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-        glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, localBuffer);
+        glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE,
+                            localBuffer);
 
         if (localBuffer) {
             stbi_image_free(localBuffer);
@@ -70,6 +71,7 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void OpenGLTexture::SetData(void *data) {
-        glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, GL_RGBA, GL_UNSIGNED_BYTE,
+                            data);
     }
 }

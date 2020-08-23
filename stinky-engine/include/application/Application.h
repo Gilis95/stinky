@@ -3,6 +3,7 @@
 #include "stinkypch.h"
 
 #include "event/Event.h"
+#include "event/EventController.h"
 #include "event/Layer.h"
 #include "event/LayerStack.h"
 #include "window/Window.h"
@@ -11,10 +12,8 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
     class Application {
-    private:
-        using EventHandlers = std::vector<EventHandler::EventHandlerFn>;
     public:
-        Application(Window::API);
+        Application(Window::API api);
 
         virtual ~Application();
 
@@ -29,21 +28,13 @@ namespace stinky {
 
         void PushOverlay(Layer *layer);
 
-        //Events
-        void RegisterEvent(EventType);
-
-        void RegisterEventHandler(EventHandler);
-
-        void OnEvent(const Event &);
-
+    protected:
+        EventController m_EventController;
     private:
         Scope<Window> m_Window;
-
         LayerStack m_LayerStack;
-        std::unordered_map<EventType, EventHandlers> m_EventHandlers;
+
         float m_LastFrameTime = 0.0f;
-
-
         bool m_IsRunning;
     };
 

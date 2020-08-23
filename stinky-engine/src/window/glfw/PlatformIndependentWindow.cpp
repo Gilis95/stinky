@@ -1,7 +1,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <event/MouseEvent.h>
 
 #include "event/ApplicationEvent.h"
+#include "event/KeyEvent.h"
 #include "window/glfw/PlatformIndependentWindow.h"
 
 #include "stinkypch.h"
@@ -58,6 +60,42 @@ namespace stinky {
                                    }
         );
 
+        glfwSetKeyCallback(m_Window,
+                           [](GLFWwindow *window, int key, int scanCode, int action, int mods) {
+                               WindowData &data = *(WindowData *) glfwGetWindowUserPointer(window);
+
+                               switch (action) {
+                                   case GLFW_PRESS: {
+                                       KeyPressedEvent event(static_cast<KeyCode>(key));
+                                       data.eventHandlerFn(event);
+                                       break;
+                                   }
+                                   case GLFW_RELEASE: {
+                                       KeyReleasedEvent event(static_cast<KeyCode>(key));
+                                       data.eventHandlerFn(event);
+                                       break;
+                                   }
+                                   case GLFW_REPEAT: {
+                                       KeyPressedEvent event(static_cast<KeyCode>(key));
+                                       data.eventHandlerFn(event);
+                                       break;
+                                   }
+                               }
+                           });
+
+        glfwSetScrollCallback(m_Window, [](GLFWwindow *window, double xOffset, double yOffset) {
+            WindowData &data = *(WindowData *) glfwGetWindowUserPointer(window);
+
+            MouseScrolledEvent event((float) xOffset, (float) yOffset);
+            data.eventHandlerFn(event);
+        });
+
+        glfwSetCharCallback(m_Window, [](GLFWwindow *window, unsigned int keyCode) {
+            WindowData &data = *(WindowData *) glfwGetWindowUserPointer(window);
+
+            KeyTypedEvent event(static_cast<KeyCode>(keyCode));
+            data.eventHandlerFn(event);
+        });
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

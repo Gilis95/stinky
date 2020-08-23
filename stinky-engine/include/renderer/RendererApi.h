@@ -12,7 +12,8 @@ namespace stinky {
 
         virtual void Clear() const = 0;
 
-        virtual void DrawIndexed(const Ref<VertexArray> &vertexArray, uint32_t indexCount = 0) const = 0;
+        virtual void
+        DrawIndexed(const Ref<VertexArray> &vertexArray, uint32_t indexCount = 0) const = 0;
     };
     /////////////////////////////////////////////////////////////////////////////////////////
 }

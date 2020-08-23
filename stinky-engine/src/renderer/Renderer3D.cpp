@@ -25,47 +25,48 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     Renderer::SceneNode
-    Renderer3D::DrawCube(const glm::vec3 &translate, const glm::vec3 &scale, const glm::vec4 &color) const {
+    Renderer3D::DrawCube(const glm::vec3 &translate, const glm::vec3 &scale,
+                         const glm::vec4 &color) const {
         const float textureIndex = 0.0f; // White Texture
         constexpr glm::vec3 cubeCoordinates[8] = {
                 //Front Quad
-                {-1.0f, -1.0f, -1.0}, //0
-                {1.0f,  -1.0f, -1.0}, //1
-                {1.0f,  1.0f,  -1.0}, //2
-                {-1.0f, 1.0f,  -1.0}, //3
+                {-1.0f, -1.0f, -1.0}
+                , //0
+                {1.0f , -1.0f, -1.0}
+                , //1
+                {1.0f , 1.0f , -1.0}
+                , //2
+                {-1.0f, 1.0f , -1.0}
+                , //3
 
                 // Back Quad
-                {1.0f,  -1.0f, 1.0}, //4
-                {-1.0f, -1.0f, 1.0}, //5
-                {-1.0f, 1.0f,  1.0}, //6
-                {1.0f,  1.0f,  1.0} //7
+                {1.0f , -1.0f, 1.0}
+                , //4
+                {-1.0f, -1.0f, 1.0}
+                , //5
+                {-1.0f, 1.0f , 1.0}
+                , //6
+                {1.0f , 1.0f , 1.0} //7
         };
 
         unsigned int indices[36] = {
                 // front side
-                0, 1, 3,
-                1, 2, 3,
+                0, 1, 3, 1, 2, 3,
 
                 // right side
-                1, 4, 2,
-                4, 6, 2,
+                1, 4, 2, 4, 6, 2,
 
                 // back side
-                4, 5, 7,
-                5, 6, 7,
+                4, 5, 7, 5, 6, 7,
 
                 // left side
-                0, 5, 3,
-                5, 6, 3,
+                0, 5, 3, 5, 6, 3,
 
                 // down side
-                3, 2, 6,
-                2, 7, 6,
+                3, 2, 6, 2, 7, 6,
 
                 // upper side
-                0, 1, 2,
-                2, 3, 0,
-        };
+                0, 1, 2, 2, 3, 0,};
 
 
         glm::mat4 model = glm::translate(glm::mat4(1.0f), translate)
@@ -74,9 +75,10 @@ namespace stinky {
         Renderer::SceneNode rendererData;
 
         //create array buffer, containing shape positions and bind it
-        const auto vertexBuffer = m_RendererFactory->CreateVertexBuffer(cubeCoordinates, 24 * sizeof(float), {
-                {ShaderDataType::Float2, "position"}
-        });
+        const auto vertexBuffer = m_RendererFactory->CreateVertexBuffer(cubeCoordinates,
+                                                                        24 * sizeof(float), {
+                                                                                {ShaderDataType::Float3, "position"}
+                                                                        });
         rendererData.vertexArray = m_RendererFactory->CreateVertexArray();
         //bind currently bound array buffer to first element of currently bound vertex array
         rendererData.vertexArray->AddVertexBuffer(vertexBuffer);

@@ -11,6 +11,7 @@ add_definitions(-DENABLE_LOG -DENABLE_ASSERTS -D_CRT_SECURE_NO_WARNINGS -DDEBUG)
 set(HDR_DIR ${PROJECT_SOURCE_DIR}/include)
 
 set(APPLICATION_HDR_DIR ${HDR_DIR}/application)
+set(CORE_HDR_DIR ${HDR_DIR}/core)
 set(EVENT_HDR_DIR ${HDR_DIR}/event)
 set(RENDERER_HDR_DIR ${HDR_DIR}/renderer)
 set(OPENGL_HDR_DIR ${RENDERER_HDR_DIR}/platform/opengl)
@@ -38,7 +39,13 @@ set(STB_DIR ${PROJECT_SOURCE_DIR}/vendor/stb_image)
 ################################################################################################
 
 set(HDR_FILES
+        # Application module
+        ${APPLICATION_HDR_DIR}/Application.h
+        ${APPLICATION_HDR_DIR}/EntryPoint.h
+
         # Renderer API
+        ${RENDERER_HDR_DIR}/OrthographicCamera.h
+        ${RENDERER_HDR_DIR}/OrthographicCameraController.h
         ${RENDERER_HDR_DIR}/Renderer.h
         ${RENDERER_HDR_DIR}/RendererFactory.h
         ${RENDERER_HDR_DIR}/RendererApi.h
@@ -57,7 +64,7 @@ set(HDR_FILES
         ${OPENGL_HDR_DIR}/OpenGLVertexArray.h
         ${OPENGL_HDR_DIR}/OpenGLShader.h
         ${OPENGL_HDR_DIR}/OpenGLTexture.h
-        ${OPENGL_HDR_DIR}/OpenGlFrameBuffer.h
+        ${OPENGL_HDR_DIR}/OpenGLFrameBuffer.h
 
         #Window submodule
         ${WINDOW_HDR_DIR}/Window.h
@@ -65,17 +72,22 @@ set(HDR_FILES
 
         #Event submodule
         ${EVENT_HDR_DIR}/Event.h
+        ${EVENT_HDR_DIR}/EventController.h
+        ${EVENT_HDR_DIR}/KeyEvent.h
         ${EVENT_HDR_DIR}/Layer.h
         ${EVENT_HDR_DIR}/LayerStack.h
+        ${EVENT_HDR_DIR}/MouseEvent.h
         ${EVENT_HDR_DIR}/Timestep.h
         ${EVENT_HDR_DIR}/ApplicationEvent.h
 
-        ${HDR_DIR}/StinkyLogger.h
-        ${HDR_DIR}/StinkyMacros.h
+        #Core component
+        ${CORE_HDR_DIR}/KeyboardCodes.h
+        ${CORE_HDR_DIR}/MouseCodes.h
+        ${CORE_HDR_DIR}/StinkyLogger.h
+        ${CORE_HDR_DIR}/StinkyMacros.h
+
         ${HDR_DIR}/stinkypch.h
 
-        ${APPLICATION_HDR_DIR}/Application.h
-        ${APPLICATION_HDR_DIR}/EntryPoint.h
 
         ${STB_DIR}/stb_image.h
         )
@@ -87,6 +99,7 @@ set(SRC_FILES
         ${APPLICATION_SRC_DIR}/Application.cpp
 
         #Events
+        ${EVENT_SRC_DIR}/EventController.cpp
         ${EVENT_SRC_DIR}/LayerStack.cpp
         ${EVENT_SRC_DIR}/Layer.cpp
 
@@ -101,6 +114,8 @@ set(SRC_FILES
         ${OPENGL_SRC_DIR}/OpenGLFrameBuffer.cpp
 
         #Render API
+        ${RENDERER_SRC_DIR}/OrthographicCamera.cpp
+        ${RENDERER_SRC_DIR}/OrthographicCameraController.cpp
         ${RENDERER_SRC_DIR}/Renderer.cpp
         ${RENDERER_SRC_DIR}/Renderer2D.cpp
         ${RENDERER_SRC_DIR}/Renderer3D.cpp

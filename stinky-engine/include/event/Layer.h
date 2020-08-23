@@ -16,7 +16,7 @@ namespace stinky {
 
         virtual void OnDetach() {}
 
-        virtual void OnUpdate(Timestep ts) {}
+        virtual void OnUpdate(const Timestep &ts) {}
 
         const std::string &GetName() const { return m_DebugName; }
 

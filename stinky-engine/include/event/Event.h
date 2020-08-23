@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 #include "stinkypch.h"
 
 namespace stinky {
@@ -14,28 +16,26 @@ namespace stinky {
     };
 
 
-#define EVENT_OVERRIDE_FUNCTIONS(type) [[nodiscard]] static EventType GetStaticType() { return EventType::type; }\
-                               [[nodiscard]] virtual EventType GetEventType() const override { return GetStaticType(); }\
-                               [[nodiscard]] virtual const char* GetName() const override { return #type; }
+#define EVENT_CONSTRUCTOR(type) Event(EventType::type, #type)
 
 
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
     class Event {
     public:
+        Event(EventType eventType, std::string name) : m_EventType(eventType),
+                                                       m_Name(std::move(name)) {}
+
         virtual ~Event() = default;
 
-        bool Handled = false;
+        [[nodiscard]] virtual std::string ToString() const { return m_Name; }
 
-        [[nodiscard]] virtual EventType GetEventType() const = 0;
-
-        [[nodiscard]] virtual const char *GetName() const = 0;
-
-        [[nodiscard]] virtual std::string ToString() const { return GetName(); }
+        EventType m_EventType;
+        std::string m_Name;
     };
 
     inline std::ostream &operator<<(std::ostream &os, const Event &e) {
-        return os << e.ToString();
+        return os << e.m_Name;
     }
 
 

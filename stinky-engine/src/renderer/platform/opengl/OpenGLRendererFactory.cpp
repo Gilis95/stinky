@@ -16,23 +16,27 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     Ref<FrameBuffer>
-    OpenGLRendererFactory::CreateFrameBuffer(const FrameBufferSpecification &frameBufferSpecification) const {
+    OpenGLRendererFactory::CreateFrameBuffer(
+            const FrameBufferSpecification &frameBufferSpecification) const {
         return CreateRef<OpenGLFrameBuffer>(frameBufferSpecification);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    Ref<IndexBuffer> OpenGLRendererFactory::CreateIndexBuffer(const void *data, unsigned int count) const {
+    Ref<IndexBuffer>
+    OpenGLRendererFactory::CreateIndexBuffer(const void *data, unsigned int count) const {
         return CreateRef<OpenGLIndexBuffer>(data, count);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    Ref<VertexBuffer> OpenGLRendererFactory::CreateVertexBuffer(unsigned int size, const BufferLayout &layout) const {
+    Ref<VertexBuffer>
+    OpenGLRendererFactory::CreateVertexBuffer(unsigned int size, const BufferLayout &layout) const {
         return CreateRef<OpenGLVertexBuffer>(layout, size);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     Ref<VertexBuffer>
-    OpenGLRendererFactory::CreateVertexBuffer(const void *data, unsigned int size, const BufferLayout &layout) const {
+    OpenGLRendererFactory::CreateVertexBuffer(const void *data, unsigned int size,
+                                              const BufferLayout &layout) const {
         return CreateRef<OpenGLVertexBuffer>(layout, data, size);
     }
 

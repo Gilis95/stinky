@@ -9,7 +9,8 @@
 
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
-    Application::Application(Window::API windowApi) : m_IsRunning(false) {
+    Application::Application(Window::API windowApi) :
+            m_IsRunning(false), m_EventController() {
         Init(windowApi);
     }
 
@@ -23,41 +24,47 @@ namespace stinky {
 
         m_Window = Window::Create(windowApi);
 
-        m_Window->SetEventCallback(STINKY_BIND(Application::OnEvent));
+        m_Window->SetEventCallback(std::bind(&EventController::OnEvent, &m_EventController,
+                                             std::placeholders::_1));
 
         // KeyPressed, KeyReleased, KeyTyped,
-        RegisterEvent(EventType::KeyPressed);
-        RegisterEvent(EventType::KeyReleased);
-        RegisterEvent(EventType::KeyTyped);
+        m_EventController.RegisterEvent(EventType::KeyPressed);
+        m_EventController.RegisterEvent(EventType::KeyReleased);
+        m_EventController.RegisterEvent(EventType::KeyTyped);
 
         // MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled 
-        RegisterEvent(EventType::MouseButtonPressed);
-        RegisterEvent(EventType::MouseButtonReleased);
-        RegisterEvent(EventType::MouseMoved);
-        RegisterEvent(EventType::MouseScrolled);
+        m_EventController.RegisterEvent(EventType::MouseButtonPressed);
+        m_EventController.RegisterEvent(EventType::MouseButtonReleased);
+        m_EventController.RegisterEvent(EventType::MouseMoved);
+        m_EventController.RegisterEvent(EventType::MouseScrolled);
 
 
         // WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
-        RegisterEvent(EventType::WindowClose);
-        RegisterEvent(EventType::WindowResize);
-        RegisterEvent(EventType::WindowFocus);
-        RegisterEvent(EventType::WindowLostFocus);
-        RegisterEvent(EventType::WindowMoved);
+        m_EventController.RegisterEvent(EventType::WindowClose);
+        m_EventController.RegisterEvent(EventType::WindowResize);
+        m_EventController.RegisterEvent(EventType::WindowFocus);
+        m_EventController.RegisterEvent(EventType::WindowLostFocus);
+        m_EventController.RegisterEvent(EventType::WindowMoved);
 
         //AppTick, AppUpdate, AppRender,
-        RegisterEvent(EventType::AppRender);
-        RegisterEvent(EventType::AppTick);
-        RegisterEvent(EventType::AppUpdate);
+        m_EventController.RegisterEvent(EventType::AppRender);
+        m_EventController.RegisterEvent(EventType::AppTick);
+        m_EventController.RegisterEvent(EventType::AppUpdate);
 
-        RegisterEventHandler({
-                                     EventType::WindowClose,
-                                     STINKY_BIND(Application::Close)
-                             });
+        m_EventController.RegisterEventHandler(
+                {
+                        EventType::WindowClose, STINKY_BIND(Application::Close)
+                }
+        );
 
-        RegisterEventHandler({
-                                     EventType::AppUpdate,
-                                     std::bind(&Window::OnUpdate, m_Window.get(), std::placeholders::_1)
-                             });
+        m_EventController.RegisterEventHandler(
+                {
+                        EventType::AppUpdate, std::bind(
+                        &Window::OnUpdate,
+                        m_Window.get(),
+                        std::placeholders::_1)
+                }
+        );
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -82,7 +89,7 @@ namespace stinky {
                         layer->OnUpdate(timestep);
                     });
 
-            OnEvent(AppUpdateEvent());
+            m_EventController.OnEvent(AppUpdateEvent());
         }
 
     }
@@ -95,32 +102,5 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     void Application::PushOverlay(Layer *layer) {
         m_LayerStack.PushOverlay(layer);
-
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////
-    void Application::RegisterEvent(EventType type) {
-        if (m_EventHandlers.find(type) == m_EventHandlers.end()) {
-            m_EventHandlers[type] = EventHandlers();
-        }
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////
-    void Application::RegisterEventHandler(EventHandler handler) {
-        m_EventHandlers[handler.m_EventType].push_back(handler.m_EventHandlerFunction);
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////
-    void Application::OnEvent(const Event &event) {
-        auto handlers = m_EventHandlers.find(event.GetEventType());
-
-        if (handlers != m_EventHandlers.end()) {
-            std::for_each(
-                    handlers->second.begin(),
-                    handlers->second.end(),
-                    [&](EventHandler::EventHandlerFn &handlerFunction) -> void {
-                        handlerFunction(event);
-                    });
-        }
     }
 }

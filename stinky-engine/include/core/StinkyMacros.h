@@ -95,8 +95,8 @@ namespace stinky {
 #define AssertLogIf(x, ...) { if((x)) { STINKY_ERROR("Assertion Failed: {0}", __VA_ARGS__); } }
 #define AssertLogUnless(x, ...) { if(!(x)) { STINKY_ERROR("Assertion Failed: {0}", __VA_ARGS__); } }
 
-#define ReturnIf(x, ...) { if(x) {STINKY_ERROR("Warning: {0} {1} {2}", __FILE__, __LINE__ , __FUNCTION__); return __VA_ARGS__;}}
-#define ReturnUnless(x, ...) { if(!x) {STINKY_ERROR("Warning: {0} {1} {2}", __FILE__, __LINE__ , __FUNCTION__); return __VA_ARGS__;}}
+#define ReturnIf(x, ...) { if(x) { return __VA_ARGS__;}}
+#define ReturnUnless(x, ...) { if(!x) { return __VA_ARGS__;}}
 
 #define AssertReturnIf(x, ...) { if(x) { STINKY_LOG_ERROR_AND_BREAK("Assertion Failed: {0} {1} {2}", __FILE__, __LINE__ , __FUNCTION__); return __VA_ARGS__;}}
 #define AssertReturnUnless(x, ...) { if(!x) { STINKY_LOG_ERROR_AND_BREAK("Assertion Failed: {0} {1} {2}", __FILE__, __LINE__ , __FUNCTION__); return __VA_ARGS__;}}

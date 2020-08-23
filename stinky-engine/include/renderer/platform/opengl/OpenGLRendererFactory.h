@@ -14,7 +14,8 @@ namespace stinky {
         [[nodiscard]] Ref<FrameBuffer>
         CreateFrameBuffer(const FrameBufferSpecification &frameBufferSpecification) const override;
 
-        [[nodiscard]] Ref<IndexBuffer> CreateIndexBuffer(const void *data, unsigned int count) const override;
+        [[nodiscard]] Ref<IndexBuffer>
+        CreateIndexBuffer(const void *data, unsigned int count) const override;
 
         [[nodiscard]] Ref<RendererApi> CreateRendererApi() const override;
 
@@ -28,7 +29,8 @@ namespace stinky {
         CreateVertexBuffer(unsigned int size, const BufferLayout &layout = {}) const override;
 
         [[nodiscard]] Ref<VertexBuffer>
-        CreateVertexBuffer(const void *data, unsigned int size, const BufferLayout &layout = {}) const override;
+        CreateVertexBuffer(const void *data, unsigned int size,
+                           const BufferLayout &layout = {}) const override;
 
         [[nodiscard]] Ref<VertexArray> CreateVertexArray() const override;
     };
