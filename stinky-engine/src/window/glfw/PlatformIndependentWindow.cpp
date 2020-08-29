@@ -96,6 +96,15 @@ namespace stinky {
             KeyTypedEvent event(static_cast<KeyCode>(keyCode));
             data.eventHandlerFn(event);
         });
+
+        glfwSetWindowSizeCallback(m_Window, [](GLFWwindow *window, int width, int height) {
+            WindowData &data = *(WindowData *) glfwGetWindowUserPointer(window);
+            data.height = height;
+            data.width = width;
+
+            WindowResizeEvent event(width, height);
+            data.eventHandlerFn(event);
+        });
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

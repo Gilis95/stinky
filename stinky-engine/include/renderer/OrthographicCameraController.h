@@ -35,7 +35,9 @@ namespace stinky {
 
         void RotateRight(const Timestep &ts);
 
-        void OnResize(float width, float height);
+        void OnWindowResize(const Event &event);
+
+        void WindowResize(float width, float height);
 
         void OnZoom(const Event &e);
 

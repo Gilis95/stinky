@@ -3,6 +3,7 @@
 //
 
 #include <event/MouseEvent.h>
+#include <event/ApplicationEvent.h>
 #include "renderer/OrthographicCameraController.h"
 
 namespace stinky {
@@ -93,7 +94,15 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void OrthographicCameraController::OnResize(float width, float height) {
+    void OrthographicCameraController::OnWindowResize(const Event &event) {
+        auto resizeEvent = dynamic_cast<const WindowResizeEvent &>(event);
+
+        WindowResize(static_cast<float>(resizeEvent.m_Width), static_cast<float>(resizeEvent
+                .m_Height));
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void OrthographicCameraController::WindowResize(float width, float height) {
         m_AspectRatio = width / height;
         m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel,
                                -m_ZoomLevel, m_ZoomLevel);
@@ -102,7 +111,7 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     void OrthographicCameraController::OnZoom(const Event &e) {
 
-        m_ZoomLevel -= static_cast<const MouseScrolledEvent &>(e).m_YOffset * 0.25f;
+        m_ZoomLevel -= dynamic_cast<const MouseScrolledEvent &>(e).m_YOffset * 0.25f;
         m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
         m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel,
                                -m_ZoomLevel, m_ZoomLevel);

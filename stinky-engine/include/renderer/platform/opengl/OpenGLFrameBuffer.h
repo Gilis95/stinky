@@ -20,7 +20,7 @@ namespace stinky {
 
         void Unbind() override;
 
-        void Resize(uint32_t width, uint32_t height) override;
+        void WindowResize(uint32_t width, uint32_t height) override;
 
         [[nodiscard]] uint32_t
         GetColorAttachmentRendererID() const override { return m_ColorAttachment; }

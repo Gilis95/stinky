@@ -1,6 +1,7 @@
 #include <glm/ext.hpp>
 #include "StinkyLayer.h"
 
+#include "event/ApplicationEvent.h"
 #include "renderer/Renderer2D.h"
 #include "renderer/RendererFactory.h"
 #include "renderer/VertexBuffer.h"
@@ -27,6 +28,20 @@ namespace stinky {
                         EventType::MouseScrolled, std::bind(
                         &OrthographicCameraController::OnZoom,
                         &m_OrthographicCameraController, std::placeholders::_1)
+                }
+        );
+
+        eventController.RegisterEventHandler(
+                {
+                        EventType::WindowResize, [&](const Event &event) {
+                    auto resizeEvent = dynamic_cast<const WindowResizeEvent &>(event);
+
+                    m_OrthographicCameraController.WindowResize(
+                            static_cast<float>(resizeEvent.m_Width), static_cast<float>(resizeEvent
+                                    .m_Height));
+                    m_FrameBuffer->WindowResize(resizeEvent.m_Width, resizeEvent
+                            .m_Height);
+                }
                 }
         );
     }
