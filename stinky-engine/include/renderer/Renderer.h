@@ -6,11 +6,11 @@
 
 #include "stinkypch.h"
 
-#include "renderer/IndexBuffer.h"
-#include "renderer/RendererApi.h"
-#include "renderer/Shader.h"
-#include "renderer/Texture.h"
-#include "renderer/VertexArray.h"
+#include "gla/IndexBuffer.h"
+#include "gla/RendererApi.h"
+#include "gla/Shader.h"
+#include "gla/Texture.h"
+#include "gla/VertexArray.h"
 
 #include <glm/glm.hpp>
 

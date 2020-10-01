@@ -14,7 +14,7 @@ namespace stinky {
     };
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    Renderer2D::Renderer2D(const Ref<RendererFactory> &rendererFactory)
+    Renderer2D::Renderer2D(const Ref<GraphicLayerAbstractionFactory> &rendererFactory)
             : Renderer(rendererFactory->CreateRendererApi()), m_RendererFactory(rendererFactory) {
         Init();
     }

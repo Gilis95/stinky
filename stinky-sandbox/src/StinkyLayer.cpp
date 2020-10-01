@@ -3,45 +3,49 @@
 
 #include "event/ApplicationEvent.h"
 #include "renderer/Renderer2D.h"
-#include "renderer/RendererFactory.h"
-#include "renderer/VertexBuffer.h"
+#include "gla/GraphicLayerAbstractionFactory.h"
+#include "gla/VertexBuffer.h"
 
 namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     StinkyLayer::StinkyLayer(EventController &eventController)
             : Layer("Stinky Layer"),
-              m_RendererFactory(RendererFactory::create(RendererFactory::API::OpenGL)),
-              m_Renderer(m_RendererFactory), m_OrthographicCamera(-1.68f, 1.68f, -1.0f, 1.0f),
-              m_OrthographicCameraController(m_OrthographicCamera, 1.68f) {
+              m_RendererFactory(GraphicLayerAbstractionFactory::create(GraphicLayerAbstractionFactory::API::OpenGL))
+            , m_Renderer(m_RendererFactory)
+            , m_PerspectiveCamera(-1.68f, 1.68f, 45.0f, 1.0f)
+            , m_PerspectiveCameraController(&m_PerspectiveCamera) {
+
+
+        eventController.RegisterEventHandler(
+                {
+                        EventType::MouseButtonPressed, std::bind(
+                        &PerspectiveCameraController::OnMousePressed,
+                        &m_PerspectiveCameraController, std::placeholders::_1)
+                }
+        );
+
+        eventController.RegisterEventHandler(
+                {
+                        EventType::MouseMoved, std::bind(
+                        &PerspectiveCameraController::OnMouseMoved,
+                        &m_PerspectiveCameraController, std::placeholders::_1)
+                }
+        );
+
+        eventController.RegisterEventHandler(
+                {
+                        EventType::MouseButtonReleased, std::bind(
+                        &PerspectiveCameraController::OnMouseReleased,
+                        &m_PerspectiveCameraController, std::placeholders::_1)
+                }
+        );
 
         eventController.RegisterEventHandler(
                 {
                         EventType::KeyPressed, std::bind(
-                        &OrthographicCameraController::OnKeyboardEvent,
-                        &m_OrthographicCameraController, std::placeholders::_1)
-                }
-        );
-
-        eventController.RegisterEventHandler(
-                {
-                        EventType::MouseScrolled, std::bind(
-                        &OrthographicCameraController::OnZoom,
-                        &m_OrthographicCameraController, std::placeholders::_1)
-                }
-        );
-
-        eventController.RegisterEventHandler(
-                {
-                        EventType::WindowResize, [&](const Event &event) {
-                    auto resizeEvent = dynamic_cast<const WindowResizeEvent &>(event);
-
-                    m_OrthographicCameraController.WindowResize(
-                            static_cast<float>(resizeEvent.m_Width), static_cast<float>(resizeEvent
-                                    .m_Height));
-                    m_FrameBuffer->WindowResize(resizeEvent.m_Width, resizeEvent
-                            .m_Height);
-                }
+                        &PerspectiveCameraController::OnKeyboardEvent,
+                        &m_PerspectiveCameraController, std::placeholders::_1)
                 }
         );
     }
@@ -50,7 +54,7 @@ namespace stinky {
     void StinkyLayer::OnAttach() {
         m_FrameBuffer = m_RendererFactory->CreateFrameBuffer({1280, 720});
         m_SceneNodes.push_back(
-                m_Renderer.CreateQuad({-0.5f, 0.5f}, {0.1f, 0.1f}, {1.0f, 0.0f, 0.0f, 1.0f}));
+                m_Renderer.DrawCube(glm::vec3(1.0f), glm::vec3(0.05f, 0.05f, 0.05f), {1.0f, 0.0f, 0.0f, 1.0f}));
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -62,8 +66,8 @@ namespace stinky {
         m_FrameBuffer->Unbind();
         m_Renderer.Clear();
 
-        m_OrthographicCameraController.OnUpdate(ts);
-        m_Renderer.BeginScene(m_OrthographicCamera.GetViewProjectionMatrix());
+        m_PerspectiveCameraController.OnUpdate(ts);
+        m_Renderer.BeginScene(m_PerspectiveCamera.GetViewProjectionMatrix());
 
         std::for_each(m_SceneNodes.begin(), m_SceneNodes.end(),
                       [&](const Renderer::SceneNode &sceneNode) -> void {

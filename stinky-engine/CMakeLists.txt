@@ -11,10 +11,12 @@ add_definitions(-DENABLE_LOG -DENABLE_ASSERTS -D_CRT_SECURE_NO_WARNINGS -DDEBUG)
 set(HDR_DIR ${PROJECT_SOURCE_DIR}/include)
 
 set(APPLICATION_HDR_DIR ${HDR_DIR}/application)
+set(CAMERA_HDR_DIR ${HDR_DIR}/camera)
 set(CORE_HDR_DIR ${HDR_DIR}/core)
 set(EVENT_HDR_DIR ${HDR_DIR}/event)
+set(GLA_HDR_DIR ${HDR_DIR}/gla)
 set(RENDERER_HDR_DIR ${HDR_DIR}/renderer)
-set(OPENGL_HDR_DIR ${RENDERER_HDR_DIR}/platform/opengl)
+set(OPENGL_HDR_DIR ${GLA_HDR_DIR}/platform/opengl)
 set(WINDOW_HDR_DIR ${HDR_DIR}/window)
 
 ################################################################################################
@@ -23,9 +25,11 @@ set(WINDOW_HDR_DIR ${HDR_DIR}/window)
 set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
 
 set(APPLICATION_SRC_DIR ${SRC_DIR}/application)
+set(CAMERA_SRC_DIR ${SRC_DIR}/camera)
 set(EVENT_SRC_DIR ${SRC_DIR}/event)
+set(GLA_SRC_DIR ${SRC_DIR}/gla)
 set(RENDERER_SRC_DIR ${SRC_DIR}/renderer)
-set(OPENGL_SRC_DIR ${RENDERER_SRC_DIR}/platform/opengl)
+set(OPENGL_SRC_DIR ${GLA_SRC_DIR}/platform/opengl)
 set(WINDOW_SRC_DIR ${SRC_DIR}/window)
 
 ################################################################################################
@@ -43,22 +47,27 @@ set(HDR_FILES
         ${APPLICATION_HDR_DIR}/Application.h
         ${APPLICATION_HDR_DIR}/EntryPoint.h
 
+        # Camera module
+        ${CAMERA_HDR_DIR}/OrthographicCamera.h
+        ${CAMERA_HDR_DIR}/OrthographicCameraController.h
+        ${CAMERA_HDR_DIR}/PerspectiveCamera.h
+
+        # Graphic Layer Abstraction module
+        ${GLA_HDR_DIR}/GraphicLayerAbstractionFactory.h
+        ${GLA_HDR_DIR}/RendererApi.h
+        ${GLA_HDR_DIR}/VertexBuffer.h
+        ${GLA_HDR_DIR}/VertexArray.h
+        ${GLA_HDR_DIR}/Shader.h
+        ${GLA_HDR_DIR}/Texture.h
+        ${GLA_HDR_DIR}/FrameBuffer.h
+
         # Renderer API
-        ${RENDERER_HDR_DIR}/OrthographicCamera.h
-        ${RENDERER_HDR_DIR}/OrthographicCameraController.h
         ${RENDERER_HDR_DIR}/Renderer.h
-        ${RENDERER_HDR_DIR}/RendererFactory.h
-        ${RENDERER_HDR_DIR}/RendererApi.h
         ${RENDERER_HDR_DIR}/Renderer2D.h
         ${RENDERER_HDR_DIR}/Renderer3D.h
-        ${RENDERER_HDR_DIR}/VertexBuffer.h
-        ${RENDERER_HDR_DIR}/VertexArray.h
-        ${RENDERER_HDR_DIR}/Shader.h
-        ${RENDERER_HDR_DIR}/Texture.h
-        ${RENDERER_HDR_DIR}/FrameBuffer.h
 
-        #Renderer OpenGL implementation
-        ${OPENGL_HDR_DIR}/OpenGLRendererFactory.h
+        # Graphic Layer Abstraction OpenGL implementation
+        ${OPENGL_HDR_DIR}/OpenGLGraphicLayerFactory.h
         ${OPENGL_HDR_DIR}/OpenGLRenderer.h
         ${OPENGL_HDR_DIR}/OpenGLVertexBuffer.h
         ${OPENGL_HDR_DIR}/OpenGLVertexArray.h
@@ -90,7 +99,7 @@ set(HDR_FILES
 
 
         ${STB_DIR}/stb_image.h
-        )
+        include/camera/PerspectiveCameraController.h)
 
 ################################################################################################
 
@@ -98,13 +107,20 @@ set(SRC_FILES
         #Application
         ${APPLICATION_SRC_DIR}/Application.cpp
 
+        # Camera
+        ${CAMERA_SRC_DIR}/OrthographicCamera.cpp
+        ${CAMERA_SRC_DIR}/OrthographicCameraController.cpp
+
         #Events
         ${EVENT_SRC_DIR}/EventController.cpp
         ${EVENT_SRC_DIR}/LayerStack.cpp
         ${EVENT_SRC_DIR}/Layer.cpp
 
+        # Graphic Layer Abstraction
+        ${GLA_SRC_DIR}/GraphicLayerAbstractionFactory.cpp
+
         #Renderer OpenGL implementation
-        ${OPENGL_SRC_DIR}/OpenGLRendererFactory.cpp
+        ${OPENGL_SRC_DIR}/OpenGLGraphicLayerFactory.cpp
         ${OPENGL_SRC_DIR}/OpenGLRenderer.cpp
         ${OPENGL_SRC_DIR}/OpenGLVertexBuffer.cpp
         ${OPENGL_SRC_DIR}/OpenGLIndexBuffer.cpp
@@ -114,12 +130,9 @@ set(SRC_FILES
         ${OPENGL_SRC_DIR}/OpenGLFrameBuffer.cpp
 
         #Render API
-        ${RENDERER_SRC_DIR}/OrthographicCamera.cpp
-        ${RENDERER_SRC_DIR}/OrthographicCameraController.cpp
         ${RENDERER_SRC_DIR}/Renderer.cpp
         ${RENDERER_SRC_DIR}/Renderer2D.cpp
         ${RENDERER_SRC_DIR}/Renderer3D.cpp
-        ${RENDERER_SRC_DIR}/RendererFactory.cpp
 
         #General purpose
         ${SRC_DIR}/StinkyLogger.cpp
@@ -130,7 +143,7 @@ set(SRC_FILES
         #Window submodule
         ${WINDOW_SRC_DIR}/Window.cpp
         ${WINDOW_SRC_DIR}/glfw/PlatformIndependentWindow.cpp
-        )
+        src/camera/PerspectiveCamera.cpp src/camera/PerspectiveCameraController.cpp)
 
 add_subdirectory(${GLFW_DIR})
 add_subdirectory(${GLAD_DIR})

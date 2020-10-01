@@ -10,8 +10,15 @@
 #include <sstream>
 #include <array>
 #include <vector>
+#include <list>
 #include <unordered_map>
 #include <unordered_set>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/transform.hpp>
+#include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/euler_angles.hpp>
 
 #include "core/StinkyLogger.h"
 

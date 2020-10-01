@@ -56,7 +56,7 @@ namespace stinky {
     class MouseButtonReleasedEvent : public Event {
     public:
         explicit MouseButtonReleasedEvent(MouseCode button)
-                : EVENT_CONSTRUCTOR(MouseButtonPressed), m_Button(button) {}
+                : EVENT_CONSTRUCTOR(MouseButtonReleased), m_Button(button) {}
 
         [[nodiscard]] std::string ToString() const override {
             std::stringstream ss;

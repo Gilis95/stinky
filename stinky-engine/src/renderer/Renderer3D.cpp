@@ -7,7 +7,7 @@
 
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
-    Renderer3D::Renderer3D(const Ref<RendererFactory> &rendererFactory)
+    Renderer3D::Renderer3D(const Ref<GraphicLayerAbstractionFactory> &rendererFactory)
             : Renderer(rendererFactory->CreateRendererApi()),
               m_RendererFactory(rendererFactory) {
 
@@ -27,7 +27,7 @@ namespace stinky {
     Renderer::SceneNode
     Renderer3D::DrawCube(const glm::vec3 &translate, const glm::vec3 &scale,
                          const glm::vec4 &color) const {
-        const float textureIndex = 0.0f; // White Texture
+        //const float textureIndex = 0.0f; // White Texture
         constexpr glm::vec3 cubeCoordinates[8] = {
                 //Front Quad
                 {-1.0f, -1.0f, -1.0}

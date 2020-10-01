@@ -5,7 +5,7 @@
 
 #include "stinkypch.h"
 #include "renderer/Renderer.h"
-#include "renderer/RendererFactory.h"
+#include "gla/GraphicLayerAbstractionFactory.h"
 
 #include <glm/glm.hpp>
 
@@ -13,7 +13,7 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     class Renderer3D : public Renderer {
     public:
-        Renderer3D(const Ref<RendererFactory> &rendererFactory);
+        Renderer3D(const Ref<GraphicLayerAbstractionFactory> &rendererFactory);
 
         void
         Init() const;
@@ -24,7 +24,7 @@ namespace stinky {
         DrawCube(const glm::vec3 &translate, const glm::vec3 &scale, const glm::vec4 &color) const;
 
     private:
-        const Ref<RendererFactory> m_RendererFactory;
+        const Ref<GraphicLayerAbstractionFactory> m_RendererFactory;
     };
     /////////////////////////////////////////////////////////////////////////////////////////
 }
