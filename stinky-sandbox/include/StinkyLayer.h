@@ -2,20 +2,21 @@
 
 
 #include <glm/glm.hpp>
+#include <camera/OrthographicCameraController.h>
 
 #include "event/EventController.h"
 #include "event/Layer.h"
-#include "renderer/FrameBuffer.h"
-#include "renderer/OrthographicCamera.h"
-#include "renderer/OrthographicCameraController.h"
-#include "renderer/Renderer2D.h"
-#include "renderer/RendererFactory.h"
+#include "gla/FrameBuffer.h"
+#include "camera/PerspectiveCamera.h"
+#include "camera/PerspectiveCameraController.h"
+#include "renderer/Renderer3D.h"
+#include "gla/GraphicLayerAbstractionFactory.h"
 
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     class StinkyLayer : public Layer {
     public:
-        StinkyLayer(EventController& eventController);
+        StinkyLayer(EventController &eventController);
 
         virtual void OnAttach() override;
 
@@ -24,13 +25,16 @@ namespace stinky {
         virtual void OnUpdate(const Timestep &ts) override;
 
     private:
-        Ref<RendererFactory> m_RendererFactory;
-        Renderer2D m_Renderer;
+        Ref<GraphicLayerAbstractionFactory> m_RendererFactory;
+        Renderer3D m_Renderer;
         Renderer::SceneNodes m_SceneNodes;
         Ref<FrameBuffer> m_FrameBuffer;
 
-        OrthographicCamera m_OrthographicCamera;
-        OrthographicCameraController m_OrthographicCameraController;
+//        OrthographicCamera m_OrthographicCamera;
+//        OrthographicCameraController m_OrthographicCameraController;
+
+        PerspectiveCamera m_PerspectiveCamera;
+        PerspectiveCameraController m_PerspectiveCameraController;
     };
     /////////////////////////////////////////////////////////////////////////////////////////
 }

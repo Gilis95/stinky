@@ -4,8 +4,8 @@
 #pragma once
 
 #include "renderer/Renderer.h"
-#include "renderer/RendererApi.h"
-#include "RendererFactory.h"
+#include "gla/RendererApi.h"
+#include "gla/GraphicLayerAbstractionFactory.h"
 
 #include <glm/glm.hpp>
 
@@ -14,7 +14,7 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     class Renderer2D : public Renderer {
     public:
-        Renderer2D(const Ref<RendererFactory> &rendererFactory);
+        Renderer2D(const Ref<GraphicLayerAbstractionFactory> &rendererFactory);
 
         void Init() const;
 
@@ -24,6 +24,6 @@ namespace stinky {
         CreateQuad(const glm::vec2 &translate, const glm::vec2 &scale, const glm::vec4 &color);
 
     private:
-        Ref<RendererFactory> m_RendererFactory;
+        Ref<GraphicLayerAbstractionFactory> m_RendererFactory;
     };
 }
