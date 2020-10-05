@@ -1,9 +1,12 @@
 //
 // Created by christian on 1/19/20.
 //
-#include <glm/ext.hpp>
 #include "stinkypch.h"
 
+#include <glm/ext.hpp>
+
+#include "gla/VertexArray.h"
+#include "gla/VertexBuffer.h"
 #include "renderer/Renderer2D.h"
 
 namespace stinky {
@@ -57,9 +60,11 @@ namespace stinky {
 
         Renderer::SceneNode rendererData;
 
+        glm::mat4 model =glm::translate(glm::mat4(1.0f), {translate.x, translate.y, 1.0})
+                         * glm::scale(glm::mat4(1.0f), {scale.x, scale.y, 1.0f});
+
         for (auto &i : data) {
-            i.coordinates = glm::translate(glm::mat4(1.0f), {translate.x, translate.y, 1.0})
-                            * glm::scale(glm::mat4(1.0f), {scale.x, scale.y, 1.0f}) * i.coordinates;
+            i.coordinates = model * i.coordinates;
         }
 
         rendererData.vertexArray = m_RendererFactory->CreateVertexArray();

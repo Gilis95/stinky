@@ -8,7 +8,7 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     OpenGLIndexBuffer::OpenGLIndexBuffer(const void *data, unsigned int count) : m_Count(count),
                                                                                  m_RendererID(0) {
-        glCreateBuffers(1, &m_RendererID);
+        glGenBuffers(1, &m_RendererID);
 
         // GL_ELEMENT_ARRAY_BUFFER is not valid without an actively bound VAO
         // Binding with GL_ARRAY_BUFFER allows the data to be loaded regardless of VAO state. 

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <gla/FrameBuffer.h>
 #include "gla/GraphicLayerAbstractionFactory.h"
 
 namespace stinky {
@@ -26,11 +25,11 @@ namespace stinky {
         [[nodiscard]] Ref<Texture> CreateTexture(uint32_t width, uint32_t height) const override;
 
         [[nodiscard]] Ref<VertexBuffer>
-        CreateVertexBuffer(unsigned int size, const BufferLayout &layout = {}) const override;
+        CreateVertexBuffer(unsigned int size, const BufferLayout &layout) const override;
 
         [[nodiscard]] Ref<VertexBuffer>
         CreateVertexBuffer(const void *data, unsigned int size,
-                           const BufferLayout &layout = {}) const override;
+                           const BufferLayout &layout) const override;
 
         [[nodiscard]] Ref<VertexArray> CreateVertexArray() const override;
     };

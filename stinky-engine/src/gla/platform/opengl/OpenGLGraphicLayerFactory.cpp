@@ -1,8 +1,15 @@
-#include "gla/platform/opengl/OpenGLRenderer.h"
+#include "gla/platform/opengl/OpenGLGraphicLayerFactory.h"
+
+#include "gla/FrameBuffer.h"
+#include "gla/IndexBuffer.h"
+#include "gla/Shader.h"
+#include "gla/Texture.h"
+#include "gla/VertexBuffer.h"
+#include "gla/VertexArray.h"
 
 #include "gla/platform/opengl/OpenGLFrameBuffer.h"
 #include "gla/platform/opengl/OpenGLIndexBuffer.h"
-#include "gla/platform/opengl/OpenGLGraphicLayerFactory.h"
+#include "gla/platform/opengl/OpenGLRenderer.h"
 #include "gla/platform/opengl/OpenGLShader.h"
 #include "gla/platform/opengl/OpenGLTexture.h"
 #include "gla/platform/opengl/OpenGLVertexBuffer.h"

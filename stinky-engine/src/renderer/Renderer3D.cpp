@@ -1,8 +1,12 @@
 //
 // Created by christian on 04/08/2020.
 //
-#include <glm/ext.hpp>
 #include "stinkypch.h"
+
+#include <glm/ext.hpp>
+
+#include "gla/VertexArray.h"
+#include "gla/VertexBuffer.h"
 #include "renderer/Renderer3D.h"
 
 namespace stinky {
@@ -28,25 +32,25 @@ namespace stinky {
     Renderer3D::DrawCube(const glm::vec3 &translate, const glm::vec3 &scale,
                          const glm::vec4 &color) const {
         //const float textureIndex = 0.0f; // White Texture
-        constexpr glm::vec3 cubeCoordinates[8] = {
+        glm::vec4 cubeCoordinates[8] = {
                 //Front Quad
-                {-1.0f, -1.0f, -1.0}
+                {-1.0f, -1.0f, -1.0, 1.0f}
                 , //0
-                {1.0f , -1.0f, -1.0}
+                {1.0f , -1.0f, -1.0, 1.0f}
                 , //1
-                {1.0f , 1.0f , -1.0}
+                {1.0f , 1.0f , -1.0, 1.0f}
                 , //2
-                {-1.0f, 1.0f , -1.0}
+                {-1.0f, 1.0f , -1.0, 1.0f}
                 , //3
 
                 // Back Quad
-                {1.0f , -1.0f, 1.0}
+                {1.0f , -1.0f, 1.0, 1.0f}
                 , //4
-                {-1.0f, -1.0f, 1.0}
+                {-1.0f, -1.0f, 1.0, 1.0f}
                 , //5
-                {-1.0f, 1.0f , 1.0}
+                {-1.0f, 1.0f , 1.0, 1.0f}
                 , //6
-                {1.0f , 1.0f , 1.0} //7
+                {1.0f , 1.0f , 1.0, 1.0f} //7
         };
 
         unsigned int indices[36] = {
@@ -70,14 +74,18 @@ namespace stinky {
 
 
         glm::mat4 model = glm::translate(glm::mat4(1.0f), translate)
-                          * glm::scale(glm::mat4(1.0f), {scale.x, scale.y, scale.z});
+                          * glm::scale(glm::mat4(1.0f), scale);
+
+        for (auto &i : cubeCoordinates) {
+            i = model * i;
+        }
 
         Renderer::SceneNode rendererData;
 
         //create array buffer, containing shape positions and bind it
         const auto vertexBuffer = m_RendererFactory->CreateVertexBuffer(cubeCoordinates,
-                                                                        24 * sizeof(float), {
-                                                                                {ShaderDataType::Float3, "position"}
+                                                                        32 * sizeof(float), {
+                                                                                {ShaderDataType::Float4, "position"}
                                                                         });
         rendererData.vertexArray = m_RendererFactory->CreateVertexArray();
         //bind currently bound array buffer to first element of currently bound vertex array

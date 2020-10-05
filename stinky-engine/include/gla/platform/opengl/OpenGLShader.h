@@ -2,11 +2,11 @@
 // Created by christian on 1/26/20.
 //
 #pragma once
+#include "stinkypch.h"
 
 #include <glad/glad.h>
 
 #include "gla/Shader.h"
-#include "stinkypch.h"
 
 namespace stinky {
 

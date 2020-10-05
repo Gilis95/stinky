@@ -143,7 +143,7 @@ set(SRC_FILES
         #Window submodule
         ${WINDOW_SRC_DIR}/Window.cpp
         ${WINDOW_SRC_DIR}/glfw/PlatformIndependentWindow.cpp
-        src/camera/PerspectiveCamera.cpp src/camera/PerspectiveCameraController.cpp)
+        src/camera/PerspectiveCamera.cpp src/camera/PerspectiveCameraController.cpp include/StinkyPrerequisites.h)
 
 add_subdirectory(${GLFW_DIR})
 add_subdirectory(${GLAD_DIR})

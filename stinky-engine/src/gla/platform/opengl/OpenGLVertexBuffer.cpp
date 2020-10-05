@@ -9,7 +9,7 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     OpenGLVertexBuffer::OpenGLVertexBuffer(const BufferLayout &layout, unsigned int size)
             : m_Layout(layout) {
-        glCreateBuffers(1, &m_RendererID);
+        glGenBuffers(1, &m_RendererID);
         glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
         glBufferData(GL_ARRAY_BUFFER, size, NULL, GL_DYNAMIC_DRAW);
     }
@@ -18,7 +18,7 @@ namespace stinky {
     OpenGLVertexBuffer::OpenGLVertexBuffer(const BufferLayout &layout, const void *data,
                                            unsigned int size) : m_Layout(
             layout) {
-        glCreateBuffers(1, &m_RendererID);
+        glGenBuffers(1, &m_RendererID);
         glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
         glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
     }

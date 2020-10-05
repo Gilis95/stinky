@@ -54,7 +54,7 @@ namespace stinky {
     void StinkyLayer::OnAttach() {
         m_FrameBuffer = m_RendererFactory->CreateFrameBuffer({1280, 720});
         m_SceneNodes.push_back(
-                m_Renderer.DrawCube(glm::vec3(1.0f), glm::vec3(0.05f, 0.05f, 0.05f), {1.0f, 0.0f, 0.0f, 1.0f}));
+                m_Renderer.DrawCube(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.5f, 0.5f, 0.5f), {1.0f, 0.0f, 0.0f, 1.0f}));
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

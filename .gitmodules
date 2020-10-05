@@ -22,3 +22,6 @@
 [submodule "stinky-engine/vendor/glm"]
 	path = stinky-engine/vendor/glm
 	url = git@github.com:g-truc/glm.git
+[submodule "vendor/entt"]
+	path = vendor/entt
+	url = git@github.com:skypjack/entt.git

@@ -2,6 +2,8 @@
 // Created by christian on 06/08/2020.
 //
 #include "renderer/Renderer.h"
+#include "gla/VertexArray.h"
+#include "gla/RendererApi.h"
 
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
