@@ -1,21 +1,21 @@
-#pragma once
+//
+// Created by christian on 1/19/20.
+//
 
-#include "stinkypch.h"
-#include "StinkyPrerequisites.h"
+#pragma once
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    class RendererApi {
+    class IndexBuffer {
     public:
-        virtual ~RendererApi() = default;
+        virtual ~IndexBuffer() = default;
 
-        virtual void Init() const = 0;
+        virtual void Bind() const = 0;
 
-        virtual void Clear() const = 0;
+        virtual void Unbind() const = 0;
 
-        virtual void
-        DrawIndexed(Ref<VertexArray> vertexArray, uint32_t indexCount = 0) const = 0;
+        virtual unsigned int GetCount() const = 0;
     };
 }
 /////////////////////////////////////////////////////////////////////////////////////////

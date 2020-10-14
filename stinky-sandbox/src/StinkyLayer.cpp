@@ -1,8 +1,11 @@
 #include <glm/ext.hpp>
 #include "StinkyLayer.h"
 
+#include "camera/PerspectiveCamera.h"
+#include "ecs/CameraComponent.h"
+#include "ecs/Entity.h"
+#include "ecs/TransformationComponents.h"
 #include "event/ApplicationEvent.h"
-#include "renderer/Renderer2D.h"
 #include "gla/GraphicLayerAbstractionFactory.h"
 #include "gla/VertexBuffer.h"
 
@@ -11,17 +14,19 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     StinkyLayer::StinkyLayer(EventController &eventController)
             : Layer("Stinky Layer"),
-              m_RendererFactory(GraphicLayerAbstractionFactory::create(GraphicLayerAbstractionFactory::API::OpenGL))
-            , m_Renderer(m_RendererFactory)
-            , m_PerspectiveCamera(-1.68f, 1.68f, 45.0f, 1.0f)
-            , m_PerspectiveCameraController(&m_PerspectiveCamera) {
-
+              m_RendererFactory(GraphicLayerAbstractionFactory::create(GraphicLayerAbstractionFactory::API::OpenGL)),
+              m_Camera(CreateScope<PerspectiveCamera>()),
+              m_CameraController(CreateScope<PerspectiveCameraController>(m_Camera.get())),
+              m_Scene(m_RendererFactory.get())
+    {
+        auto entity = m_Scene.CreateCameraEntity();
+        entity.AddComponent<CameraComponent>(m_Camera.get(), true);
 
         eventController.RegisterEventHandler(
                 {
                         EventType::MouseButtonPressed, std::bind(
                         &PerspectiveCameraController::OnMousePressed,
-                        &m_PerspectiveCameraController, std::placeholders::_1)
+                        m_CameraController.get(), std::placeholders::_1)
                 }
         );
 
@@ -29,7 +34,7 @@ namespace stinky {
                 {
                         EventType::MouseMoved, std::bind(
                         &PerspectiveCameraController::OnMouseMoved,
-                        &m_PerspectiveCameraController, std::placeholders::_1)
+                        m_CameraController.get(), std::placeholders::_1)
                 }
         );
 
@@ -37,7 +42,7 @@ namespace stinky {
                 {
                         EventType::MouseButtonReleased, std::bind(
                         &PerspectiveCameraController::OnMouseReleased,
-                        &m_PerspectiveCameraController, std::placeholders::_1)
+                        m_CameraController.get(), std::placeholders::_1)
                 }
         );
 
@@ -45,7 +50,7 @@ namespace stinky {
                 {
                         EventType::KeyPressed, std::bind(
                         &PerspectiveCameraController::OnKeyboardEvent,
-                        &m_PerspectiveCameraController, std::placeholders::_1)
+                        m_CameraController.get(), std::placeholders::_1)
                 }
         );
     }
@@ -53,8 +58,10 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     void StinkyLayer::OnAttach() {
         m_FrameBuffer = m_RendererFactory->CreateFrameBuffer({1280, 720});
-        m_SceneNodes.push_back(
-                m_Renderer.DrawCube(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.5f, 0.5f, 0.5f), {1.0f, 0.0f, 0.0f, 1.0f}));
+        auto entity = m_Scene.CreateCubeEntity();
+        m_Camera->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+        entity.AddComponent<TranslateComponent>(glm::vec3(0.0f, 0.0f, -2.0f));
+        entity.AddComponent<ScaleComponent>(glm::vec3(0.5f, 0.5f, 0.5f));
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -64,17 +71,9 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     void StinkyLayer::OnUpdate(const Timestep &ts) {
         m_FrameBuffer->Unbind();
-        m_Renderer.Clear();
+        m_Scene.OnUpdate();
+        m_CameraController->OnUpdate(ts);
 
-        m_PerspectiveCameraController.OnUpdate(ts);
-        m_Renderer.BeginScene(m_PerspectiveCamera.GetViewProjectionMatrix());
-
-        std::for_each(m_SceneNodes.begin(), m_SceneNodes.end(),
-                      [&](const Renderer::SceneNode &sceneNode) -> void {
-                          m_Renderer.Draw(sceneNode);
-                      });
         m_FrameBuffer->Bind();
-
-        m_Renderer.EndScene();
     }
 }

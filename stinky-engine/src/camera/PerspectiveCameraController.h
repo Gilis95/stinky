@@ -16,7 +16,7 @@ namespace stinky {
 
     class PerspectiveCameraController {
     public:
-        PerspectiveCameraController(PerspectiveCamera *camera);
+        explicit PerspectiveCameraController(PerspectiveCamera *camera);
 
         ~PerspectiveCameraController();
 
@@ -55,6 +55,5 @@ namespace stinky {
         float m_Yaw = 0.0f;
 
         std::unordered_map<KeyCode, std::function<void()>> m_CameraMoveFunctions;
-
     };
 }

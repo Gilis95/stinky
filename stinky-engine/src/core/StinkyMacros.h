@@ -71,7 +71,7 @@ namespace stinky {
     using Scope = std::unique_ptr<T>;
 
     template<typename T, typename ... Args>
-    constexpr Scope<T> createScope(Args &&... args) {
+    constexpr Scope<T> CreateScope(Args &&... args) {
         return std::make_unique<T>(std::forward<Args>(args)...);
     }
 
@@ -101,3 +101,5 @@ namespace stinky {
 #define AssertReturnIf(x, ...) { if(x) { STINKY_LOG_ERROR_AND_BREAK("Assertion Failed: {0} {1} {2}", __FILE__, __LINE__ , __FUNCTION__); return __VA_ARGS__;}}
 #define AssertReturnUnless(x, ...) { if(!x) { STINKY_LOG_ERROR_AND_BREAK("Assertion Failed: {0} {1} {2}", __FILE__, __LINE__ , __FUNCTION__); return __VA_ARGS__;}}
 
+#define ContinueIf(x) { if(x) { continue;}}
+#define ContinueUnless(x) { if(!(x)) { continue;}}

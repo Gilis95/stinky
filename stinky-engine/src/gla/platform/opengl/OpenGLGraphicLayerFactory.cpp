@@ -17,8 +17,8 @@
 
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
-    Ref<RendererApi> OpenGLGraphicLayerFactory::CreateRendererApi() const {
-        return CreateRef<OpenGLRenderer>();
+    Scope<RendererApi> OpenGLGraphicLayerFactory::CreateRendererApi() const {
+        return CreateScope<OpenGLRenderer>();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

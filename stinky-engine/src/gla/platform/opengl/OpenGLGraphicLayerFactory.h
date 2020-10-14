@@ -2,21 +2,22 @@
 
 #include "gla/GraphicLayerAbstractionFactory.h"
 
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    /////////////////////////////////////////////////////////////////////////////////////////
     class OpenGLGraphicLayerFactory : public GraphicLayerAbstractionFactory {
     public:
         OpenGLGraphicLayerFactory() = default;
 
         ~OpenGLGraphicLayerFactory() override = default;
 
+        [[nodiscard]] Scope<RendererApi> CreateRendererApi() const override;
+
         [[nodiscard]] Ref<FrameBuffer>
         CreateFrameBuffer(const FrameBufferSpecification &frameBufferSpecification) const override;
 
         [[nodiscard]] Ref<IndexBuffer>
         CreateIndexBuffer(const void *data, unsigned int count) const override;
-
-        [[nodiscard]] Ref<RendererApi> CreateRendererApi() const override;
 
         [[nodiscard]] Ref<Shader> CreateShader(const std::string &filePath) const override;
 
@@ -33,5 +34,6 @@ namespace stinky {
 
         [[nodiscard]] Ref<VertexArray> CreateVertexArray() const override;
     };
-    /////////////////////////////////////////////////////////////////////////////////////////
 }
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////

@@ -4,12 +4,12 @@
 namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    Ref<GraphicLayerAbstractionFactory> GraphicLayerAbstractionFactory::create(const API &api) {
+    Scope<GraphicLayerAbstractionFactory> GraphicLayerAbstractionFactory::create(const API &api) {
         switch (api) {
             case API::none: STINKY_LOG_ERROR_AND_BREAK("No Graphic API has been chosen");
                 return nullptr;
             case API::OpenGL:
-                return CreateRef<OpenGLGraphicLayerFactory>();
+                return CreateScope<OpenGLGraphicLayerFactory>();
             default: STINKY_LOG_ERROR_AND_BREAK("No Graphic API has been chosen");
                 return nullptr;
         }

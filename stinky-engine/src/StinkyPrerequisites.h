@@ -6,16 +6,10 @@
 
 namespace stinky {
     class FrameBuffer;
-
     class IndexBuffer;
-
     class Shader;
-
     class Texture;
-
     class VertexArray;
-
     class VertexBuffer;
-
     class BufferLayout;
 }

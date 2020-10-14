@@ -6,8 +6,9 @@
 #include "gla/FrameBuffer.h"
 #include "gla/RendererApi.h"
 
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    /////////////////////////////////////////////////////////////////////////////////////////
     class GraphicLayerAbstractionFactory {
     public:
         enum class API {
@@ -16,15 +17,15 @@ namespace stinky {
 
         virtual ~GraphicLayerAbstractionFactory() = default;
 
-        static Ref<GraphicLayerAbstractionFactory> create(const API &api = API::OpenGL);
+        static Scope<GraphicLayerAbstractionFactory> create(const API &api = API::OpenGL);
+
+        [[nodiscard]] virtual Scope<RendererApi> CreateRendererApi() const = 0;
 
         [[nodiscard]] virtual Ref<FrameBuffer>
         CreateFrameBuffer(const FrameBufferSpecification &frameBufferSpecification) const = 0;
 
         [[nodiscard]] virtual Ref<IndexBuffer>
         CreateIndexBuffer(const void *data, unsigned int count) const = 0;
-
-        [[nodiscard]] virtual Ref<RendererApi> CreateRendererApi() const = 0;
 
         [[nodiscard]] virtual Ref<Shader> CreateShader(const std::string &filePath) const = 0;
 
