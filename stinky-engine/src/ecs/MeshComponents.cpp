@@ -14,13 +14,9 @@
 
 
 namespace stinky {
-/** ####################################### Mesh Component Interfaces #######################################*/
-    MeshVertexComponent::MeshVertexComponent(unsigned verticesCount, glm::vec4 *vertices) : verticesCount(
-            verticesCount), vertices(vertices) {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    MeshComponent::MeshComponent(unsigned verticesCount, glm::vec4 *vertices, unsigned indicesCount, unsigned *indices)
+            : verticesCount(verticesCount), vertices(vertices), indicesCount(indicesCount), indices(indices) {
     }
 
-    MeshIndexComponent::MeshIndexComponent(unsigned indicesCount, unsigned *indices) : indicesCount(indicesCount),
-                                                                                       indices(indices) {
-    }
-/** ####################################### Mesh Component Interfaces #######################################*/
 }

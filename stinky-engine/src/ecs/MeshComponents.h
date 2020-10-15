@@ -6,39 +6,31 @@
 
 #include "glm/glm.hpp"
 
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-/** ####################################### Mesh Component Interfaces #######################################*/
-    class MeshVertexComponent {
+    class MeshComponent {
     public:
-        MeshVertexComponent(unsigned verticesCount, glm::vec4 *vertices);
-        MeshVertexComponent(MeshVertexComponent &&) = default;
-        virtual ~MeshVertexComponent() = default;
+        explicit MeshComponent(unsigned verticesCount, glm::vec4 *vertices, unsigned indicesCount, unsigned *indices);
+        MeshComponent(MeshComponent &&) = default;
+        virtual ~MeshComponent() = default;
 
-        MeshVertexComponent &operator=(MeshVertexComponent &&copy) noexcept {
+        MeshComponent &operator=(MeshComponent &&copy) noexcept {
             vertices = copy.vertices;
             verticesCount = copy.verticesCount;
+
+            indices = copy.indices;
+            indicesCount = copy.indicesCount;
+
             return *this;
         }
 
         unsigned verticesCount;
         glm::vec4 *vertices;
-    };
-
-    class MeshIndexComponent {
-    public:
-        MeshIndexComponent(unsigned indicesCount, unsigned *indices);
-        MeshIndexComponent(MeshIndexComponent &&) = default;
-        virtual ~MeshIndexComponent() = default;
-
-        MeshIndexComponent &operator=(MeshIndexComponent &&copy) noexcept {
-            indices = copy.indices;
-            indicesCount = copy.indicesCount;
-            return *this;
-        }
 
         unsigned indicesCount;
         unsigned *indices;
     };
-
-/** ####################################### Mesh Component Interfaces #######################################*/
 }
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////

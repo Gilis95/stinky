@@ -4,12 +4,51 @@
 #include "camera/PerspectiveCamera.h"
 #include "ecs/CameraComponent.h"
 #include "ecs/Entity.h"
+#include "ecs/MeshComponents.h"
 #include "ecs/TransformationComponents.h"
 #include "event/ApplicationEvent.h"
 #include "gla/GraphicLayerAbstractionFactory.h"
 #include "gla/VertexBuffer.h"
 
 namespace stinky {
+    namespace {
+        constexpr unsigned VERTICES_COUNT = 32;
+        glm::vec4 vertices[8] = {
+                //Front Quad
+                {-1.0f, -1.0f, -1.0, 1.0f}, //0
+                {1.0f,  -1.0f, -1.0, 1.0f}, //1
+                {1.0f,  1.0f,  -1.0, 1.0f}, //2
+                {-1.0f, 1.0f,  -1.0, 1.0f}, //3
+
+                // Back Quad
+                {1.0f,  -1.0f, 1.0,  1.0f}, //4
+                {-1.0f, -1.0f, 1.0,  1.0f}, //5
+                {-1.0f, 1.0f,  1.0,  1.0f}, //6
+                {1.0f,  1.0f,  1.0,  1.0f} //7
+        };
+
+        constexpr unsigned int INDICES_COUNT = 36;
+
+        unsigned indices[INDICES_COUNT] = {
+                // front side
+                0, 1, 3, 1, 2, 3,
+
+                // right side
+                1, 4, 2, 4, 6, 2,
+
+                // back side
+                4, 5, 7, 5, 6, 7,
+
+                // left side
+                0, 5, 3, 5, 6, 3,
+
+                // down side
+                3, 2, 6, 2, 7, 6,
+
+                // upper side
+                0, 1, 2, 2, 3, 0
+        };
+    }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     StinkyLayer::StinkyLayer(EventController &eventController)
@@ -17,9 +56,8 @@ namespace stinky {
               m_RendererFactory(GraphicLayerAbstractionFactory::create(GraphicLayerAbstractionFactory::API::OpenGL)),
               m_Camera(CreateScope<PerspectiveCamera>()),
               m_CameraController(CreateScope<PerspectiveCameraController>(m_Camera.get())),
-              m_Scene(m_RendererFactory.get())
-    {
-        auto entity = m_Scene.CreateCameraEntity();
+              m_Scene(m_RendererFactory.get()) {
+        Entity entity(m_Scene.CreateEntity());
         entity.AddComponent<CameraComponent>(m_Camera.get(), true);
 
         eventController.RegisterEventHandler(
@@ -58,8 +96,10 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     void StinkyLayer::OnAttach() {
         m_FrameBuffer = m_RendererFactory->CreateFrameBuffer({1280, 720});
-        auto entity = m_Scene.CreateCubeEntity();
         m_Camera->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+
+        auto entity = m_Scene.CreateEntity();
+        entity.AddComponent<MeshComponent>(VERTICES_COUNT, vertices, INDICES_COUNT, indices);
         entity.AddComponent<TranslateComponent>(glm::vec3(0.0f, 0.0f, -2.0f));
         entity.AddComponent<ScaleComponent>(glm::vec3(0.5f, 0.5f, 0.5f));
     }

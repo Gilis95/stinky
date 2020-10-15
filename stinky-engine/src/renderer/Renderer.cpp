@@ -45,16 +45,16 @@ namespace stinky {
         glm::mat4 model = glm::translate(glm::mat4(1.0f), command.translateComponent.translation)
                           * glm::scale(glm::mat4(1.0f), command.scaleComponent.scale);
 
-        int vectorsCount = command.verticesComponent.verticesCount / 4;
+        unsigned vectorsCount = command.meshComponent.verticesCount / 4;
         glm::vec4 cubeCoordinates[vectorsCount];
 
         for (int i = 0; i < vectorsCount; ++i) {
-            cubeCoordinates[i] = model * command.verticesComponent.vertices[i];
+            cubeCoordinates[i] = model * command.meshComponent.vertices[i];
         }
 
         //create array buffer, containing shape positions and bind it
         const auto vertexBuffer = m_RendererFactory->CreateVertexBuffer(cubeCoordinates,
-                                                                        command.verticesComponent.verticesCount *
+                                                                        command.meshComponent.verticesCount *
                                                                         sizeof(float), {
                                                                                 {ShaderDataType::Float4, "position"}
                                                                         });
@@ -63,8 +63,8 @@ namespace stinky {
         vertexArray->AddVertexBuffer(vertexBuffer);
 
         //Create index buffer, that will define shape vertex positions
-        const auto indexBuffer = m_RendererFactory->CreateIndexBuffer(command.indicesComponent.indices,
-                                                                      command.indicesComponent.indicesCount);
+        const auto indexBuffer = m_RendererFactory->CreateIndexBuffer(command.meshComponent.indices,
+                                                                      command.meshComponent.indicesCount);
 
         vertexArray->SetIndexBuffer(indexBuffer);
 

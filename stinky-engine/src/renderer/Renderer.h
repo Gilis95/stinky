@@ -12,8 +12,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    class MeshVertexComponent;
-    class MeshIndexComponent;
+    class MeshComponent;
     class TranslateComponent;
     class ScaleComponent;
     class RendererApi;
@@ -21,8 +20,7 @@ namespace stinky {
     class GraphicLayerAbstractionFactory;
 
     struct RenderCommand {
-        const MeshVertexComponent& verticesComponent;
-        const MeshIndexComponent& indicesComponent;
+        const MeshComponent& meshComponent;
         const TranslateComponent& translateComponent;
         const ScaleComponent& scaleComponent;
     };

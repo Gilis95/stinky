@@ -18,9 +18,7 @@ namespace stinky {
     public:
         explicit Scene(const GraphicLayerAbstractionFactory *rendererFactory);
         ~Scene() = default;
-        Entity CreateCubeEntity();
-
-        Entity CreateCameraEntity();
+        Entity CreateEntity();
 
         void OnUpdate();
     private:
