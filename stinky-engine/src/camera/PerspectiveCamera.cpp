@@ -12,31 +12,13 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     PerspectiveCamera::PerspectiveCamera(int screenWidth, int screenHeight, float fov, float zNear, float zFar)
-            : m_Viewport(0, 0, screenWidth, screenHeight), m_Position(0), m_Rotation(),
-              m_ProjectionMatrix(
-                      glm::perspective(glm::radians(fov), (float) screenWidth / (float) screenHeight, zNear, zFar)),
-              m_ViewMatrix(1), m_ViewProjectionMatrix(m_ProjectionMatrix), m_ViewDirty(false) {
+            : Camera(glm::perspective(glm::radians(fov), (float) screenWidth / (float) screenHeight, zNear, zFar)),
+              m_Viewport(0, 0, screenWidth, screenHeight), m_Rotation() {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void PerspectiveCamera::SetProjectionRH(float fov, float aspectRatio, float zNear, float zFar) {
         m_ProjectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, zNear, zFar);
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////
-    void PerspectiveCamera::ApplyViewMatrix() {
-        RecalculateViewMatrix();
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////
-    void PerspectiveCamera::SetPosition(const glm::vec3 &pos) {
-        m_Position = pos;
-        m_ViewDirty = true;
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////
-    glm::vec3 PerspectiveCamera::GetPosition() const {
-        return m_Position;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -77,24 +59,6 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    glm::mat4 PerspectiveCamera::GetProjectionMatrix() {
-        return m_ProjectionMatrix;
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////
-    glm::mat4 PerspectiveCamera::GetViewMatrix() {
-        RecalculateViewMatrix();
-        return m_ViewMatrix;
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////
-    glm::mat4 PerspectiveCamera::GetViewProjectionMatrix()
-    {
-        RecalculateViewMatrix();
-        return m_ViewProjectionMatrix;
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////
     void PerspectiveCamera::RecalculateViewMatrix() {
         if (m_ViewDirty) {
             glm::mat4 translate = glm::translate(-m_Position);
@@ -103,7 +67,7 @@ namespace stinky {
             glm::mat4 rotate = glm::transpose(glm::toMat4(m_Rotation));
 
             m_ViewMatrix = rotate * translate;
-            m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix ;
+            m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
             m_ViewDirty = false;
         }
     }

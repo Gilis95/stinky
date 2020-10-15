@@ -9,10 +9,12 @@ enable_testing()
 
 set(SPDLOG_DIR ${PROJECT_SOURCE_DIR}/vendor/spdlog)
 set(GLM_DIR ${PROJECT_SOURCE_DIR}/vendor/glm)
+set(ENTT_DIR ${PROJECT_SOURCE_DIR}/vendor/entt)
 
 #3rd party libraries
 add_subdirectory(${SPDLOG_DIR})
 add_subdirectory(${GLM_DIR})
+add_subdirectory(${ENTT_DIR})
 
 #Submodules
 add_subdirectory(stinky-engine)

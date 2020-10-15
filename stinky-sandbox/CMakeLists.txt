@@ -7,8 +7,9 @@ set (CMAKE_CXX_STANDARD 17)
 set(HDR_DIR ${PROJECT_SOURCE_DIR}/include)
 set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
 
-set(STINKY_ENGINE_DIR ${PROJECT_SOURCE_DIR}/../stinky-engine)
+set(ETT_DIR ${PROJECT_SOURCE_DIR}/../vendor/entt)
 set(GLM_DIR ${PROJECT_SOURCE_DIR}/../vendor/glm/)
+set(STINKY_ENGINE_DIR ${PROJECT_SOURCE_DIR}/../stinky-engine)
 
 set(HDR_FILES  
     ${HDR_DIR}/StinkyApplication.h 
@@ -24,9 +25,10 @@ add_executable(stinky-sandbox ${SRC_FILES} ${HDR_FILES})
 
 target_include_directories(stinky-sandbox PRIVATE 
                             ${HDR_DIR}
-                            ${STINKY_ENGINE_DIR}/include
+                            ${STINKY_ENGINE_DIR}/src
                             ${SPDLOG_DIR}/include
                             ${GLM_DIR}
+                            ${ETT_DIR}/src
                             )
 
 target_link_libraries(stinky-sandbox PRIVATE 

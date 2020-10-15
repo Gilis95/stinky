@@ -10,15 +10,17 @@
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top)
-            : m_ProjectionMatrix(glm::ortho(left, right, bottom, top, -1.0f, 1.0f)), m_ViewMatrix(1.0f),
-              m_ViewDirty(false), m_Position(0.0f), m_Rotation(0.0f) {
-        m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
+            : Camera(glm::ortho(left, right, bottom, top, -1.0f, 1.0f)),
+              m_ViewDirty(false), m_Rotation(0.0f) {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void OrthographicCamera::Translate(const glm::vec3 &delta) {
-        m_Position += delta;
-        m_ViewDirty = true;
+        if (true) {
+            m_Position += m_Rotation * delta;
+        } else {
+            m_Position += delta;
+        }
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

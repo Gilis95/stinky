@@ -2,15 +2,14 @@
 
 
 #include <glm/glm.hpp>
-#include <camera/OrthographicCameraController.h>
 
+#include "camera/PerspectiveCamera.h"
+#include "camera/PerspectiveCameraController.h"
 #include "event/EventController.h"
 #include "event/Layer.h"
 #include "gla/FrameBuffer.h"
-#include "camera/PerspectiveCamera.h"
-#include "camera/PerspectiveCameraController.h"
-#include "renderer/Renderer3D.h"
 #include "gla/GraphicLayerAbstractionFactory.h"
+#include "scene/Scene.h"
 
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -26,15 +25,10 @@ namespace stinky {
 
     private:
         Ref<GraphicLayerAbstractionFactory> m_RendererFactory;
-        Renderer3D m_Renderer;
-        Renderer::SceneNodes m_SceneNodes;
-        Ref<FrameBuffer> m_FrameBuffer;
-
-//        OrthographicCamera m_OrthographicCamera;
-//        OrthographicCameraController m_OrthographicCameraController;
-
-        PerspectiveCamera m_PerspectiveCamera;
-        PerspectiveCameraController m_PerspectiveCameraController;
+        Scene                               m_Scene;
+        Ref<FrameBuffer>                    m_FrameBuffer;
+        Scope<PerspectiveCamera>            m_Camera;
+        Scope<PerspectiveCameraController>  m_CameraController;
     };
     /////////////////////////////////////////////////////////////////////////////////////////
 }
