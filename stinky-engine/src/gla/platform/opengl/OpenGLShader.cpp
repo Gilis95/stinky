@@ -55,7 +55,6 @@ namespace stinky {
         glDeleteProgram(m_RendererID);
     }
 
-
     /////////////////////////////////////////////////////////////////////////////////////////
     int OpenGLShader::GetUniformLocation(const std::string &name) {
         if (m_UniformLocationsCache.find(name) != m_UniformLocationsCache.end()) {
@@ -194,8 +193,8 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void OpenGLShader::SetFloat4(const std::string &name, float f0, float f1, float f2, float f3) {
-        glUniform4f(GetUniformLocation(name), f0, f1, f2, f3);
+    void OpenGLShader::SetFloat4(const std::string &name, glm::vec4 vector) {
+        glUniform4f(GetUniformLocation(name), vector.x, vector.y, vector.z, vector.w);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

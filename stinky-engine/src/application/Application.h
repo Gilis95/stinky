@@ -19,7 +19,7 @@ namespace stinky {
 
         void Init(Window::API);
 
-        void Close(const Event &);
+        void Close();
 
         void Run();
 

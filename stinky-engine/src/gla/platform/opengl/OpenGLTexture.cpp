@@ -60,12 +60,14 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void OpenGLTexture::Bind(unsigned int slot) const {
+    void OpenGLTexture::Bind(uint32_t slot) const {
+        glActiveTexture(GL_TEXTURE0 + slot);
         glBindTextureUnit(slot, m_RendererID);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void OpenGLTexture::Unbind() const {
+    void OpenGLTexture::Unbind(uint32_t slot) const {
+        glActiveTexture(GL_TEXTURE0 + slot);
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 

@@ -1,5 +1,6 @@
 #include "gla/platform/opengl/OpenGLGraphicLayerFactory.h"
 
+#include "gla/CubeTexture.h"
 #include "gla/FrameBuffer.h"
 #include "gla/IndexBuffer.h"
 #include "gla/Shader.h"
@@ -7,6 +8,7 @@
 #include "gla/VertexBuffer.h"
 #include "gla/VertexArray.h"
 
+#include "gla/platform/opengl/OpenGLCubeTexture.h"
 #include "gla/platform/opengl/OpenGLFrameBuffer.h"
 #include "gla/platform/opengl/OpenGLIndexBuffer.h"
 #include "gla/platform/opengl/OpenGLRenderer.h"
@@ -66,4 +68,10 @@ namespace stinky {
     Ref<Texture> OpenGLGraphicLayerFactory::CreateTexture(uint32_t width, uint32_t height) const {
         return CreateRef<OpenGLTexture>(width, height);
     }
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    [[nodiscard]] Ref<Texture> OpenGLGraphicLayerFactory::CreateCubeTexture(const std::string &path) const {
+        return CreateRef<OpenGLCubeTexture>(path);
+    }
+
 }

@@ -1,26 +1,23 @@
 //
-// Created by christian on 09/02/2020.
+// Created by christian on 19/10/2020.
 //
+
 #pragma once
+
+#include "gla/CubeTexture.h"
+#include <string>
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    class Texture {
+    class OpenGLCubeTexture : public CubeTexture {
     public:
-        virtual ~Texture() = default;
+        explicit OpenGLCubeTexture(std::string path);
+        ~OpenGLCubeTexture() override = default;
 
-        virtual void Bind(uint32_t slot) const = 0;
+        void Bind(uint32_t slot) const override;
 
-        virtual void Unbind(uint32_t slot) const = 0;
-
-        virtual void SetData(void *data) = 0;
-
-        [[nodiscard]] virtual int GetWidth() const = 0;
-
-        [[nodiscard]] virtual int GetHeight() const = 0;
-    public:
-        uint32_t m_RendererID;
+        void Unbind(uint32_t slot) const override;
     };
 }
 /////////////////////////////////////////////////////////////////////////////////////////

@@ -24,8 +24,8 @@ namespace stinky {
 
         m_Window = Window::Create(windowApi);
 
-        m_Window->SetEventCallback(std::bind(&EventController::OnEvent, &m_EventController,
-                                             std::placeholders::_1));
+        m_Window->SetEventCallback(
+                [ObjectPtr = &m_EventController](const Event &event) -> void { ObjectPtr->OnEvent(event); });
 
         // KeyPressed, KeyReleased, KeyTyped,
         m_EventController.RegisterEvent(EventType::KeyPressed);
@@ -53,22 +53,19 @@ namespace stinky {
 
         m_EventController.RegisterEventHandler(
                 {
-                        EventType::WindowClose, STINKY_BIND(Application::Close)
+                        EventType::WindowClose, [this](const Event &event) { Close(); }
                 }
         );
 
         m_EventController.RegisterEventHandler(
                 {
-                        EventType::AppUpdate, std::bind(
-                        &Window::OnUpdate,
-                        m_Window.get(),
-                        std::placeholders::_1)
+                        EventType::AppUpdate, [window = m_Window.get()](const Event &event) { window->OnUpdate(event); }
                 }
         );
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void Application::Close(const Event &closeEvent) {
+    void Application::Close() {
         m_IsRunning = false;
     }
 

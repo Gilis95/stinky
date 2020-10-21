@@ -7,8 +7,8 @@
 namespace stinky {
     class OpenGLIndexBuffer : public IndexBuffer {
     private:
-        unsigned int m_RendererID;
-        const unsigned int m_Count;
+        uint32_t m_RendererID;
+        const uint32_t m_Count;
     public:
         OpenGLIndexBuffer(const void *data, unsigned int count);
 
@@ -18,7 +18,7 @@ namespace stinky {
 
         void Unbind() const override;
 
-        unsigned int GetCount() const override {
+        [[nodiscard]] uint32_t GetCount() const override {
             return m_Count;
         }
     };

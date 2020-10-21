@@ -11,22 +11,21 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     PerspectiveCameraController::PerspectiveCameraController(PerspectiveCamera *camera) : m_Camera(camera) {
         m_CameraMoveFunctions.emplace(KeyCode::Left,
-                                      std::bind(&PerspectiveCameraController::MoveLeft, this));
+                                      [this] { MoveLeft(); });
         m_CameraMoveFunctions.emplace(KeyCode::Right,
-                                      std::bind(&PerspectiveCameraController::MoveRight, this));
+                                      [this] { MoveRight(); });
         m_CameraMoveFunctions.emplace(KeyCode::Up,
-                                      std::bind(&PerspectiveCameraController::MoveNear, this));
+                                      [this] { MoveNear(); });
         m_CameraMoveFunctions.emplace(KeyCode::Down,
-                                      std::bind(&PerspectiveCameraController::MoveFar, this));
+                                      [this] { MoveFar(); });
         m_CameraMoveFunctions.emplace(KeyCode::Q,
-                                      std::bind(&PerspectiveCameraController::MoveUp, this));
+                                      [this] { MoveUp(); });
         m_CameraMoveFunctions.emplace(KeyCode::E,
-                                      std::bind(&PerspectiveCameraController::MoveDown, this));
+                                      [this] { MoveDown(); });
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    PerspectiveCameraController::~PerspectiveCameraController() {
-    }
+    PerspectiveCameraController::~PerspectiveCameraController() = default;
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void PerspectiveCameraController::LookAt() {
@@ -45,11 +44,11 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void PerspectiveCameraController::FPSLookAt() {
+    void PerspectiveCameraController::FPSLookAt(const Timestep &ts) {
         glm::vec2 delta = m_NewMousePosition - m_OldMousePosition;
 
-        m_Pitch += delta.y * 0.01f;
-        m_Yaw += delta.x * 0.01f;
+        m_Pitch += delta.y * (m_CameraSpeed + ts + 0.001f);
+        m_Yaw += delta.x * (m_CameraSpeed + ts + 0.001f);
 
         m_Pitch = glm::clamp(m_Pitch, -90.0f, 90.0f);
         m_Yaw = std::fmod(m_Yaw, 360.0f);
@@ -103,8 +102,8 @@ namespace stinky {
         }
 
         ReturnUnless(m_Rotate)
+        FPSLookAt(ts);
         m_Rotate = false;
-        FPSLookAt();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -125,7 +124,6 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     void PerspectiveCameraController::OnMouseReleased(const Event &event) {
         m_MousePressed = false;
-        m_SetNewPosition = false;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -133,15 +131,9 @@ namespace stinky {
         ReturnUnless(m_MousePressed)
 
         const auto mouseMovedEvent = dynamic_cast<const MouseMovedEvent &>(event);
-
-        if (m_SetNewPosition) {
-            m_NewMousePosition.x = mouseMovedEvent.m_MouseX;
-            m_NewMousePosition.y = mouseMovedEvent.m_MouseY;
-            m_Rotate = true;
-        } else {
-            m_OldMousePosition.x = mouseMovedEvent.m_MouseX;
-            m_OldMousePosition.y = mouseMovedEvent.m_MouseY;
-            m_SetNewPosition = true;
-        }
+        m_OldMousePosition = m_NewMousePosition;
+        m_NewMousePosition.x = mouseMovedEvent.m_MouseX;
+        m_NewMousePosition.y = mouseMovedEvent.m_MouseY;
+        m_Rotate = true;
     }
 }

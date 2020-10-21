@@ -69,6 +69,8 @@ set(HDR_FILES
         ${ECS_HDR_DIR}/Entity.h
         ${ECS_HDR_DIR}/TransformationComponents.h
         ${ECS_HDR_DIR}/MeshComponents.h
+        ${ECS_HDR_DIR}/ProgramComponent.h
+        ${ECS_HDR_DIR}/MaterialComponent.h
 
         #Event submodule
         ${EVENT_HDR_DIR}/Event.h
@@ -81,13 +83,14 @@ set(HDR_FILES
         ${EVENT_HDR_DIR}/ApplicationEvent.h
 
         # Graphic Layer Abstraction module
+        ${GLA_HDR_DIR}/CubeTexture.h
+        ${GLA_HDR_DIR}/FrameBuffer.h
         ${GLA_HDR_DIR}/GraphicLayerAbstractionFactory.h
         ${GLA_HDR_DIR}/RendererApi.h
-        ${GLA_HDR_DIR}/VertexBuffer.h
-        ${GLA_HDR_DIR}/VertexArray.h
         ${GLA_HDR_DIR}/Shader.h
         ${GLA_HDR_DIR}/Texture.h
-        ${GLA_HDR_DIR}/FrameBuffer.h
+        ${GLA_HDR_DIR}/VertexBuffer.h
+        ${GLA_HDR_DIR}/VertexArray.h
 
         # Root dir
         ${HDR_DIR}/stinkypch.h
@@ -113,6 +116,7 @@ set(HDR_FILES
         ${WINDOW_HDR_DIR}/glfw/PlatformIndependentWindow.h
 
         ${STB_DIR}/stb_image.h
+        ${STB_DIR}/stb_image_write.h
         )
 
 ################################################################################################
@@ -122,6 +126,7 @@ set(SRC_FILES
         ${APPLICATION_SRC_DIR}/Application.cpp
 
         # Camera
+        ${CAMERA_SRC_DIR}/Camera.cpp
         ${CAMERA_SRC_DIR}/OrthographicCamera.cpp
         ${CAMERA_SRC_DIR}/OrthographicCameraController.cpp
         ${CAMERA_SRC_DIR}/PerspectiveCamera.cpp
@@ -129,8 +134,10 @@ set(SRC_FILES
 
         # Entity Component System
         ${ECS_SRC_DIR}/CameraComponent.cpp
-        ${ECS_SRC_DIR}/TransformationComponents.cpp
+        ${ECS_SRC_DIR}/MaterialComponent.cpp
         ${ECS_SRC_DIR}/MeshComponents.cpp
+        ${ECS_SRC_DIR}/ProgramComponent.cpp
+        ${ECS_SRC_DIR}/TransformationComponents.cpp
 
         #Events
         ${EVENT_SRC_DIR}/EventController.cpp
@@ -139,16 +146,19 @@ set(SRC_FILES
 
         # Graphic Layer Abstraction
         ${GLA_SRC_DIR}/GraphicLayerAbstractionFactory.cpp
+        ${GLA_SRC_DIR}/CubeTexture.cpp
 
         #Renderer OpenGL implementation
         ${OPENGL_SRC_DIR}/OpenGLGraphicLayerFactory.cpp
-        ${OPENGL_SRC_DIR}/OpenGLRenderer.cpp
-        ${OPENGL_SRC_DIR}/OpenGLVertexBuffer.cpp
+        ${OPENGL_SRC_DIR}/OpenGLFrameBuffer.cpp
         ${OPENGL_SRC_DIR}/OpenGLIndexBuffer.cpp
-        ${OPENGL_SRC_DIR}/OpenGLVertexArray.cpp
+        ${OPENGL_SRC_DIR}/OpenGLRenderer.cpp
         ${OPENGL_SRC_DIR}/OpenGLShader.cpp
         ${OPENGL_SRC_DIR}/OpenGLTexture.cpp
-        ${OPENGL_SRC_DIR}/OpenGLFrameBuffer.cpp
+        ${OPENGL_SRC_DIR}/OpenGLVertexBuffer.cpp
+        ${OPENGL_SRC_DIR}/OpenGLVertexArray.cpp
+        ${OPENGL_SRC_DIR}/OpenGLCubeTexture.h
+        ${OPENGL_SRC_DIR}/OpenGLCubeTexture.cpp
 
         #Render API
         ${RENDERER_SRC_DIR}/Renderer.cpp
@@ -165,8 +175,7 @@ set(SRC_FILES
         #Window submodule
         ${WINDOW_SRC_DIR}/Window.cpp
         ${WINDOW_SRC_DIR}/glfw/PlatformIndependentWindow.cpp
-
-        src/camera/Camera.cpp src/ecs/MeshComponents.h src/ecs/MeshComponents.cpp src/ecs/TransformationComponents.cpp)
+        )
 
 add_subdirectory(${GLFW_DIR})
 add_subdirectory(${GLAD_DIR})

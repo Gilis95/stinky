@@ -3,8 +3,6 @@
 //
 #pragma once
 
-#include <glad/glad.h>
-
 #include "gla/VertexBuffer.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -33,7 +31,7 @@ namespace stinky {
         }
 
     private:
-        GLuint m_RendererID;
+        uint32_t m_RendererID;
         BufferLayout m_Layout;
     };
 }

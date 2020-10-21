@@ -23,7 +23,7 @@ namespace stinky {
 
         //Camera Rotation
         void LookAt();
-        void FPSLookAt();
+        void FPSLookAt(const Timestep &ts);
 
         // Camera move trough XYZ
         void MoveLeft();
@@ -46,7 +46,6 @@ namespace stinky {
         glm::vec2 m_OldMousePosition{1.0f, 1.0f};
         glm::vec2 m_NewMousePosition{1.0f, 1.0f};
         bool m_MousePressed = false;
-        bool m_SetNewPosition = false;
         bool m_Rotate = false;
 
         glm::vec3 m_CameraPosition{0.0f, 0.0f, 0.0f};

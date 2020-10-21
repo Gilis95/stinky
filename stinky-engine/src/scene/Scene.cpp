@@ -9,7 +9,9 @@
 #include "camera/Camera.h"
 #include "ecs/CameraComponent.h"
 #include "ecs/Entity.h"
+#include "ecs/MaterialComponent.h"
 #include "ecs/MeshComponents.h"
+#include "ecs/ProgramComponent.h"
 #include "ecs/TransformationComponents.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -39,15 +41,20 @@ namespace stinky {
         }
 
         m_Renderer->Clear();
-        auto meshesGroup = m_Registry.group<MeshComponent, TranslateComponent, ScaleComponent>();
         m_Renderer->BeginScene(camera->GetViewProjectionMatrix());
+
+        auto meshesGroup = m_Registry.group<MeshComponent, TranslateComponent, ScaleComponent, ProgramComponent, MaterialComponent>();
 
         for (auto mesh : meshesGroup) {
             m_Renderer->Draw({
                                      meshesGroup.get<MeshComponent>(mesh),
                                      meshesGroup.get<TranslateComponent>(mesh),
-                                     meshesGroup.get<ScaleComponent>(mesh)
+                                     meshesGroup.get<ScaleComponent>(mesh),
+                                     meshesGroup.get<ProgramComponent>(mesh),
+                                     meshesGroup.get<MaterialComponent>(mesh)
                              });
         }
+
+        m_Renderer->EndScene();
     }
 }

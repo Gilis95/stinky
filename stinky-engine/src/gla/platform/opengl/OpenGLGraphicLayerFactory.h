@@ -25,6 +25,8 @@ namespace stinky {
 
         [[nodiscard]] Ref<Texture> CreateTexture(uint32_t width, uint32_t height) const override;
 
+        [[nodiscard]] Ref<Texture> CreateCubeTexture(const std::string &path) const;
+
         [[nodiscard]] Ref<VertexBuffer>
         CreateVertexBuffer(unsigned int size, const BufferLayout &layout) const override;
 

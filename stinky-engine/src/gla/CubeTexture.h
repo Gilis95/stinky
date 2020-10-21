@@ -1,38 +1,43 @@
-//
-// Created by christian on 09/02/2020.
-//
 #pragma once
 
 #include <string>
+
 #include "gla/Texture.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    class OpenGLTexture : public Texture {
+    class CubeTexture : public Texture {
+    private:
+        typedef unsigned char byte;
     public:
-        explicit OpenGLTexture(const std::string &path);
+        explicit CubeTexture(std::string path);
 
-        OpenGLTexture(uint32_t width, uint32_t height);
+        ~CubeTexture() override = default;
 
-        ~OpenGLTexture() override;
-
-        void Bind(unsigned int slot = 0) const override;
-
-        void Unbind(uint32_t slot) const override;
+        void LoadFromSingleFile();
 
         void SetData(void *data) override;
 
         [[nodiscard]] int GetWidth() const override {
-            return m_Width;
-        };
+            return m_FaceWidth;
+        }
 
         [[nodiscard]] int GetHeight() const override {
-            return m_Height;
-        };
+            return m_FaceHeight;
+        }
+
+    protected:
+        byte *m_Left = nullptr;
+        byte *m_Right = nullptr;
+        byte *m_Top = nullptr;
+        byte *m_Bottom = nullptr;
+        byte *m_Back = nullptr;
+        byte *m_Front = nullptr;
+
+        uint32_t m_FaceHeight, m_FaceWidth;
     private:
-        uint32_t m_RendererID;
-        int m_Width, m_Height;
+        std::string m_Path;
     };
 }
 /////////////////////////////////////////////////////////////////////////////////////////

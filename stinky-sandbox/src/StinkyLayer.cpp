@@ -4,7 +4,9 @@
 #include "camera/PerspectiveCamera.h"
 #include "ecs/CameraComponent.h"
 #include "ecs/Entity.h"
+#include "ecs/MaterialComponent.h"
 #include "ecs/MeshComponents.h"
+#include "ecs/ProgramComponent.h"
 #include "ecs/TransformationComponents.h"
 #include "event/ApplicationEvent.h"
 #include "gla/GraphicLayerAbstractionFactory.h"
@@ -12,8 +14,8 @@
 
 namespace stinky {
     namespace {
-        constexpr unsigned VERTICES_COUNT = 32;
-        glm::vec4 vertices[8] = {
+        constexpr unsigned CUBE_VERTICES_COUNT = 32;
+        glm::vec4 cubeVertices[8] = {
                 //Front Quad
                 {-1.0f, -1.0f, -1.0, 1.0f}, //0
                 {1.0f,  -1.0f, -1.0, 1.0f}, //1
@@ -27,9 +29,9 @@ namespace stinky {
                 {1.0f,  1.0f,  1.0,  1.0f} //7
         };
 
-        constexpr unsigned int INDICES_COUNT = 36;
+        constexpr unsigned int CUBE_INDICES_COUNT = 36;
 
-        unsigned indices[INDICES_COUNT] = {
+        uint32_t cubeIndices[CUBE_INDICES_COUNT] = {
                 // front side
                 0, 1, 3, 1, 2, 3,
 
@@ -48,6 +50,18 @@ namespace stinky {
                 // upper side
                 0, 1, 2, 2, 3, 0
         };
+
+        glm::vec4 quadVertices[4] = {
+                {-1.0f, -1.0f, 1.0, 1.0f}, //0
+                {1.0f,  -1.0f, 1.0, 1.0f}, //1
+                {1.0f,  1.0f,  1.0, 1.0f}, //2
+                {-1.0f, 1.0f,  1.0, 1.0f}, //3
+        };
+
+        uint32_t quadIndices[6] = {
+                // front side
+                0, 1, 3, 1, 2, 3
+        };
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -62,33 +76,37 @@ namespace stinky {
 
         eventController.RegisterEventHandler(
                 {
-                        EventType::MouseButtonPressed, std::bind(
-                        &PerspectiveCameraController::OnMousePressed,
-                        m_CameraController.get(), std::placeholders::_1)
+                        EventType::MouseButtonPressed,
+                        [cameraController = m_CameraController.get()](const Event &event) {
+                            cameraController->OnMousePressed(event);
+                        }
                 }
         );
 
         eventController.RegisterEventHandler(
                 {
-                        EventType::MouseMoved, std::bind(
-                        &PerspectiveCameraController::OnMouseMoved,
-                        m_CameraController.get(), std::placeholders::_1)
+                        EventType::MouseMoved,
+                        [capture0 = m_CameraController.get()](const Event &event) {
+                            capture0->OnMouseMoved(event);
+                        }
                 }
         );
 
         eventController.RegisterEventHandler(
                 {
-                        EventType::MouseButtonReleased, std::bind(
-                        &PerspectiveCameraController::OnMouseReleased,
-                        m_CameraController.get(), std::placeholders::_1)
+                        EventType::MouseButtonReleased,
+                        [cameraController = m_CameraController.get()](const Event &event) {
+                            cameraController->OnMouseReleased(event);
+                        }
                 }
         );
 
         eventController.RegisterEventHandler(
                 {
-                        EventType::KeyPressed, std::bind(
-                        &PerspectiveCameraController::OnKeyboardEvent,
-                        m_CameraController.get(), std::placeholders::_1)
+                        EventType::KeyPressed,
+                        [cameraController = m_CameraController.get()](const Event &event) {
+                            cameraController->OnKeyboardEvent(event);
+                        }
                 }
         );
     }
@@ -99,9 +117,21 @@ namespace stinky {
         m_Camera->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 
         auto entity = m_Scene.CreateEntity();
-        entity.AddComponent<MeshComponent>(VERTICES_COUNT, vertices, INDICES_COUNT, indices);
-        entity.AddComponent<TranslateComponent>(glm::vec3(0.0f, 0.0f, -2.0f));
-        entity.AddComponent<ScaleComponent>(glm::vec3(0.5f, 0.5f, 0.5f));
+        entity.AddComponent<MeshComponent>(16, quadVertices, 6, quadIndices);
+        entity.AddComponent<TranslateComponent>(glm::vec3(0.0f, 0.0f, -10.0f));
+        entity.AddComponent<ScaleComponent>(glm::vec3(2.0f, 2.0f, 2.0f));
+        entity.AddComponent<ProgramComponent>(m_RendererFactory->CreateShader(
+                "/home/christian/workspace/stinky/stinky-sandbox/resources/shaders/skybox.glsl"));
+        entity.AddComponent<MaterialComponent>(m_RendererFactory->CreateCubeTexture(
+                "/home/christian/workspace/stinky/stinky-sandbox/resources/skybox.png"));
+
+        auto entity1 = m_Scene.CreateEntity();
+        entity1.AddComponent<MeshComponent>(CUBE_VERTICES_COUNT, cubeVertices, CUBE_INDICES_COUNT, cubeIndices);
+        entity1.AddComponent<TranslateComponent>(glm::vec3(0.8f, 0.0f, -2.0f));
+        entity1.AddComponent<ScaleComponent>(glm::vec3(0.5f, 0.5f, 0.5f));
+        entity1.AddComponent<ProgramComponent>(m_RendererFactory->CreateShader(
+                "/home/christian/workspace/stinky/stinky-sandbox/resources/shaders/basic.shader"));
+        entity1.AddComponent<MaterialComponent>(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

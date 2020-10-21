@@ -2,9 +2,8 @@
 // Created by christian on 1/26/20.
 //
 #pragma once
-#include "stinkypch.h"
 
-#include <glad/glad.h>
+#include "stinkypch.h"
 
 #include "gla/Shader.h"
 
@@ -31,13 +30,12 @@ namespace stinky {
 
         void SetInteger(const std::string &name, int i) override;
 
-        void SetFloat4(const std::string &name, float f0, float f1, float f2, float f3) override;
+        void SetFloat4(const std::string &name, glm::vec4 vector) override;
 
         void SetMat4(const std::string &name, glm::mat4 matrix) override;
-
     private:
-        GLuint m_RendererID;
-        std::unordered_map<GLenum, std::string> m_ShaderSources;
+        uint32_t m_RendererID;
+        std::unordered_map<uint32_t, std::string> m_ShaderSources;
         std::unordered_map<std::string, int> m_UniformLocationsCache;
 
         void CreateProgram();
@@ -46,7 +44,7 @@ namespace stinky {
 
         int GetUniformLocation(const std::string &name);
 
-        static GLuint CompileShader(GLenum type, const std::string &shaderCode);
+        static uint32_t CompileShader(uint32_t type, const std::string &shaderCode);
 
     };
 }

@@ -33,6 +33,8 @@ namespace stinky {
 
         [[nodiscard]] virtual Ref<Texture> CreateTexture(uint32_t width, uint32_t height) const = 0;
 
+        [[nodiscard]] virtual Ref<Texture> CreateCubeTexture(const std::string &path) const = 0;
+
         [[nodiscard]] virtual Ref<VertexBuffer>
         CreateVertexBuffer(unsigned int size, const BufferLayout &layout) const = 0;
 
