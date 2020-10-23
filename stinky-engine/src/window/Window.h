@@ -1,8 +1,14 @@
 #pragma once
 
+#include <utility>
+
 #include "stinkypch.h"
 
 #include "event/Event.h"
+
+namespace stinky {
+    class EventController;
+}
 
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -12,9 +18,10 @@ namespace stinky {
         std::string m_Title;
         int m_Width, m_Height;
 
-        WindowProperties(const std::string &title = "stinky engine", const int width = 1280,
+        WindowProperties(std::string title = "stinky engine",
+                         const int width = 1280,
                          const int height = 720)
-                : m_Title(title), m_Width(width), m_Height(height) {}
+                : m_Title(std::move(title)), m_Width(width), m_Height(height) {}
     };
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -25,16 +32,19 @@ namespace stinky {
             none, GLFW
         };
 
-        static Scope<Window> Create(const API &api, const WindowProperties &properties = {});
+        Window(EventController &controller);
+
+        static Scope <Window>
+        Create(const API &api, EventController &eventController, const WindowProperties &properties = {});
 
         virtual ~Window() = default;
 
-        virtual void Init() = 0;
-
-        virtual void SetEventCallback(EventHandler::EventHandlerFn callback) = 0;
+        virtual void Init();
 
         virtual void OnUpdate(const Event &) = 0;
 
         virtual void Shutdown() = 0;
+    protected:
+        EventController &m_EventController;
     };
 }

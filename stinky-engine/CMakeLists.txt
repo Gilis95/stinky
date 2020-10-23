@@ -39,8 +39,8 @@ set(WINDOW_SRC_DIR ${SRC_DIR}/window)
 ################################################################################################
 
 #Dependencies directory
-set(GLFW_DIR ${PROJECT_SOURCE_DIR}/vendor/glfw/)
-set(GLAD_DIR ${PROJECT_SOURCE_DIR}/vendor/glad/)
+set(GLFW_DIR ${PROJECT_SOURCE_DIR}/../vendor/glfw/)
+set(GLAD_DIR ${PROJECT_SOURCE_DIR}/../vendor/glad/)
 set(GLM_DIR ${PROJECT_SOURCE_DIR}/../vendor/glm/)
 set(STB_DIR ${PROJECT_SOURCE_DIR}/vendor/stb_image)
 
@@ -81,6 +81,8 @@ set(HDR_FILES
         ${EVENT_HDR_DIR}/MouseEvent.h
         ${EVENT_HDR_DIR}/Timestep.h
         ${EVENT_HDR_DIR}/ApplicationEvent.h
+        ${EVENT_HDR_DIR}/platform/glfw/GLFWWindowEvent.h
+
 
         # Graphic Layer Abstraction module
         ${GLA_HDR_DIR}/CubeTexture.h
@@ -117,7 +119,7 @@ set(HDR_FILES
 
         ${STB_DIR}/stb_image.h
         ${STB_DIR}/stb_image_write.h
-        )
+        src/event/WindowsEvent.h)
 
 ################################################################################################
 
@@ -176,9 +178,6 @@ set(SRC_FILES
         ${WINDOW_SRC_DIR}/Window.cpp
         ${WINDOW_SRC_DIR}/glfw/PlatformIndependentWindow.cpp
         )
-
-add_subdirectory(${GLFW_DIR})
-add_subdirectory(${GLAD_DIR})
 
 add_library(stinky-engine STATIC ${SRC_FILES} ${HDR_FILES})
 

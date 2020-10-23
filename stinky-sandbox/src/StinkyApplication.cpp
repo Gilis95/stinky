@@ -2,8 +2,6 @@
 #include "StinkyLayer.h"
 #include "application/EntryPoint.h"
 
-#include <filesystem>
-
 namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////

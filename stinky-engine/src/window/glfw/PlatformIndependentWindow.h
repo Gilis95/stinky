@@ -1,9 +1,16 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
-
 #include "window/Window.h"
-#include "event/Event.h"
+
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+struct GLFWwindow;
+
+namespace stinky {
+    class Event;
+
+    class EventController;
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -11,23 +18,24 @@ namespace stinky {
     class PlatformIndependentWindow : public Window {
     public:
         struct WindowData {
-            std::string titile;
+            EventController &eventController;
+            std::string title;
             int width, height;
-            EventHandler::EventHandlerFn eventHandlerFn;
+
+            WindowData(EventController &eventController, std::string title, int width, int height) : eventController(
+                    eventController), title(std::move(title)), width(width), height(height) {
+            }
         };
 
-        PlatformIndependentWindow(const WindowProperties &properties);
+        PlatformIndependentWindow(const WindowProperties &properties, EventController &eventController);
 
         ~PlatformIndependentWindow();
 
         void Init() override;
 
-        void SetEventCallback(EventHandler::EventHandlerFn callback) override;
-
         void OnUpdate(const Event &) override;
 
         void Shutdown() override;
-
     private:
         WindowData m_Data;
         GLFWwindow *m_Window;

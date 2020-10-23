@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <glm/glm.hpp>
 
 #include "camera/PerspectiveCamera.h"
@@ -15,13 +14,13 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     class StinkyLayer : public Layer {
     public:
-        StinkyLayer(EventController &eventController);
+        explicit StinkyLayer(EventController &eventController);
 
-        virtual void OnAttach() override;
+        void OnAttach() override;
 
-        virtual void OnDetach() override;
+        void OnDetach() override;
 
-        virtual void OnUpdate(const Timestep &ts) override;
+        void OnUpdate(const Timestep &ts) override;
 
     private:
         Ref<GraphicLayerAbstractionFactory> m_RendererFactory;

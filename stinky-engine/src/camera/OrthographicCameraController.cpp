@@ -2,8 +2,9 @@
 // Created by christian on 23/08/2020.
 //
 
-#include <event/MouseEvent.h>
 #include <event/ApplicationEvent.h>
+#include <event/MouseEvent.h>
+#include <event/WindowsEvent.h>
 #include "camera/OrthographicCameraController.h"
 
 namespace stinky {

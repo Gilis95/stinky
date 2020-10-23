@@ -7,12 +7,26 @@
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    enum class EventType {
-        None = 0,
-        WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
-        AppTick, AppUpdate, AppRender,
-        KeyPressed, KeyReleased, KeyTyped,
-        MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
+    namespace EventType {
+        const int None = 0;
+        const int WindowClose = 1;
+        const int WindowResize = 2;
+        const int WindowFocus = 3;
+        const int WindowLostFocus = 4;
+        const int WindowMoved = 5;
+        const int AppTick = 6;
+        const int AppUpdate = 7;
+        const int AppRender = 8;
+        const int KeyPressed = 9;
+        const int KeyReleased = 10;
+        const int KeyTyped = 11;
+        const int MouseButtonPressed = 12;
+        const int MouseButtonReleased = 13;
+        const int MouseMoved = 14;
+        const int MouseScrolled = 15;
+
+        /** Platform Specific */
+        const int GLFWWindowPostInitEvent = 50;
     };
 
 
@@ -23,14 +37,14 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     class Event {
     public:
-        Event(EventType eventType, std::string name) : m_EventType(eventType),
-                                                       m_Name(std::move(name)) {}
+        Event(int eventType, std::string name) : m_EventType(eventType),
+                                                 m_Name(std::move(name)) {}
 
         virtual ~Event() = default;
 
         [[nodiscard]] virtual std::string ToString() const { return m_Name; }
 
-        EventType m_EventType;
+        int m_EventType;
         std::string m_Name;
     };
 
@@ -44,7 +58,7 @@ namespace stinky {
     struct EventHandler {
         using EventHandlerFn = std::function<void(const Event &)>;
 
-        EventType m_EventType;
+        int m_EventType;
         EventHandlerFn m_EventHandlerFunction;
     };
 }

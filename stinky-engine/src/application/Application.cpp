@@ -22,29 +22,7 @@ namespace stinky {
     void Application::Init(Window::API windowApi) {
         Log::Init();
 
-        m_Window = Window::Create(windowApi);
-
-        m_Window->SetEventCallback(
-                [ObjectPtr = &m_EventController](const Event &event) -> void { ObjectPtr->OnEvent(event); });
-
-        // KeyPressed, KeyReleased, KeyTyped,
-        m_EventController.RegisterEvent(EventType::KeyPressed);
-        m_EventController.RegisterEvent(EventType::KeyReleased);
-        m_EventController.RegisterEvent(EventType::KeyTyped);
-
-        // MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled 
-        m_EventController.RegisterEvent(EventType::MouseButtonPressed);
-        m_EventController.RegisterEvent(EventType::MouseButtonReleased);
-        m_EventController.RegisterEvent(EventType::MouseMoved);
-        m_EventController.RegisterEvent(EventType::MouseScrolled);
-
-
-        // WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
-        m_EventController.RegisterEvent(EventType::WindowClose);
-        m_EventController.RegisterEvent(EventType::WindowResize);
-        m_EventController.RegisterEvent(EventType::WindowFocus);
-        m_EventController.RegisterEvent(EventType::WindowLostFocus);
-        m_EventController.RegisterEvent(EventType::WindowMoved);
+        m_Window = Window::Create(windowApi, {}, m_EventController);
 
         //AppTick, AppUpdate, AppRender,
         m_EventController.RegisterEvent(EventType::AppRender);
@@ -88,7 +66,6 @@ namespace stinky {
 
             m_EventController.OnEvent(AppUpdateEvent());
         }
-
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

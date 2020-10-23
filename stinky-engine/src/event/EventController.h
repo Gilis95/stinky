@@ -18,13 +18,13 @@ namespace stinky {
         EventController();
 
         //Events
-        void RegisterEvent(EventType eventType);
+        void RegisterEvent(int eventType);
 
         void RegisterEventHandler(const EventHandler &handler);
 
         void OnEvent(const Event &);
 
     private:
-        std::unordered_map<EventType, EventHandlers> m_EventHandlers;
+        std::unordered_map<int, EventHandlers> m_EventHandlers;
     };
 }

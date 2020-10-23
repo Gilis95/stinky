@@ -12,7 +12,7 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void EventController::RegisterEvent(EventType type) {
+    void EventController::RegisterEvent(int type) {
         m_EventHandlers[type];
     }
 

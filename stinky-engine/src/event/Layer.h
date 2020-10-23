@@ -8,7 +8,7 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     class Layer {
     public:
-        Layer(const std::string &name = "Layer");
+        Layer(std::string name = "Layer");
 
         virtual ~Layer() = default;
 
