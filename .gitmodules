@@ -13,15 +13,12 @@
 [submodule "vendor/glad"]
 	path = vendor/glad
 	url = git@github.com:Dav1dde/glad.git
-[submodule "stinky-engine/vendor/glad"]
-	path = stinky-engine/vendor/glad
+[submodule "vendor/glad"]
+	path = vendor/glad
 	url = git@github.com:Dav1dde/glad.git
-[submodule "stinky-engine/vendor/glfw"]
-	path = stinky-engine/vendor/glfw
+[submodule "vendor/glfw"]
+	path = vendor/glfw
 	url = git@github.com:glfw/glfw.git
-[submodule "stinky-engine/vendor/glm"]
-	path = stinky-engine/vendor/glm
-	url = git@github.com:g-truc/glm.git
 [submodule "vendor/entt"]
 	path = vendor/entt
 	url = git@github.com:skypjack/entt.git
