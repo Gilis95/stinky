@@ -22,7 +22,7 @@ namespace stinky {
     void Application::Init(Window::API windowApi) {
         Log::Init();
 
-        m_Window = Window::Create(windowApi, {}, m_EventController);
+        m_Window = Window::Create(windowApi, m_EventController);
 
         //AppTick, AppUpdate, AppRender,
         m_EventController.RegisterEvent(EventType::AppRender);

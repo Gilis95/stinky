@@ -16,3 +16,6 @@
 [submodule "vendor/entt"]
 	path = vendor/entt
 	url = git@github.com:skypjack/entt.git
+[submodule "hoatzin-editor/vendor/imgui"]
+	path = hoatzin-editor/vendor/imgui
+	url = git@github.com:Gilis95/imgui.git

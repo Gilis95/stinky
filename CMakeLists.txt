@@ -13,6 +13,13 @@ set(GLFW_DIR ${PROJECT_SOURCE_DIR}/vendor/glfw/)
 set(GLM_DIR ${PROJECT_SOURCE_DIR}/vendor/glm)
 set(SPDLOG_DIR ${PROJECT_SOURCE_DIR}/vendor/spdlog)
 
+set(ENTT_DIR_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/vendor/entt/src)
+set(OPENGL_INCLUDE_DIRS ${GLAD_DIR}/include)
+set(WINDOW_ABSTRACTION_INCLUDE_DIR ${GLFW_DIR}/include)
+
+set(OPENGL_LIB glad)
+set(WINDOW_ABSTRACTION_LIB glfw)
+
 #3rd party libraries
 add_subdirectory(${ENTT_DIR})
 add_subdirectory(${GLAD_DIR})

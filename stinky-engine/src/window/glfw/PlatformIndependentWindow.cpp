@@ -22,7 +22,7 @@ namespace stinky {
     PlatformIndependentWindow::PlatformIndependentWindow(const WindowProperties &properties,
                                                          EventController &eventController)
             : Window(eventController),
-              m_Data(eventController, properties.m_Title, properties.m_Height, properties.m_Width) {
+              m_Data(eventController, properties.m_Title, properties.m_Width, properties.m_Height) {
         PlatformIndependentWindow::Init();
     }
 

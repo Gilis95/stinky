@@ -7,9 +7,6 @@ set(HDR_DIR ${PROJECT_SOURCE_DIR}/src)
 set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
 
 # 3rd party lib dir
-set(ETT_DIR ${PROJECT_SOURCE_DIR}/../vendor/entt)
-set(GLFW_DIR ${PROJECT_SOURCE_DIR}/../vendor/glfw/)
-set(GLM_DIR ${PROJECT_SOURCE_DIR}/../vendor/glm/)
 set(IMGUI_DEAR_DIR ${PROJECT_SOURCE_DIR}/vendor/imgui/)
 
 # Submodules dir
@@ -25,24 +22,27 @@ set(SRC_FILES
         ${SRC_DIR}/HoatzinEditorLayer.cpp
         ${SRC_DIR}/ImGuiLayer.cpp)
 
+# Definitions
+add_definitions(-DIMGUI_IMPL_OPENGL_LOADER_GLAD)
+
 #3rd party libraries
 add_subdirectory(${IMGUI_DEAR_DIR})
 
 add_executable(hoatzin-editor ${SRC_FILES} ${HDR_FILES})
 
 target_include_directories(hoatzin-editor PRIVATE
-        ${ETT_DIR}/src
+        ${ENTT_DIR_INCLUDE_DIR}
         ${GLM_DIR}
-        ${GLFW_DIR}/include
         ${HDR_DIR}
         ${IMGUI_DEAR_DIR}/
         ${STINKY_ENGINE_DIR}/src
+        ${WINDOW_ABSTRACTION_INCLUDE_DIR}
         )
 
 target_link_libraries(hoatzin-editor PRIVATE
         stinky::stinky-engine
-        glfw
         glm
         imgui-dear
         spdlog
+        ${WINDOW_ABSTRACTION_INCLUDE_DIR}
         )

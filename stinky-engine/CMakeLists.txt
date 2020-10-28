@@ -6,7 +6,6 @@ set(CMAKE_CXX_STANDARD 17)
 add_definitions(-DENABLE_LOG -DENABLE_ASSERTS -D_CRT_SECURE_NO_WARNINGS -DDEBUG)
 
 ################################################################################################
-
 #Project Header directory
 set(HDR_DIR ${PROJECT_SOURCE_DIR}/src)
 
@@ -22,7 +21,6 @@ set(SCENE_HDR_DIR ${HDR_DIR}/scene)
 set(WINDOW_HDR_DIR ${HDR_DIR}/window)
 
 ################################################################################################
-
 #Project source directory
 set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
 
@@ -37,15 +35,10 @@ set(SCENE_SRC_DIR ${SRC_DIR}/scene)
 set(WINDOW_SRC_DIR ${SRC_DIR}/window)
 
 ################################################################################################
-
 #Dependencies directory
-set(GLFW_DIR ${PROJECT_SOURCE_DIR}/../vendor/glfw/)
-set(GLAD_DIR ${PROJECT_SOURCE_DIR}/../vendor/glad/)
-set(GLM_DIR ${PROJECT_SOURCE_DIR}/../vendor/glm/)
 set(STB_DIR ${PROJECT_SOURCE_DIR}/vendor/stb_image)
 
 ################################################################################################
-
 set(HDR_FILES
         # Application module
         ${APPLICATION_HDR_DIR}/Application.h
@@ -82,7 +75,6 @@ set(HDR_FILES
         ${EVENT_HDR_DIR}/Timestep.h
         ${EVENT_HDR_DIR}/ApplicationEvent.h
         ${EVENT_HDR_DIR}/platform/glfw/GLFWWindowEvent.h
-
 
         # Graphic Layer Abstraction module
         ${GLA_HDR_DIR}/CubeTexture.h
@@ -122,7 +114,6 @@ set(HDR_FILES
         src/event/WindowsEvent.h)
 
 ################################################################################################
-
 set(SRC_FILES
         #Application
         ${APPLICATION_SRC_DIR}/Application.cpp
@@ -182,18 +173,18 @@ set(SRC_FILES
 add_library(stinky-engine STATIC ${SRC_FILES} ${HDR_FILES})
 
 target_include_directories(stinky-engine PRIVATE
-        ${HDR_DIR}
-        ${STB_DIR}
-        ${GLAD_INCLUDE_DIRS}
-        ${GLFW_DIR}/include
+        ${ENTT_DIR_INCLUDE_DIR}
         ${GLM_DIR}
+        ${HDR_DIR}
+        ${OPENGL_INCLUDE_DIRS}
         ${SPDLOG_DIR}/include
-        ${ENTT_DIR}/src
+        ${STB_DIR}
+        ${WINDOW_ABSTRACTION_INCLUDE_DIR}
         )
 
 target_link_libraries(stinky-engine PRIVATE
-        glad
         glm
-        glfw
+        ${OPENGL_LIB}
         spdlog
+        ${WINDOW_ABSTRACTION_LIB}
         )
