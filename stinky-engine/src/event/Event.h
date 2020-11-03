@@ -59,7 +59,7 @@ namespace stinky {
         using EventHandlerFn = std::function<void(const Event &)>;
 
         int m_EventType;
-        EventHandlerFn m_EventHandlerFunction;
+        const EventHandlerFn& m_EventHandlerFunction;
     };
 }
 

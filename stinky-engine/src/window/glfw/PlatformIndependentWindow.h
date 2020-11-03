@@ -29,7 +29,9 @@ namespace stinky {
 
         PlatformIndependentWindow(const WindowProperties &properties, EventController &eventController);
 
-        ~PlatformIndependentWindow();
+        ~PlatformIndependentWindow() override;
+
+        void RegisterEvents() override;
 
         void Init() override;
 

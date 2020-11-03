@@ -21,10 +21,16 @@ namespace stinky::hoatzin {
         virtual void OnUpdate(const Timestep &ts) override;
 
     private:
+        void ImGuiBegin();
+        void ImGuiRender();
+        void ImGuiEnd();
+    private:
         Ref<GraphicLayerAbstractionFactory> m_RendererFactory;
         Scene m_Scene;
         Ref<FrameBuffer> m_FrameBuffer;
+
         Scope<PerspectiveCamera> m_Camera;
+
         Scope<PerspectiveCameraController> m_CameraController;
     };
     /////////////////////////////////////////////////////////////////////////////////////////

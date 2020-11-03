@@ -2,6 +2,7 @@
 #include "event/LayerStack.h"
 #include "event/Layer.h"
 
+class value;
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     LayerStack::~LayerStack() {
@@ -13,14 +14,14 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void LayerStack::PushLayer(Layer *layer) {
-        m_Layers.emplace(m_Layers.begin() + m_LayerInsertIndex, layer);
-        m_LayerInsertIndex++;
+        m_Layers.push_back(layer);
+        ++m_LayerInsertIndex;
         layer->OnAttach();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void LayerStack::PushOverlay(Layer *overlay) {
-        m_Layers.emplace_back(overlay);
+        m_Layers.push_back(overlay);
         overlay->OnAttach();
     }
 
@@ -30,7 +31,7 @@ namespace stinky {
         if (it != m_Layers.begin() + m_LayerInsertIndex) {
             layer->OnDetach();
             m_Layers.erase(it);
-            m_LayerInsertIndex--;
+            --m_LayerInsertIndex;
         }
     }
 

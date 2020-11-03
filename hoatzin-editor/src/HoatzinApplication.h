@@ -12,6 +12,10 @@ namespace stinky {
         class HoatzinApplication : public Application {
         public:
             HoatzinApplication();
+
+            void RegisterEvents() override;
+
+            void Init() override;
         };
 
     }

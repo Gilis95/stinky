@@ -10,20 +10,15 @@
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     Application::Application(Window::API windowApi) :
-            m_IsRunning(false), m_EventController() {
-        Init(windowApi);
+            m_IsRunning(false), m_EventController(), m_Window(Window::Create(windowApi, m_EventController)) {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    Application::~Application() {
-    }
+    Application::~Application() = default;
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void Application::Init(Window::API windowApi) {
-        Log::Init();
-
-        m_Window = Window::Create(windowApi, m_EventController);
-
+    void Application::RegisterEvents(){
+        m_Window->RegisterEvents();
         //AppTick, AppUpdate, AppRender,
         m_EventController.RegisterEvent(EventType::AppRender);
         m_EventController.RegisterEvent(EventType::AppTick);
@@ -40,6 +35,12 @@ namespace stinky {
                         EventType::AppUpdate, [window = m_Window.get()](const Event &event) { window->OnUpdate(event); }
                 }
         );
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void Application::Init() {
+        Log::Init();
+        m_Window->Init();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

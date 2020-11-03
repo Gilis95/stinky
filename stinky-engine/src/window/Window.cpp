@@ -18,7 +18,8 @@ namespace stinky {
         }
     }
 
-    void Window::Init() {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void Window::RegisterEvents() {
         // KeyPressed, KeyReleased, KeyTyped,
         m_EventController.RegisterEvent(EventType::KeyPressed);
         m_EventController.RegisterEvent(EventType::KeyReleased);

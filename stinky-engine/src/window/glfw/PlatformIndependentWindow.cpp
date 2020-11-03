@@ -23,7 +23,6 @@ namespace stinky {
                                                          EventController &eventController)
             : Window(eventController),
               m_Data(eventController, properties.m_Title, properties.m_Width, properties.m_Height) {
-        PlatformIndependentWindow::Init();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -32,15 +31,19 @@ namespace stinky {
     };
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void PlatformIndependentWindow::Init() {
-        Window::Init();
+    void PlatformIndependentWindow::RegisterEvents() {
+        Window::RegisterEvents();
         m_EventController.RegisterEvent(EventType::GLFWWindowPostInitEvent);
+    }
 
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void PlatformIndependentWindow::Init() {
         int status = glfwInit();
 
         AssertReturnUnless(status);
         glfwSetErrorCallback(GLFWErrorCallback);
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);

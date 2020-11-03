@@ -17,7 +17,9 @@ namespace stinky {
 
         virtual ~Application();
 
-        void Init(Window::API);
+        virtual void RegisterEvents();
+
+        virtual void Init();
 
         void Close();
 
@@ -36,6 +38,7 @@ namespace stinky {
 
         float m_LastFrameTime = 0.0f;
         bool m_IsRunning;
+
     };
 
     extern Application *CreateApplication();

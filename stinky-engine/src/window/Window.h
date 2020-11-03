@@ -39,7 +39,9 @@ namespace stinky {
 
         virtual ~Window() = default;
 
-        virtual void Init();
+        virtual void RegisterEvents();
+
+        virtual void Init() = 0;
 
         virtual void OnUpdate(const Event &) = 0;
 
