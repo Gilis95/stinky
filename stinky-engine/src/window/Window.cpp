@@ -31,7 +31,6 @@ namespace stinky {
         m_EventController.RegisterEvent(EventType::MouseMoved);
         m_EventController.RegisterEvent(EventType::MouseScrolled);
 
-
         // WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
         m_EventController.RegisterEvent(EventType::WindowClose);
         m_EventController.RegisterEvent(EventType::WindowResize);
@@ -39,6 +38,4 @@ namespace stinky {
         m_EventController.RegisterEvent(EventType::WindowLostFocus);
         m_EventController.RegisterEvent(EventType::WindowMoved);
     }
-
-
 }

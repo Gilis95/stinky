@@ -18,8 +18,7 @@ namespace stinky {
 
     /** ################################ Entity Component Classes ################################################ */
     class MeshComponent;
-    class TranslateComponent;
-    class ScaleComponent;
+    class TransformComponent;
     class MaterialComponent;
     class ProgramComponent;
     /** ################################ Entity Component Classes ################################################ */

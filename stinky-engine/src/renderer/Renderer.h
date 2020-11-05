@@ -17,8 +17,7 @@ namespace stinky {
 
     struct RenderCommand {
         const MeshComponent &meshComponent;
-        const TranslateComponent &translateComponent;
-        const ScaleComponent &scaleComponent;
+        const TransformComponent &transformComponent;
         const ProgramComponent &programComponent;
         const MaterialComponent &materialComponent;
     };

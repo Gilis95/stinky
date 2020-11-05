@@ -12,7 +12,7 @@
 #include "ecs/MaterialComponent.h"
 #include "ecs/MeshComponents.h"
 #include "ecs/ProgramComponent.h"
-#include "ecs/TransformationComponents.h"
+#include "ecs/TransformComponent.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -24,12 +24,8 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    Entity Scene::CreateEntity() {
-        return Entity(m_Registry);
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////
     void Scene::OnUpdate() {
+
         auto camerasView = m_Registry.view<CameraComponent>();
 
         Camera *camera;
@@ -43,18 +39,35 @@ namespace stinky {
         m_Renderer->Clear();
         m_Renderer->BeginScene(camera->GetViewProjectionMatrix());
 
-        auto meshesGroup = m_Registry.group<MeshComponent, TranslateComponent, ScaleComponent, ProgramComponent, MaterialComponent>();
+        auto meshesGroup = m_Registry.group<MeshComponent, TransformComponent, ProgramComponent, MaterialComponent>();
+
+        m_Registry.each([](auto &entity) -> void {
+
+        });
 
         for (auto mesh : meshesGroup) {
             m_Renderer->Draw({
                                      meshesGroup.get<MeshComponent>(mesh),
-                                     meshesGroup.get<TranslateComponent>(mesh),
-                                     meshesGroup.get<ScaleComponent>(mesh),
+                                     meshesGroup.get<TransformComponent>(mesh),
                                      meshesGroup.get<ProgramComponent>(mesh),
                                      meshesGroup.get<MaterialComponent>(mesh)
                              });
         }
 
         m_Renderer->EndScene();
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    Entity Scene::CreateEntity() {
+        return Entity(&m_Registry);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void Scene::each(std::function<void(Entity &entt)> func) {
+
+        m_Registry.each([this, &func](const auto &it) -> void {
+            Entity entt(&m_Registry, it);
+            func(entt);
+        });
     }
 }

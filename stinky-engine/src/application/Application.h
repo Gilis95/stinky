@@ -4,16 +4,19 @@
 
 #include "event/Event.h"
 #include "event/EventController.h"
-#include "event/Layer.h"
 #include "event/LayerStack.h"
-#include "window/Window.h"
+
+namespace stinky{
+    class Window;
+    class Layer;
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
     class Application {
     public:
-        Application(Window::API api);
+        Application();
 
         virtual ~Application();
 
@@ -30,10 +33,10 @@ namespace stinky {
 
         void PushOverlay(Layer *layer);
 
+        virtual Window* GetWindow() = 0;
     protected:
         EventController m_EventController;
     private:
-        Scope<Window> m_Window;
         LayerStack m_LayerStack;
 
         float m_LastFrameTime = 0.0f;

@@ -7,7 +7,7 @@
 #include "ecs/MaterialComponent.h"
 #include "ecs/MeshComponents.h"
 #include "ecs/ProgramComponent.h"
-#include "ecs/TransformationComponents.h"
+#include "ecs/TransformComponent.h"
 #include "event/ApplicationEvent.h"
 #include "gla/GraphicLayerAbstractionFactory.h"
 #include "gla/VertexBuffer.h"

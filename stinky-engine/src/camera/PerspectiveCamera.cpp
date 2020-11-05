@@ -13,12 +13,13 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     PerspectiveCamera::PerspectiveCamera(int screenWidth, int screenHeight, float fov, float zNear, float zFar)
             : Camera(glm::perspective(glm::radians(fov), (float) screenWidth / (float) screenHeight, zNear, zFar)),
-              m_Viewport(0, 0, screenWidth, screenHeight), m_Rotation() {
+              m_Rotation(1.0, 0.0, 0.0, 0.0) {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void PerspectiveCamera::SetProjectionRH(float fov, float aspectRatio, float zNear, float zFar) {
         m_ProjectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, zNear, zFar);
+        m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

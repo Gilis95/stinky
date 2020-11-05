@@ -3,10 +3,15 @@
 //
 #include <event/MouseEvent.h>
 #include <event/KeyEvent.h>
+#include <event/WindowsEvent.h>
 #include "camera/PerspectiveCamera.h"
 #include "camera/PerspectiveCameraController.h"
 
 namespace stinky {
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    PerspectiveCameraController::PerspectiveCameraController() : PerspectiveCameraController(nullptr) {
+    }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     PerspectiveCameraController::PerspectiveCameraController(PerspectiveCamera *camera) : m_Camera(camera) {
@@ -47,24 +52,21 @@ namespace stinky {
     void PerspectiveCameraController::FPSLookAt(const Timestep &ts) {
         glm::vec2 delta = m_NewMousePosition - m_OldMousePosition;
 
-        m_Pitch += delta.y * (m_CameraSpeed + ts + 0.001f);
-        m_Yaw += delta.x * (m_CameraSpeed + ts + 0.001f);
+        float pitch = delta.y * m_RotationSpeed;
+        float yaw = delta.x * m_RotationSpeed;
 
-        m_Pitch = glm::clamp(m_Pitch, -90.0f, 90.0f);
-        m_Yaw = std::fmod(m_Yaw, 360.0f);
-
-        glm::quat cameraRotation = glm::toQuat(glm::eulerAngleYX(glm::radians(m_Yaw), glm::radians(m_Pitch)));
-        m_Camera->SetRotation(cameraRotation);
+        glm::quat cameraRotation = glm::toQuat(glm::eulerAngleYX(glm::radians(yaw), glm::radians(pitch)));
+        m_Camera->Rotate(cameraRotation);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void PerspectiveCameraController::MoveLeft() {
-        ++m_CameraPosition.x;
+        --m_CameraPosition.x;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void PerspectiveCameraController::MoveRight() {
-        --m_CameraPosition.x;
+        ++m_CameraPosition.x;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -128,12 +130,31 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void PerspectiveCameraController::OnMouseMoved(const Event &event) {
-        ReturnUnless(m_MousePressed)
-
         const auto mouseMovedEvent = dynamic_cast<const MouseMovedEvent &>(event);
-        m_OldMousePosition = m_NewMousePosition;
-        m_NewMousePosition.x = mouseMovedEvent.m_MouseX;
-        m_NewMousePosition.y = mouseMovedEvent.m_MouseY;
-        m_Rotate = true;
+
+        if (m_MousePressed) {
+            m_OldMousePosition = m_NewMousePosition;
+            m_NewMousePosition.x = mouseMovedEvent.m_MouseX;
+            m_NewMousePosition.y = mouseMovedEvent.m_MouseY;
+
+            m_Rotate = true;
+            return;
+        } else {
+            // if button is released new frame must update according last change, before we update new position
+            ReturnIf(m_Rotate)
+
+            m_NewMousePosition.x = mouseMovedEvent.m_MouseX;
+            m_NewMousePosition.y = mouseMovedEvent.m_MouseY;
+        }
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void PerspectiveCameraController::OnWindowResize(const Event &event) {
+        auto resizeEvent = dynamic_cast<const WindowResizeEvent &>(event);
+
+        float aspectRatio = static_cast<float>(resizeEvent.m_Width)/ static_cast<float>(resizeEvent
+                .m_Height);
+        m_Camera->SetProjectionRH(45, aspectRatio,
+                               1, -1);
     }
 }

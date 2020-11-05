@@ -6,7 +6,7 @@
 #include "ecs/MaterialComponent.h"
 #include "ecs/MeshComponents.h"
 #include "ecs/ProgramComponent.h"
-#include "ecs/TransformationComponents.h"
+#include "ecs/TransformComponent.h"
 #include "gla/GraphicLayerAbstractionFactory.h"
 #include "gla/VertexBuffer.h"
 #include "gla/VertexArray.h"
@@ -46,8 +46,8 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     void Renderer::Draw(const RenderCommand &command) {
 
-        glm::mat4 model = glm::translate(glm::mat4(1.0f), command.translateComponent.translation)
-                          * glm::scale(glm::mat4(1.0f), command.scaleComponent.scale);
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), command.transformComponent.translation)
+                          * glm::scale(glm::mat4(1.0f), command.transformComponent.scale);
 
         unsigned vectorsCount = command.meshComponent.verticesCount / 4;
         glm::vec4 cubeCoordinates[vectorsCount];

@@ -11,6 +11,7 @@
 namespace stinky {
     class MeshComponent {
     public:
+        MeshComponent() = default;
         explicit MeshComponent(unsigned verticesCount, glm::vec4 *vertices, unsigned indicesCount, unsigned *indices);
         MeshComponent(MeshComponent &&) = default;
         virtual ~MeshComponent() = default;

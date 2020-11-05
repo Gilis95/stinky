@@ -1,16 +1,14 @@
 #include "application/Application.h"
-
-
 #include "stinkypch.h"
 #include "event/ApplicationEvent.h"
-
 #include "event/Event.h"
-#include "GLFW/glfw3.h"
+#include "window/Window.h"
+#include <GLFW/glfw3.h>
 
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
-    Application::Application(Window::API windowApi) :
-            m_IsRunning(false), m_EventController(), m_Window(Window::Create(windowApi, m_EventController)) {
+    Application::Application() :
+            m_IsRunning(false), m_EventController() {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -18,7 +16,7 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void Application::RegisterEvents(){
-        m_Window->RegisterEvents();
+        GetWindow()->RegisterEvents();
         //AppTick, AppUpdate, AppRender,
         m_EventController.RegisterEvent(EventType::AppRender);
         m_EventController.RegisterEvent(EventType::AppTick);
@@ -32,7 +30,7 @@ namespace stinky {
 
         m_EventController.RegisterEventHandler(
                 {
-                        EventType::AppUpdate, [window = m_Window.get()](const Event &event) { window->OnUpdate(event); }
+                        EventType::AppUpdate, [window = GetWindow()](const Event &event) { window->OnUpdate(event); }
                 }
         );
     }
@@ -40,7 +38,7 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     void Application::Init() {
         Log::Init();
-        m_Window->Init();
+        GetWindow()->Init();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

@@ -36,7 +36,6 @@ namespace stinky {
     protected:
         void RecalculateViewMatrix() override;
     protected:
-        glm::vec4 m_Viewport;
         glm::quat m_Rotation;
     };
 }

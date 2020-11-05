@@ -16,17 +16,17 @@ namespace stinky {
               m_CameraRotation(m_Camera.GetRotation()), m_CameraMoveFunctions(7),
               m_CameraRotationSpeed(180.0f), m_AspectRatio(aspectRatio), m_ZoomLevel(1.0) {
         m_CameraMoveFunctions.emplace(KeyCode::Left,
-                                      std::bind(&OrthographicCameraController::MoveLeft, this));
+                                      [this] { MoveLeft(); });
         m_CameraMoveFunctions.emplace(KeyCode::Right,
-                                      std::bind(&OrthographicCameraController::MoveRight, this));
+                                      [this] { MoveRight(); });
         m_CameraMoveFunctions.emplace(KeyCode::Up,
-                                      std::bind(&OrthographicCameraController::MoveUp, this));
+                                      [this] { MoveUp(); });
         m_CameraMoveFunctions.emplace(KeyCode::Down,
-                                      std::bind(&OrthographicCameraController::MoveDown, this));
+                                      [this] { MoveDown(); });
         m_CameraMoveFunctions.emplace(KeyCode::Q,
-                                      std::bind(&OrthographicCameraController::RotateLeft, this));
+                                      [this] { RotateLeft(); });
         m_CameraMoveFunctions.emplace(KeyCode::E,
-                                      std::bind(&OrthographicCameraController::RotateRight, this));
+                                      [this] { RotateRight(); });
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

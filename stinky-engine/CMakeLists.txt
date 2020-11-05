@@ -60,7 +60,7 @@ set(HDR_FILES
         # Entity Component System
         ${ECS_HDR_DIR}/CameraComponent.h
         ${ECS_HDR_DIR}/Entity.h
-        ${ECS_HDR_DIR}/TransformationComponents.h
+        ${ECS_HDR_DIR}/TransformComponent.h
         ${ECS_HDR_DIR}/MeshComponents.h
         ${ECS_HDR_DIR}/ProgramComponent.h
         ${ECS_HDR_DIR}/MaterialComponent.h
@@ -130,7 +130,7 @@ set(SRC_FILES
         ${ECS_SRC_DIR}/MaterialComponent.cpp
         ${ECS_SRC_DIR}/MeshComponents.cpp
         ${ECS_SRC_DIR}/ProgramComponent.cpp
-        ${ECS_SRC_DIR}/TransformationComponents.cpp
+        ${ECS_SRC_DIR}/TransformComponent.cpp
 
         #Events
         ${EVENT_SRC_DIR}/EventController.cpp
@@ -168,7 +168,7 @@ set(SRC_FILES
         #Window submodule
         ${WINDOW_SRC_DIR}/Window.cpp
         ${WINDOW_SRC_DIR}/glfw/PlatformIndependentWindow.cpp
-        )
+        src/ecs/TagComponent.h)
 
 add_library(stinky-engine STATIC ${SRC_FILES} ${HDR_FILES})
 
