@@ -47,6 +47,7 @@ namespace stinky {
         void OnMouseMoved(const Event &event);
 
         void OnWindowResize(const Event &event);
+        void OnWindowResize(uint32_t width, uint32_t height);
     private:
         PerspectiveCamera *m_Camera = nullptr;
         glm::vec2 m_OldMousePosition{1.0f, 1.0f};

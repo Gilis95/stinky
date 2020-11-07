@@ -42,6 +42,13 @@ namespace stinky::hoatzin {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void HoatzinEditorLayer::OnUpdate(const Timestep &ts) {
+        const auto &frameBufferSpecification = m_FrameBuffer->GetSpecification();
+        if (m_ViewportSize.x > 0 && m_ViewportSize.y > 0 &&
+            !(m_ViewportSize.x == frameBufferSpecification.Height &&
+              m_ViewportSize.y == frameBufferSpecification.Width)) {
+            m_FrameBuffer->WindowResize(m_ViewportSize.x, m_ViewportSize.y);
+            m_CameraController->OnWindowResize(m_ViewportSize.x, m_ViewportSize.y);
+        }
         /** Render current scene */
         m_FrameBuffer->Bind();
 
@@ -74,18 +81,16 @@ namespace stinky::hoatzin {
     /////////////////////////////////////////////////////////////////////////////////////////
     void HoatzinEditorLayer::ImGuiRender() {
         ImGui::ShowDemoWindow();
-        {
-            Workspace::Begin();
+        Workspace::Begin();
 
-            SceneHierarchyPanel::Render(m_Scene, m_SelectedEntt);
+        SceneHierarchyPanel::Render(m_Scene, m_SelectedEntt);
 
-            EntityInspectorPanel::Render(m_SelectedEntt);
+        EntityInspectorPanel::Render(m_SelectedEntt);
 
-            uint64_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
-            ScenePanel::Render(textureID, m_ViewportSize);
+        uint64_t textureID = m_FrameBuffer->GetColorAttachmentRendererID();
+        ScenePanel::Render(textureID, m_ViewportSize);
 
-            Workspace::End();
-        }
+        Workspace::End();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

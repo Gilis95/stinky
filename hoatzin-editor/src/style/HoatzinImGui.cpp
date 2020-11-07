@@ -74,4 +74,36 @@ namespace stinky::hoatzin::HoatzinImGui {
 
         ImGui::PopID();
     }
+
+    void OverrideImGuiColours() {
+        auto &colors = ImGui::GetStyle().Colors;
+        colors[ImGuiCol_WindowBg] = ImVec4{0.96f, 0.96f, 0.96f, 1.0f};
+
+        // Headers
+        colors[ImGuiCol_Header] = ImVec4{0.8f, 0.8f, 0.8f, 1.0f};
+        colors[ImGuiCol_HeaderHovered] = ImVec4{0.85f, 0.85f, 0.85f, 1.0f};
+        colors[ImGuiCol_HeaderActive] = ImVec4{0.75f, 0.75f, 0.75f, 1.0f};
+
+        // Buttons
+        colors[ImGuiCol_Button] = ImVec4{0.8f, 0.8f, 0.8f, 1.0f};
+        colors[ImGuiCol_ButtonHovered] = ImVec4{0.85f, 0.85f, 0.85f, 1.0f};
+        colors[ImGuiCol_ButtonActive] = ImVec4{0.75f, 0.75f, 0.75f, 1.0f};
+
+        // Frame BG
+        colors[ImGuiCol_FrameBg] = ImVec4{0.8f, 0.8f, 0.8f, 1.0f};
+        colors[ImGuiCol_FrameBgHovered] = ImVec4{0.85f, 0.85f, 0.85f, 1.0f};
+        colors[ImGuiCol_FrameBgActive] = ImVec4{0.75f, 0.75f, 0.75f, 1.0f};
+
+        // Tabs
+        colors[ImGuiCol_Tab] = ImVec4{0.9f, 0.9f, 0.9f, 1.0f};
+        colors[ImGuiCol_TabHovered] = ImVec4{0.85f, 0.85f, 0.85f, 1.0f};
+        colors[ImGuiCol_TabActive] = ImVec4{0.96f, 0.96f, 0.96f, 1.0f};
+        colors[ImGuiCol_TabUnfocused] = ImVec4{0.9f, 0.9f, 0.9f, 1.0f};
+        colors[ImGuiCol_TabUnfocusedActive] = ImVec4{0.95f, 0.95f, 0.95f, 1.0f};
+
+        // Title
+        colors[ImGuiCol_TitleBg] = ImVec4{0.8f, 0.8f, 0.8f, 1.0f};
+        colors[ImGuiCol_TitleBgActive] = ImVec4{0.75f, 0.75f, 0.75f, 1.0f};
+        colors[ImGuiCol_TitleBgCollapsed] = ImVec4{0.75f, 0.75f, 0.75f, 1.0f};
+    }
 }

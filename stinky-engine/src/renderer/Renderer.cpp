@@ -46,14 +46,17 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     void Renderer::Draw(const RenderCommand &command) {
 
-        glm::mat4 model = glm::translate(glm::mat4(1.0f), command.transformComponent.translation)
-                          * glm::scale(glm::mat4(1.0f), command.transformComponent.scale);
+        glm::mat4 translation = glm::translate(glm::mat4(1.0f), command.transformComponent.translation);
+        glm::mat4 translationRotationX = glm::rotate(translation, command.transformComponent.rotation.x, glm::vec3(1.0,0.0,0.0));
+        glm::mat4 translationRotationY = glm::rotate(translationRotationX, command.transformComponent.rotation.y, glm::vec3(0.0,1.0,0.0));
+        glm::mat4 translationRotation = glm::rotate(translationRotationY, command.transformComponent.rotation.z, glm::vec3(0.0,0.0,1.0));
+        glm::mat4 modelMatrix = glm::scale(translationRotation, command.transformComponent.scale);
 
         unsigned vectorsCount = command.meshComponent.verticesCount / 4;
         glm::vec4 cubeCoordinates[vectorsCount];
 
         for (int i = 0; i < vectorsCount; ++i) {
-            cubeCoordinates[i] = model * command.meshComponent.vertices[i];
+            cubeCoordinates[i] = modelMatrix * command.meshComponent.vertices[i];
         }
 
         //create array buffer, containing shape positions and bind it

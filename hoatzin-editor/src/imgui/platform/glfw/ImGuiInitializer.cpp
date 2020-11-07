@@ -6,7 +6,9 @@
 #include <backends/imgui_impl_opengl3.h>
 #include <backends/imgui_impl_glfw.h>
 #include <event/platform/glfw/GLFWWindowEvent.h>
-#include "ImGuiInitializer.h"
+
+#include "imgui/platform/glfw/ImGuiInitializer.h"
+#include "style/HoatzinImGui.h"
 
 
 namespace stinky::hoatzin::ImGuiInitializer {
@@ -59,6 +61,6 @@ namespace stinky::hoatzin::ImGuiInitializer {
         //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
         //IM_ASSERT(font != NULL);
 
-
+        HoatzinImGui::OverrideImGuiColours();
     }
 }

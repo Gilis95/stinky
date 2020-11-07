@@ -152,9 +152,13 @@ namespace stinky {
     void PerspectiveCameraController::OnWindowResize(const Event &event) {
         auto resizeEvent = dynamic_cast<const WindowResizeEvent &>(event);
 
-        float aspectRatio = static_cast<float>(resizeEvent.m_Width)/ static_cast<float>(resizeEvent
-                .m_Height);
-        m_Camera->SetProjectionRH(45, aspectRatio,
-                               1, -1);
+        OnWindowResize(resizeEvent.m_Width, resizeEvent.m_Height);
     }
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void PerspectiveCameraController::OnWindowResize(uint32_t width, uint32_t height) {
+        float aspectRatio = static_cast<float>(width) / static_cast<float>(height);
+        m_Camera->SetProjectionRH(45, aspectRatio, 1, -1);
+    }
+
 }
