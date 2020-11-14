@@ -12,11 +12,14 @@
 #include "glm/glm.hpp"
 #include "MeshComponents.h"
 
+#include <utility>
+#include "gla/VertexArray.h"
+
 
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
-    MeshComponent::MeshComponent(unsigned verticesCount, glm::vec4 *vertices, unsigned indicesCount, unsigned *indices)
-            : verticesCount(verticesCount), vertices(vertices), indicesCount(indicesCount), indices(indices) {
+    MeshComponent::MeshComponent(Ref<VertexArray> vertexArray)
+            : vertexArray(std::move(vertexArray)) {
     }
 
 }

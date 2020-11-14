@@ -37,13 +37,9 @@ namespace stinky {
         }
 
         m_Renderer->Clear();
-        m_Renderer->BeginScene(camera->GetViewProjectionMatrix());
+        m_Renderer->BeginScene(camera->GetViewMatrix(), camera->GetProjectionMatrix());
 
         auto meshesGroup = m_Registry.group<MeshComponent, TransformComponent, ProgramComponent, MaterialComponent>();
-
-        m_Registry.each([](auto &entity) -> void {
-
-        });
 
         for (auto mesh : meshesGroup) {
             m_Renderer->Draw({
@@ -56,6 +52,12 @@ namespace stinky {
 
         m_Renderer->EndScene();
     }
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void Scene::OnClose(){
+        m_Registry.clear<>();
+    }
+
 
     /////////////////////////////////////////////////////////////////////////////////////////
     Entity Scene::CreateEntity() {

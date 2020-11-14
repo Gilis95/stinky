@@ -49,6 +49,7 @@ set(SRC_FILES
 
 # Definitions
 add_definitions(-DIMGUI_IMPL_OPENGL_LOADER_GLAD)
+add_definitions(-DSTINKY_ENABLE_LOG)
 
 #3rd party libraries
 add_subdirectory(${IMGUI_DEAR_DIR})

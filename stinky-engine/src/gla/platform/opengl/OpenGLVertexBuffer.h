@@ -10,11 +10,11 @@
 namespace stinky {
     class OpenGLVertexBuffer : public VertexBuffer {
     public:
-        OpenGLVertexBuffer(const BufferLayout &layout, unsigned int size);
+        OpenGLVertexBuffer(BufferLayout layout, unsigned int size);
 
-        OpenGLVertexBuffer(const BufferLayout &layout, const void *data, unsigned int size);
+        OpenGLVertexBuffer(BufferLayout layout, const void *data, unsigned int size);
 
-        ~OpenGLVertexBuffer();
+        ~OpenGLVertexBuffer() override;
 
         void Bind() const override;
 

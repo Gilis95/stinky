@@ -30,9 +30,9 @@ namespace stinky {
                      GL_UNSIGNED_BYTE, m_Bottom);
 
         glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_RGB, m_FaceWidth, m_FaceHeight, 0, GL_RGBA,
-                     GL_UNSIGNED_BYTE, m_Front);
-        glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_RGB, m_FaceWidth, m_FaceHeight, 0, GL_RGBA,
                      GL_UNSIGNED_BYTE, m_Back);
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_RGB, m_FaceWidth, m_FaceHeight, 0, GL_RGBA,
+                     GL_UNSIGNED_BYTE, m_Front);
 
         glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 

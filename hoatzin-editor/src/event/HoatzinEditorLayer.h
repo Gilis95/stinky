@@ -7,10 +7,16 @@
 
 namespace stinky {
     class PerspectiveCameraController;
+
     class PerspectiveCamera;
+
     class FrameBuffer;
+
     class GraphicLayerAbstractionFactory;
+
     class Scene;
+
+    class EventController;
 }
 
 namespace stinky::hoatzin {
@@ -18,11 +24,11 @@ namespace stinky::hoatzin {
     class HoatzinEditorLayer : public Layer {
     public:
         HoatzinEditorLayer(GraphicLayerAbstractionFactory *glaFactory, PerspectiveCameraController *cameraController,
-                           unsigned width, unsigned height);
+                           EventController &eventController, unsigned width, unsigned height);
 
         void OnAttach() override;
         void OnUpdate(const Timestep &ts) override;
-        void OnDetach() override;
+        void OnClose();
 
         void ImGuiBegin();
         void ImGuiRender();
@@ -34,9 +40,11 @@ namespace stinky::hoatzin {
         Ref<FrameBuffer> m_FrameBuffer;
         PerspectiveCameraController *m_CameraController;
         Scope<PerspectiveCamera> m_Camera;
+        EventController &m_EventController;
+
 
         Entity m_SelectedEntt;
-        glm::vec2 m_ViewportSize;
+        glm::vec2 m_ViewportSize{0, 0};
     };
     /////////////////////////////////////////////////////////////////////////////////////////
 }

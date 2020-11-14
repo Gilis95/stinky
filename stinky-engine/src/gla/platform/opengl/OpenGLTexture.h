@@ -31,7 +31,6 @@ namespace stinky {
             return m_Height;
         };
     private:
-        uint32_t m_RendererID;
         int m_Width, m_Height;
     };
 }

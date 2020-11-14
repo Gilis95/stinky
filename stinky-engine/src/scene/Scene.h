@@ -22,6 +22,8 @@ namespace stinky {
 
         void OnUpdate();
 
+        void OnClose();
+
         /** NOTE:: maybe in separate class */
         Entity CreateEntity();
 

@@ -34,8 +34,9 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void Renderer::BeginScene(const glm::mat4 &viewProjection) {
-        m_ViewProjection = viewProjection;
+    void Renderer::BeginScene(const glm::mat4 &view, const glm::mat4 &projection) {
+        m_View = view;
+        m_Projection = projection;
         m_TextureId = 0;
     }
 
@@ -47,50 +48,47 @@ namespace stinky {
     void Renderer::Draw(const RenderCommand &command) {
 
         glm::mat4 translation = glm::translate(glm::mat4(1.0f), command.transformComponent.translation);
-        glm::mat4 translationRotationX = glm::rotate(translation, command.transformComponent.rotation.x, glm::vec3(1.0,0.0,0.0));
-        glm::mat4 translationRotationY = glm::rotate(translationRotationX, command.transformComponent.rotation.y, glm::vec3(0.0,1.0,0.0));
-        glm::mat4 translationRotation = glm::rotate(translationRotationY, command.transformComponent.rotation.z, glm::vec3(0.0,0.0,1.0));
+        glm::mat4 translationRotationX = glm::rotate(translation, command.transformComponent.rotation.x,
+                                                     glm::vec3(1.0, 0.0, 0.0));
+        glm::mat4 translationRotationY = glm::rotate(translationRotationX, command.transformComponent.rotation.y,
+                                                     glm::vec3(0.0, 1.0, 0.0));
+        glm::mat4 translationRotation = glm::rotate(translationRotationY, command.transformComponent.rotation.z,
+                                                    glm::vec3(0.0, 0.0, 1.0));
         glm::mat4 modelMatrix = glm::scale(translationRotation, command.transformComponent.scale);
-
-        unsigned vectorsCount = command.meshComponent.verticesCount / 4;
-        glm::vec4 cubeCoordinates[vectorsCount];
-
-        for (int i = 0; i < vectorsCount; ++i) {
-            cubeCoordinates[i] = modelMatrix * command.meshComponent.vertices[i];
-        }
-
-        //create array buffer, containing shape positions and bind it
-        const auto vertexBuffer = m_RendererFactory->CreateVertexBuffer(cubeCoordinates,
-                                                                        command.meshComponent.verticesCount *
-                                                                        sizeof(float), {
-                                                                                {ShaderDataType::Float4, "position"}
-                                                                        });
-        auto vertexArray = m_RendererFactory->CreateVertexArray();
-        //bind currently bound array buffer to first element of currently bound vertex array
-        vertexArray->AddVertexBuffer(vertexBuffer);
-
-        //Create index buffer, that will define shape vertex positions
-        const auto indexBuffer = m_RendererFactory->CreateIndexBuffer(command.meshComponent.indices,
-                                                                      command.meshComponent.indicesCount);
-
-        vertexArray->SetIndexBuffer(indexBuffer);
 
         if (command.materialComponent.type == MaterialType::TEXTURED) {
             command.materialComponent.material->Bind(m_TextureId);
-            ++m_TextureId;
-        }
-
-        command.programComponent.program->Bind();
-        command.programComponent.program->SetMat4("u_ViewProjection", m_ViewProjection);
-
-        if (command.materialComponent.type == MaterialType::SOLID) {
-            command.programComponent.program->SetFloat4("u_Colour", command.materialComponent.colour);
-        } else {
+            //initialize shader program
+            command.programComponent.program->Bind();
+            command.programComponent.program->SetMat4("u_ViewMatrix", m_View);
+            command.programComponent.program->SetMat4("u_ProjectionMatrix", m_Projection);
+            command.programComponent.program->SetMat4("u_ModelMatrix", modelMatrix);
             command.programComponent.program->SetInteger("u_Texture", command.materialComponent.material->m_RendererID);
-        }
 
-        vertexArray->Bind();
-        m_RendererApi->DrawIndexed(vertexArray);
+            // draw
+            command.meshComponent.vertexArray->Bind();
+            m_RendererApi->DrawIndexed(command.meshComponent.vertexArray);
+
+            // cleanup
+            command.meshComponent.vertexArray->Unbind();
+            command.materialComponent.material->Unbind(m_TextureId);
+
+            ++m_TextureId;
+        } else {
+            //initialize shader program
+            command.programComponent.program->Bind();
+            command.programComponent.program->SetMat4("u_ViewMatrix", m_View);
+            command.programComponent.program->SetMat4("u_ProjectionMatrix", m_Projection);
+            command.programComponent.program->SetMat4("u_ModelMatrix", modelMatrix);
+            command.programComponent.program->SetFloat4("u_Colour", command.materialComponent.colour);
+
+            // draw
+            command.meshComponent.vertexArray->Bind();
+            m_RendererApi->DrawIndexed(command.meshComponent.vertexArray);
+
+            // cleanup
+            command.meshComponent.vertexArray->Unbind();
+        }
     }
 
 

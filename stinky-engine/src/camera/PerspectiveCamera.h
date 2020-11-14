@@ -34,6 +34,7 @@ namespace stinky {
         // Rotate the camera by some amount.
         void Rotate(const glm::quat &rot);
     protected:
+        void RecalculateViewProjectionMatrix() override;
         void RecalculateViewMatrix() override;
     protected:
         glm::quat m_Rotation;

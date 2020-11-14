@@ -31,7 +31,7 @@ namespace stinky {
     };
 }
 
-#if defined(ENABLE_LOG)
+#if defined(STINKY_ENABLE_LOG)
 #define STINKY_TRACE(...)         stinky::Log::getClientLogger()->trace(__VA_ARGS__)
 #define STINKY_INFO(...)          stinky::Log::getClientLogger()->info(__VA_ARGS__)
 #define STINKY_WARN(...)          stinky::Log::getClientLogger()->warn(__VA_ARGS__)

@@ -3,15 +3,16 @@
 #include <camera/PerspectiveCamera.h>
 #include <camera/PerspectiveCameraController.h>
 #include <ecs/CameraComponent.h>
-
 #include <gla/GraphicLayerAbstractionFactory.h>
 #include <gla/VertexBuffer.h>
-#include <scene/Scene.h>
-#include <panels/Workspace.h>
-#include <panels/SceneHierarchyPanel.h>
-#include <panels/EntityInspectorPanel.h>
-#include <panels/ScenePanel.h>
 #include <GLFW/glfw3.h>
+#include <scene/Scene.h>
+
+#include "event/EventController.h"
+#include "panels/Workspace.h"
+#include "panels/SceneHierarchyPanel.h"
+#include "panels/EntityInspectorPanel.h"
+#include "panels/ScenePanel.h"
 
 #include "HoatzinEditorLayer.h"
 
@@ -21,12 +22,14 @@ namespace stinky::hoatzin {
     /////////////////////////////////////////////////////////////////////////////////////////
     HoatzinEditorLayer::HoatzinEditorLayer(GraphicLayerAbstractionFactory *glaFactory,
                                            PerspectiveCameraController *cameraController,
+                                           EventController &eventController,
                                            uint32_t width, uint32_t height)
             : Layer("Hoatzin HoatzinEditorEditor Layer"), m_GLAFactory(glaFactory),
               m_Scene(glaFactory),
               m_SceneManager(glaFactory, m_Scene),
+              m_FrameBuffer(glaFactory->CreateFrameBuffer({width, height})),
               m_CameraController(cameraController), m_Camera(CreateScope<PerspectiveCamera>(width, height)),
-              m_FrameBuffer(glaFactory->CreateFrameBuffer({width, height})) {
+              m_EventController(eventController) {
         Entity entity(m_Scene.CreateEntity());
         entity.AddComponent<CameraComponent>(m_Camera.get(), true);
 
@@ -38,14 +41,22 @@ namespace stinky::hoatzin {
         m_Camera->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 
         m_SceneManager.LoadSceneFromFile("default");
+        m_EventController.RegisterEventHandler(
+                {
+                        EventType::WindowClose,
+                        [this](const Event &event) {
+                            OnClose();
+                        }
+                }
+        );
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void HoatzinEditorLayer::OnUpdate(const Timestep &ts) {
         const auto &frameBufferSpecification = m_FrameBuffer->GetSpecification();
         if (m_ViewportSize.x > 0 && m_ViewportSize.y > 0 &&
-            !(m_ViewportSize.x == frameBufferSpecification.Height &&
-              m_ViewportSize.y == frameBufferSpecification.Width)) {
+            !(m_ViewportSize.x == frameBufferSpecification.Width &&
+              m_ViewportSize.y == frameBufferSpecification.Height)) {
             m_FrameBuffer->WindowResize(m_ViewportSize.x, m_ViewportSize.y);
             m_CameraController->OnWindowResize(m_ViewportSize.x, m_ViewportSize.y);
         }
@@ -65,10 +76,13 @@ namespace stinky::hoatzin {
         /** Render editor */
     }
 
-    void HoatzinEditorLayer::OnDetach() {
+    void HoatzinEditorLayer::OnClose() {
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
+
+        m_FrameBuffer.reset();
+        m_Scene.OnClose();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

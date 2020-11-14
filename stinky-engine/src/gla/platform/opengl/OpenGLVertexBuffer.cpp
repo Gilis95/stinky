@@ -3,21 +3,23 @@
 //
 #include <glad/glad.h>
 
+#include <utility>
+
 #include "gla/platform/opengl/OpenGLVertexBuffer.h"
 
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
-    OpenGLVertexBuffer::OpenGLVertexBuffer(const BufferLayout &layout, unsigned int size)
-            : m_Layout(layout) {
+    OpenGLVertexBuffer::OpenGLVertexBuffer(BufferLayout layout, unsigned int size)
+            : m_Layout(std::move(layout)) {
         glGenBuffers(1, &m_RendererID);
         glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
         glBufferData(GL_ARRAY_BUFFER, size, NULL, GL_DYNAMIC_DRAW);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    OpenGLVertexBuffer::OpenGLVertexBuffer(const BufferLayout &layout, const void *data,
-                                           unsigned int size) : m_Layout(
-            layout) {
+    OpenGLVertexBuffer::OpenGLVertexBuffer(BufferLayout layout, const void *data,
+                                           unsigned int size) : m_Layout(std::move(
+            layout)) {
         glGenBuffers(1, &m_RendererID);
         glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
         glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);

@@ -20,10 +20,13 @@ namespace stinky {
 
         [[nodiscard]] const glm::mat4 &GetProjectionMatrix() const { return m_ProjectionMatrix; }
 
-        [[nodiscard]] const glm::mat4 &GetViewMatrix() const { return m_ViewMatrix; }
+        [[nodiscard]] const glm::mat4 &GetViewMatrix() {
+            RecalculateViewMatrix();
+            return m_ViewMatrix;
+        }
 
         [[nodiscard]] const glm::mat4 &GetViewProjectionMatrix() {
-            RecalculateViewMatrix();
+            RecalculateViewProjectionMatrix();
             return m_ViewProjectionMatrix;
         }
 
@@ -37,6 +40,8 @@ namespace stinky {
         }
 
     protected:
+        virtual void RecalculateViewProjectionMatrix() = 0;
+
         virtual void RecalculateViewMatrix() = 0;
 
     protected:

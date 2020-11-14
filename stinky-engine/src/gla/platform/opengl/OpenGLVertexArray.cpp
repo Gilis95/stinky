@@ -46,13 +46,18 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void OpenGLVertexArray::Bind() const {
-        m_IndexBuffer->Bind();
         glBindVertexArray(m_RendererID);
+
+        ReturnUnless(m_IndexBuffer)
+        m_IndexBuffer->Bind();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void OpenGLVertexArray::Unbind() const {
         glBindVertexArray(0);
+
+        ReturnUnless(m_IndexBuffer)
+        m_IndexBuffer->Unbind();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -65,7 +70,7 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer> &vb) {
-        glBindVertexArray(m_RendererID);
+        Bind();
         vb->Bind();
 
         const auto &layout = vb->GetBufferLayout();
@@ -111,5 +116,8 @@ namespace stinky {
         }
 
         m_VertexBuffers.push_back(vb);
+
+        vb->Unbind();
+        Unbind();
     }
 }

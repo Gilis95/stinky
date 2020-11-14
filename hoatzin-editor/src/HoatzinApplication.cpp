@@ -98,7 +98,8 @@ namespace stinky {
             Application::Init();
 
             PushLayer(
-                    new HoatzinEditorLayer(m_GLAFactory.get(), m_CameraController.get(), WIDTH, HEIGHT));
+                    new HoatzinEditorLayer(m_GLAFactory.get(), m_CameraController.get(), m_EventController, WIDTH,
+                                           HEIGHT));
         }
     }
 

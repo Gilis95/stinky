@@ -7,7 +7,10 @@
 #include <ecs/ProgramComponent.h>
 #include <ecs/TagComponent.h>
 #include <ecs/TransformComponent.h>
-#include "gla/GraphicLayerAbstractionFactory.h"
+#include <gla/GraphicLayerAbstractionFactory.h>
+#include <gla/IndexBuffer.h>
+#include <gla/VertexArray.h>
+#include <gla/VertexBuffer.h>
 #include <glm/glm.hpp>
 #include <scene/Scene.h>
 #include "SaveManager.h"
@@ -77,8 +80,23 @@ namespace stinky::hoatzin {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void SaveManager::LoadSceneFromFile(std::string path) {
+
+        //create array buffer, containing shape positions and bind it
+        const auto quadVertexBuffer = m_GLAFactory->CreateVertexBuffer(quadVertices,
+                                                                       16 *
+                                                                       sizeof(float), {
+                                                                               {ShaderDataType::Float4, "position"}
+                                                                       });
+        //Create index buffer, that will define shape vertex positions
+        const auto quadIndexBuffer = m_GLAFactory->CreateIndexBuffer(quadIndices, 6);
+
+        auto quadVertexArray = m_GLAFactory->CreateVertexArray();
+        //bind currently bound array buffer to first element of currently bound vertex array
+        quadVertexArray->AddVertexBuffer(quadVertexBuffer);
+        quadVertexArray->SetIndexBuffer(quadIndexBuffer);
+
         auto entity = m_Scene.CreateEntity();
-        entity.AddComponent<MeshComponent>(16, quadVertices, 6, quadIndices);
+        entity.AddComponent<MeshComponent>(quadVertexArray);
         entity.AddComponent<TransformComponent>(glm::vec3(0.0f, 0.0f, -10.0f), glm::vec3(2.0f, 2.0f, 2.0f),
                                                 glm::vec3(0.0f, 0.0f, 0.0f));
         entity.AddComponent<ProgramComponent>(m_GLAFactory->CreateShader(
@@ -87,13 +105,29 @@ namespace stinky::hoatzin {
                 "/home/christian/workspace/stinky/stinky-sandbox/resources/skybox.png"));
         entity.AddComponent<TagComponent>("Skybox");
 
+
+        //create array buffer, containing shape positions and bind it
+        const auto cubeVertexBuffer = m_GLAFactory->CreateVertexBuffer(cubeVertices,
+                                                                       CUBE_VERTICES_COUNT *
+                                                                       sizeof(float), {
+                                                                               {ShaderDataType::Float4, "position"}
+                                                                       });
+        //Create index buffer, that will define shape vertex positions
+        const auto cubeIndexBuffer = m_GLAFactory->CreateIndexBuffer(cubeIndices, CUBE_INDICES_COUNT);
+
+        auto cubeVertexArray = m_GLAFactory->CreateVertexArray();
+        //bind currently bound array buffer to first element of currently bound vertex array
+        cubeVertexArray->AddVertexBuffer(cubeVertexBuffer);
+        cubeVertexArray->SetIndexBuffer(cubeIndexBuffer);
+
         auto entity1 = m_Scene.CreateEntity();
-        entity1.AddComponent<MeshComponent>(CUBE_VERTICES_COUNT, cubeVertices, CUBE_INDICES_COUNT, cubeIndices);
+        entity1.AddComponent<MeshComponent>(cubeVertexArray);
         entity1.AddComponent<TransformComponent>(glm::vec3(0.8f, 0.0f, -2.0f), glm::vec3(0.5f, 0.5f, 0.5f),
                                                  glm::vec3(0.0f, 0.0f, 0.0f));
         entity1.AddComponent<ProgramComponent>(m_GLAFactory->CreateShader(
                 "/home/christian/workspace/stinky/stinky-sandbox/resources/shaders/basic.shader"));
         entity1.AddComponent<MaterialComponent>(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
         entity1.AddComponent<TagComponent>("Cube");
+
     }
 }
