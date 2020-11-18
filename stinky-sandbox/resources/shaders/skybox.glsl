@@ -11,9 +11,8 @@ out vec4 v_TexCoord;
 
 void main()
 {
-    vec4 pos = vec4(position.xy, 0.0, 1.0);
-    gl_Position = pos;
-    v_TexCoord = u_ProjectionMatrix * u_ViewMatrix * u_ModelMatrix * pos;
+    gl_Position =  position;
+    v_TexCoord = u_ViewMatrix * vec4(position.xyz, 0.0f);
 }
 
 #type fragment

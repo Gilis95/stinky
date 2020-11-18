@@ -94,7 +94,6 @@ namespace stinky::hoatzin {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void HoatzinEditorLayer::ImGuiRender() {
-        ImGui::ShowDemoWindow();
         Workspace::Begin();
 
         SceneHierarchyPanel::Render(m_Scene, m_SelectedEntt);

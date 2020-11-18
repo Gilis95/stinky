@@ -27,8 +27,13 @@ namespace stinky {
 
         // Colour channels contained into image.
         uint32_t stride = channelsCount;
+        uint32_t face = 0;
 
-        uint32_t  face = 0;
+        if (channelsCount == 4) {
+            m_InputFormat = InputImageFormat::RGBA;
+        } else if (channelsCount == 3) {
+            m_InputFormat = InputImageFormat::RGB;
+        }
 
         /**
          * --------------------------------------
@@ -47,8 +52,8 @@ namespace stinky {
         m_FaceHeight = srcHeight / 3;
 
 
-        for (uint32_t  cy = 0; cy < 3; cy++) {
-            for (uint32_t  cx = 0; cx < 4; cx++) {
+        for (uint32_t cy = 0; cy < 3; cy++) {
+            for (uint32_t cx = 0; cx < 4; cx++) {
                 if (cy == 0 || cy == 2) {
                     if (cx != 1) {
                         continue;
@@ -61,16 +66,16 @@ namespace stinky {
                 for (uint32_t y = 0; y < m_FaceHeight; y++) {
                     uint32_t offset = y;
 
-                    unsigned  yp = cy * m_FaceHeight + offset;
-                    for (unsigned  x = 0; x < m_FaceWidth; x++) {
+                    unsigned yp = cy * m_FaceHeight + offset;
+                    for (unsigned x = 0; x < m_FaceWidth; x++) {
                         offset = x;
                         uint xp = cx * m_FaceWidth + offset;
                         cubeTextureData[face][(x + y * m_FaceWidth) * stride + 0] = data[(xp + yp * srcWidth) * stride +
-                                                                                       0];
+                                                                                         0];
                         cubeTextureData[face][(x + y * m_FaceWidth) * stride + 1] = data[(xp + yp * srcWidth) * stride +
-                                                                                       1];
+                                                                                         1];
                         cubeTextureData[face][(x + y * m_FaceWidth) * stride + 2] = data[(xp + yp * srcWidth) * stride +
-                                                                                       2];
+                                                                                         2];
                         if (stride >= 4)
                             cubeTextureData[face][(x + y * m_FaceWidth) * stride + 3] = data[
                                     (xp + yp * srcWidth) * stride + 3];

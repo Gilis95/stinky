@@ -57,7 +57,7 @@ namespace stinky {
 
         glm::vec3 m_CameraPosition{0.0f, 0.0f, 0.0f};
         float m_CameraSpeed = 1.0f;
-        float m_RotationSpeed = 1.1f;
+        float m_RotationSpeed = 5.0f;
 
         std::unordered_map<KeyCode, std::function<void()>> m_CameraMoveFunctions;
     };

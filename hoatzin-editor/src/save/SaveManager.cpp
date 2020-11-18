@@ -82,31 +82,6 @@ namespace stinky::hoatzin {
     void SaveManager::LoadSceneFromFile(std::string path) {
 
         //create array buffer, containing shape positions and bind it
-        const auto quadVertexBuffer = m_GLAFactory->CreateVertexBuffer(quadVertices,
-                                                                       16 *
-                                                                       sizeof(float), {
-                                                                               {ShaderDataType::Float4, "position"}
-                                                                       });
-        //Create index buffer, that will define shape vertex positions
-        const auto quadIndexBuffer = m_GLAFactory->CreateIndexBuffer(quadIndices, 6);
-
-        auto quadVertexArray = m_GLAFactory->CreateVertexArray();
-        //bind currently bound array buffer to first element of currently bound vertex array
-        quadVertexArray->AddVertexBuffer(quadVertexBuffer);
-        quadVertexArray->SetIndexBuffer(quadIndexBuffer);
-
-        auto entity = m_Scene.CreateEntity();
-        entity.AddComponent<MeshComponent>(quadVertexArray);
-        entity.AddComponent<TransformComponent>(glm::vec3(0.0f, 0.0f, -10.0f), glm::vec3(2.0f, 2.0f, 2.0f),
-                                                glm::vec3(0.0f, 0.0f, 0.0f));
-        entity.AddComponent<ProgramComponent>(m_GLAFactory->CreateShader(
-                "/home/christian/workspace/stinky/stinky-sandbox/resources/shaders/skybox.glsl"));
-        entity.AddComponent<MaterialComponent>(m_GLAFactory->CreateCubeTexture(
-                "/home/christian/workspace/stinky/stinky-sandbox/resources/skybox.png"));
-        entity.AddComponent<TagComponent>("Skybox");
-
-
-        //create array buffer, containing shape positions and bind it
         const auto cubeVertexBuffer = m_GLAFactory->CreateVertexBuffer(cubeVertices,
                                                                        CUBE_VERTICES_COUNT *
                                                                        sizeof(float), {
@@ -129,5 +104,28 @@ namespace stinky::hoatzin {
         entity1.AddComponent<MaterialComponent>(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
         entity1.AddComponent<TagComponent>("Cube");
 
+        //create array buffer, containing shape positions and bind it
+        const auto quadVertexBuffer = m_GLAFactory->CreateVertexBuffer(quadVertices,
+                                                                       16 *
+                                                                       sizeof(float), {
+                                                                               {ShaderDataType::Float4, "position"}
+                                                                       });
+        //Create index buffer, that will define shape vertex positions
+        const auto quadIndexBuffer = m_GLAFactory->CreateIndexBuffer(quadIndices, 6);
+
+        auto quadVertexArray = m_GLAFactory->CreateVertexArray();
+        //bind currently bound array buffer to first element of currently bound vertex array
+        quadVertexArray->AddVertexBuffer(quadVertexBuffer);
+        quadVertexArray->SetIndexBuffer(quadIndexBuffer);
+
+        auto entity = m_Scene.CreateEntity();
+        entity.AddComponent<MeshComponent>(quadVertexArray);
+        entity.AddComponent<TransformComponent>(glm::vec3(1.0f), glm::vec3(1.0f),
+                                                glm::vec3(1.0f));
+        entity.AddComponent<ProgramComponent>(m_GLAFactory->CreateShader(
+                "/home/christian/workspace/stinky/stinky-sandbox/resources/shaders/skybox.glsl"));
+        entity.AddComponent<MaterialComponent>(m_GLAFactory->CreateCubeTexture(
+                "/home/christian/workspace/stinky/hoatzin-editor/assets/blue-atmosphere.png"));
+        entity.AddComponent<TagComponent>("Skybox");
     }
 }

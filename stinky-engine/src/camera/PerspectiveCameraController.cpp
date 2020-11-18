@@ -50,7 +50,7 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void PerspectiveCameraController::FPSLookAt(const Timestep &ts) {
-        glm::vec2 delta = m_NewMousePosition - m_OldMousePosition;
+        glm::vec2 delta = m_OldMousePosition - m_NewMousePosition;
 
         float pitch = delta.y * m_RotationSpeed;
         float yaw = delta.x * m_RotationSpeed;
@@ -61,12 +61,12 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void PerspectiveCameraController::MoveLeft() {
-        --m_CameraPosition.x;
+        ++m_CameraPosition.x;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void PerspectiveCameraController::MoveRight() {
-        ++m_CameraPosition.x;
+        --m_CameraPosition.x;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

@@ -63,7 +63,7 @@ namespace stinky {
             command.programComponent.program->SetMat4("u_ViewMatrix", m_View);
             command.programComponent.program->SetMat4("u_ProjectionMatrix", m_Projection);
             command.programComponent.program->SetMat4("u_ModelMatrix", modelMatrix);
-            command.programComponent.program->SetInteger("u_Texture", command.materialComponent.material->m_RendererID);
+            command.programComponent.program->SetInteger("u_Texture", m_TextureId);
 
             // draw
             command.meshComponent.vertexArray->Bind();
