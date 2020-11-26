@@ -5,6 +5,7 @@
 #include "scene/Scene.h"
 
 #include <entt/entt.hpp>
+#include <Tracy.hpp>
 
 #include "camera/Camera.h"
 #include "ecs/CameraComponent.h"
@@ -25,16 +26,19 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void Scene::OnUpdate() {
+        Camera *camera;
+
+        ZoneScopedN("SceneUpdate")
 
         auto camerasView = m_Registry.view<CameraComponent>();
-
-        Camera *camera;
 
         for (auto cameraView:  camerasView) {
             auto &tmpCameraRef = camerasView.get<CameraComponent>(cameraView);
             ContinueUnless(tmpCameraRef.m_IsPrimary)
             camera = tmpCameraRef.m_Camera;
         }
+
+        AssertReturnUnless(camera);
 
         m_Renderer->Clear();
         m_Renderer->BeginScene(camera->GetViewMatrix(), camera->GetProjectionMatrix());
@@ -54,7 +58,7 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void Scene::OnClose(){
+    void Scene::OnClose() {
         m_Registry.clear<>();
     }
 

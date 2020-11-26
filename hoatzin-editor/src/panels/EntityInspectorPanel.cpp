@@ -5,6 +5,7 @@
 #include <ecs/Entity.h>
 #include <ecs/TransformComponent.h>
 #include <imgui.h>
+#include <Tracy.hpp>
 
 #include "panels/EntityInspectorPanel.h"
 #include "style/HoatzinImGui.h"
@@ -12,14 +13,16 @@
 namespace stinky::hoatzin::EntityInspectorPanel {
     /////////////////////////////////////////////////////////////////////////////////////////
     void Render(Entity &selectedEntt) {
+        ZoneScopedN("EntityInspectionPanel")
+
         ImGui::Begin("Inspector");
         if (selectedEntt) {
             auto transform = selectedEntt.GetComponent<TransformComponent>();
-            if (transform.first) {
+            if (transform.has_value()) {
                 if (ImGui::CollapsingHeader("Transformation")) {
-                    HoatzinImGui::DrawVec3Control("Translation", transform.second.get().translation);
-                    HoatzinImGui::DrawVec3Control("Scale", transform.second.get().scale);
-                    HoatzinImGui::DrawVec3Control("Rotation", transform.second.get().rotation);
+                    HoatzinImGui::DrawVec3Control("Translation", transform.value().get().translation);
+                    HoatzinImGui::DrawVec3Control("Scale", transform.value().get().scale);
+                    HoatzinImGui::DrawVec3Control("Rotation", transform.value().get().rotation);
                 }
             }
         }

@@ -4,17 +4,14 @@
 
 #pragma once
 
-#include "stinkypch.h"
-#include "StinkyPrerequisites.h"
-
 #include <glm/glm.hpp>
+
+#include "core/StinkyMemory.h"
+#include "StinkyPrerequisites.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    class RendererApi;
-    class GraphicLayerAbstractionFactory;
-
     struct RenderCommand {
         const MeshComponent &meshComponent;
         const TransformComponent &transformComponent;

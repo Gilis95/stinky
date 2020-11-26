@@ -3,11 +3,13 @@
 //
 
 #include <imgui.h>
+#include <Tracy.hpp>
 #include "panels/Workspace.h"
 
 namespace stinky::hoatzin::Workspace{
     /////////////////////////////////////////////////////////////////////////////////////////
     void Begin() {
+        ZoneScopedN("ImGuiWorkspaceBegin")
         // Note: Switch this to true to enable dockspace
         static bool dockspaceOpen = true;
         static bool opt_fullscreen_persistant = true;
@@ -60,6 +62,7 @@ namespace stinky::hoatzin::Workspace{
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void End() {
+        ZoneScopedN("ImGuiWorkspaceEnd")
         ImGui::End();
     }
 }

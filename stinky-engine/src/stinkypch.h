@@ -21,8 +21,8 @@
 #include <glm/gtx/euler_angles.hpp>
 
 #include "core/StinkyLogger.h"
-
 #include "core/StinkyMacros.h"
+#include "core/StinkyMemory.h"
 
 #ifdef SK_PLATFORM_WINDOWS
 #include <Windows.h>

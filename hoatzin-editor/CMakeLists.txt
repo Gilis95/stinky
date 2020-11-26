@@ -32,9 +32,10 @@ set(HDR_FILES
         ${PANELS_HDR_DIR}/SceneHierarchyPanel.h
         ${PANELS_HDR_DIR}/EntityInspectorPanel.h
         ${PANELS_HDR_DIR}/ScenePanel.h
+        ${PANELS_HDR_DIR}/Workspace.h
         ${SAVE_HDR_DIR}/SaveManager.h
         ${STYLE_HDR_DIR}/HoatzinImGui.h
-        src/panels/Workspace.h)
+        )
 
 set(SRC_FILES
         ${EVENT_SRC_DIR}/HoatzinEditorLayer.cpp
@@ -42,14 +43,14 @@ set(SRC_FILES
         ${PANELS_SRC_DIR}/EntityInspectorPanel.cpp
         ${PANELS_SRC_DIR}/SceneHierarchyPanel.cpp
         ${PANELS_SRC_DIR}/ScenePanel.cpp
+        ${PANELS_SRC_DIR}/Workspace.cpp
         ${SAVE_SRC_DIR}/SaveManager.cpp
         ${SRC_DIR}/HoatzinApplication.cpp
         ${STYLE_SRC_DIR}/HoatzinImGui.cpp
-        src/panels/Workspace.cpp)
+        )
 
 # Definitions
-add_definitions(-DIMGUI_IMPL_OPENGL_LOADER_GLAD)
-add_definitions(-DSTINKY_ENABLE_LOG)
+add_definitions(-DIMGUI_IMPL_OPENGL_LOADER_GLAD -DSTINKY_ENABLE_LOG -DTRACY_ENABLE )
 
 #3rd party libraries
 add_subdirectory(${IMGUI_DEAR_DIR})
@@ -62,6 +63,7 @@ target_include_directories(hoatzin-editor PRIVATE
         ${HDR_DIR}
         ${IMGUI_DEAR_DIR}/
         ${STINKY_ENGINE_DIR}/src
+        ${TRACY_DIR}
         ${WINDOW_ABSTRACTION_INCLUDE_DIR}
         )
 
@@ -70,5 +72,6 @@ target_link_libraries(hoatzin-editor PRIVATE
         glm
         imgui-dear
         spdlog
+        tracy
         ${WINDOW_ABSTRACTION_INCLUDE_DIR}
         )

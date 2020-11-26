@@ -7,6 +7,7 @@
 #include <string>
 #include <utility>
 #include <stb_image.h>
+#include <Tracy.hpp>
 
 
 namespace stinky {
@@ -18,6 +19,7 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void CubeTexture::LoadFromSingleFile() {
+        ZoneScopedN("CubeTextureFileRead")
         int srcWidth, srcHeight, channelsCount;
 
         byte *cubeTextureData[6];

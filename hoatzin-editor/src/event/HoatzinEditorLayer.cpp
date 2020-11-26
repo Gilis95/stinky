@@ -3,10 +3,12 @@
 #include <camera/PerspectiveCamera.h>
 #include <camera/PerspectiveCameraController.h>
 #include <ecs/CameraComponent.h>
+#include <gla/FrameBuffer.h>
 #include <gla/GraphicLayerAbstractionFactory.h>
 #include <gla/VertexBuffer.h>
 #include <GLFW/glfw3.h>
 #include <scene/Scene.h>
+#include <Tracy.hpp>
 
 #include "event/EventController.h"
 #include "panels/Workspace.h"
@@ -41,39 +43,42 @@ namespace stinky::hoatzin {
         m_Camera->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 
         m_SceneManager.LoadSceneFromFile("default");
-        m_EventController.RegisterEventHandler(
-                {
-                        EventType::WindowClose,
-                        [this](const Event &event) {
-                            OnClose();
-                        }
+        m_EventController.RegisterEventHandler<WindowCloseEvent>(
+                [this](const Event &event) {
+                    OnClose();
                 }
         );
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void HoatzinEditorLayer::OnUpdate(const Timestep &ts) {
-        const auto &frameBufferSpecification = m_FrameBuffer->GetSpecification();
-        if (m_ViewportSize.x > 0 && m_ViewportSize.y > 0 &&
-            !(m_ViewportSize.x == frameBufferSpecification.Width &&
-              m_ViewportSize.y == frameBufferSpecification.Height)) {
-            m_FrameBuffer->WindowResize(m_ViewportSize.x, m_ViewportSize.y);
-            m_CameraController->OnWindowResize(m_ViewportSize.x, m_ViewportSize.y);
+        {
+            ZoneScopedN("FrameBufferSceneRender")
+            const auto &frameBufferSpecification = m_FrameBuffer->GetSpecification();
+            if (m_ViewportSize.x > 0 && m_ViewportSize.y > 0 &&
+                !(m_ViewportSize.x == frameBufferSpecification.Width &&
+                  m_ViewportSize.y == frameBufferSpecification.Height)) {
+                m_FrameBuffer->WindowResize(m_ViewportSize.x, m_ViewportSize.y);
+                m_CameraController->OnWindowResize(m_ViewportSize.x, m_ViewportSize.y);
+            }
+            /** Render current scene */
+            m_FrameBuffer->Bind();
+
+            m_CameraController->OnUpdate(ts);
+            m_Scene.OnUpdate();
+
+            m_FrameBuffer->Unbind();
+            /** Render current scene */
         }
-        /** Render current scene */
-        m_FrameBuffer->Bind();
 
-        m_CameraController->OnUpdate(ts);
-        m_Scene.OnUpdate();
-
-        m_FrameBuffer->Unbind();
-        /** Render current scene */
-
-        /** Render editor */
-        ImGuiBegin();
-        ImGuiRender();
-        ImGuiEnd();
-        /** Render editor */
+        {
+            ZoneScopedN("ImGuiRender")
+            /** Render editor */
+            ImGuiBegin();
+            ImGuiRender();
+            ImGuiEnd();
+            /** Render editor */
+        }
     }
 
     void HoatzinEditorLayer::OnClose() {
@@ -87,6 +92,7 @@ namespace stinky::hoatzin {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void HoatzinEditorLayer::ImGuiBegin() {
+        ZoneScopedN("ImGuiFrameCreation")
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
@@ -108,6 +114,7 @@ namespace stinky::hoatzin {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void HoatzinEditorLayer::ImGuiEnd() {
+        ZoneScopedN("ImGuiDraw")
         ImGuiIO &io = ImGui::GetIO();
         io.DisplaySize = ImVec2(1024, 720);
 

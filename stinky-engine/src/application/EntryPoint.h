@@ -5,7 +5,7 @@
 int main(int argc, char **argv) {
     auto app = stinky::CreateApplication();
 
-    app->RegisterEvents();
+    app->RegisterEventHandlers();
     app->Init();
 
     app->Run();

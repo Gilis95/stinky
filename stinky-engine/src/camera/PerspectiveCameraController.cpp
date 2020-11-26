@@ -1,11 +1,14 @@
 //
 // Created by christian on 30/08/2020.
 //
-#include <event/MouseEvent.h>
-#include <event/KeyEvent.h>
-#include <event/WindowsEvent.h>
+#include <Tracy.hpp>
 #include "camera/PerspectiveCamera.h"
 #include "camera/PerspectiveCameraController.h"
+#include "event/MouseEvent.h"
+#include "event/KeyEvent.h"
+#include "event/Timestep.h"
+#include "event/WindowsEvent.h"
+#include "stinkypch.h"
 
 namespace stinky {
 
@@ -50,6 +53,7 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void PerspectiveCameraController::FPSLookAt(const Timestep &ts) {
+        ZoneScopedN("CameraRotation")
         glm::vec2 delta = m_OldMousePosition - m_NewMousePosition;
 
         float pitch = delta.y * m_RotationSpeed;
@@ -91,7 +95,9 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void PerspectiveCameraController::OnUpdate(const Timestep &ts) {
+        ZoneScopedN("CameraUpdate")
         if (m_CameraPosition.x != 0 || m_CameraPosition.y != 0 || m_CameraPosition.z != 0) {
+            ZoneScopedN("CameraTranslation")
             m_CameraPosition.x *= (m_CameraSpeed * ts);
             m_CameraPosition.y *= (m_CameraSpeed * ts);
             m_CameraPosition.z *= (m_CameraSpeed * ts);
@@ -109,7 +115,7 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void PerspectiveCameraController::OnKeyboardEvent(const Event &keyPressedEvent) {
+    void PerspectiveCameraController::OnKeyboardEvent(const KeyPressedEvent &keyPressedEvent) {
         const auto keyCode = dynamic_cast<const KeyPressedEvent &>(keyPressedEvent).m_Key;
 
         auto functionToExecute = m_CameraMoveFunctions.find(keyCode);
@@ -119,17 +125,17 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void PerspectiveCameraController::OnMousePressed(const Event &event) {
+    void PerspectiveCameraController::OnMousePressed(const MouseButtonPressedEvent &event) {
         m_MousePressed = true;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void PerspectiveCameraController::OnMouseReleased(const Event &event) {
+    void PerspectiveCameraController::OnMouseReleased(const MouseButtonReleasedEvent &event) {
         m_MousePressed = false;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void PerspectiveCameraController::OnMouseMoved(const Event &event) {
+    void PerspectiveCameraController::OnMouseMoved(const MouseMovedEvent &event) {
         const auto mouseMovedEvent = dynamic_cast<const MouseMovedEvent &>(event);
 
         if (m_MousePressed) {
@@ -149,10 +155,8 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void PerspectiveCameraController::OnWindowResize(const Event &event) {
-        auto resizeEvent = dynamic_cast<const WindowResizeEvent &>(event);
-
-        OnWindowResize(resizeEvent.m_Width, resizeEvent.m_Height);
+    void PerspectiveCameraController::OnWindowResize(const WindowResizeEvent &event) {
+        OnWindowResize(event.m_Width, event.m_Height);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -160,5 +164,4 @@ namespace stinky {
         float aspectRatio = static_cast<float>(width) / static_cast<float>(height);
         m_Camera->SetProjectionRH(45, aspectRatio, 1, -1);
     }
-
 }

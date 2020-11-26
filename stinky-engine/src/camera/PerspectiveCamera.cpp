@@ -4,9 +4,7 @@
 
 #include "camera/PerspectiveCamera.h"
 
-#include <glm/glm.hpp>
-#include <glm/gtx/transform.hpp>
-#include <glm/gtx/quaternion.hpp>
+#include "stinkypch.h"
 
 namespace stinky {
 
@@ -14,14 +12,12 @@ namespace stinky {
     PerspectiveCamera::PerspectiveCamera(int screenWidth, int screenHeight, float fov, float zNear, float zFar)
             : Camera(glm::perspective(glm::radians(fov), (float) screenWidth / (float) screenHeight, zNear, zFar)),
               m_Rotation(1.0, 0.0, 0.0, 0.0) {
-        std::cout << (float) screenWidth / (float) screenHeight << std::endl;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void PerspectiveCamera::SetProjectionRH(float fov, float aspectRatio, float zNear, float zFar) {
         m_ProjectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, zNear, zFar);
         m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
-        std::cout << aspectRatio << std::endl;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

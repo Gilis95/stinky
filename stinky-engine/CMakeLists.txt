@@ -3,7 +3,7 @@ project(stinky-engine)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_definitions(-DENABLE_LOG -DENABLE_ASSERTS -D_CRT_SECURE_NO_WARNINGS -DDEBUG)
+add_definitions(-DSTINKY_ENABLE_LOG -D_CRT_SECURE_NO_WARNINGS -DSTINKY_ENGINE_DEBUG -DTRACY_ENABLE)
 
 ################################################################################################
 #Project Header directory
@@ -26,6 +26,7 @@ set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
 
 set(APPLICATION_SRC_DIR ${SRC_DIR}/application)
 set(CAMERA_SRC_DIR ${SRC_DIR}/camera)
+set(CORE_SRC_DIR ${SRC_DIR}/core)
 set(EVENT_SRC_DIR ${SRC_DIR}/event)
 set(ECS_SRC_DIR ${SRC_DIR}/ecs)
 set(GLA_SRC_DIR ${SRC_DIR}/gla)
@@ -75,6 +76,7 @@ set(HDR_FILES
         ${EVENT_HDR_DIR}/Timestep.h
         ${EVENT_HDR_DIR}/ApplicationEvent.h
         ${EVENT_HDR_DIR}/platform/glfw/GLFWWindowEvent.h
+        ${EVENT_HDR_DIR}/WindowsEvent.h
 
         # Graphic Layer Abstraction module
         ${GLA_HDR_DIR}/CubeTexture.h
@@ -91,13 +93,14 @@ set(HDR_FILES
         ${HDR_DIR}/StinkyPrerequisites.h
 
         # Graphic Layer Abstraction OpenGL implementation
+        ${OPENGL_HDR_DIR}/OpenGLFrameBuffer.h
         ${OPENGL_HDR_DIR}/OpenGLGraphicLayerFactory.h
         ${OPENGL_HDR_DIR}/OpenGLRenderer.h
         ${OPENGL_HDR_DIR}/OpenGLVertexBuffer.h
         ${OPENGL_HDR_DIR}/OpenGLVertexArray.h
         ${OPENGL_HDR_DIR}/OpenGLShader.h
+        ${OPENGL_HDR_DIR}/OpenGLCubeTexture.h
         ${OPENGL_HDR_DIR}/OpenGLTexture.h
-        ${OPENGL_HDR_DIR}/OpenGLFrameBuffer.h
 
         # Renderer API
         ${RENDERER_HDR_DIR}/Renderer.h
@@ -111,7 +114,7 @@ set(HDR_FILES
 
         ${STB_DIR}/stb_image.h
         ${STB_DIR}/stb_image_write.h
-        src/event/WindowsEvent.h)
+        )
 
 ################################################################################################
 set(SRC_FILES
@@ -125,17 +128,20 @@ set(SRC_FILES
         ${CAMERA_SRC_DIR}/PerspectiveCamera.cpp
         ${CAMERA_SRC_DIR}/PerspectiveCameraController.cpp
 
+        ${CORE_SRC_DIR}/StinkyMemory.h
+
         # Entity Component System
         ${ECS_SRC_DIR}/CameraComponent.cpp
         ${ECS_SRC_DIR}/MaterialComponent.cpp
         ${ECS_SRC_DIR}/MeshComponents.cpp
         ${ECS_SRC_DIR}/ProgramComponent.cpp
+        ${ECS_SRC_DIR}/TagComponent.h
         ${ECS_SRC_DIR}/TransformComponent.cpp
 
         #Events
-        ${EVENT_SRC_DIR}/EventController.cpp
         ${EVENT_SRC_DIR}/LayerStack.cpp
         ${EVENT_SRC_DIR}/Layer.cpp
+        ${EVENT_SRC_DIR}/EventController.cpp
 
         # Graphic Layer Abstraction
         ${GLA_SRC_DIR}/GraphicLayerAbstractionFactory.cpp
@@ -150,7 +156,6 @@ set(SRC_FILES
         ${OPENGL_SRC_DIR}/OpenGLTexture.cpp
         ${OPENGL_SRC_DIR}/OpenGLVertexBuffer.cpp
         ${OPENGL_SRC_DIR}/OpenGLVertexArray.cpp
-        ${OPENGL_SRC_DIR}/OpenGLCubeTexture.h
         ${OPENGL_SRC_DIR}/OpenGLCubeTexture.cpp
 
         #Render API
@@ -168,7 +173,7 @@ set(SRC_FILES
         #Window submodule
         ${WINDOW_SRC_DIR}/Window.cpp
         ${WINDOW_SRC_DIR}/glfw/PlatformIndependentWindow.cpp
-        src/ecs/TagComponent.h)
+        )
 
 add_library(stinky-engine STATIC ${SRC_FILES} ${HDR_FILES})
 
@@ -179,6 +184,7 @@ target_include_directories(stinky-engine PRIVATE
         ${OPENGL_INCLUDE_DIRS}
         ${SPDLOG_DIR}/include
         ${STB_DIR}
+        ${TRACY_DIR}
         ${WINDOW_ABSTRACTION_INCLUDE_DIR}
         )
 
@@ -186,5 +192,6 @@ target_link_libraries(stinky-engine PRIVATE
         glm
         ${OPENGL_LIB}
         spdlog
+        tracy
         ${WINDOW_ABSTRACTION_LIB}
         )

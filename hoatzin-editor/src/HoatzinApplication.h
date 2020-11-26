@@ -25,7 +25,7 @@ namespace stinky {
         public:
             HoatzinApplication();
 
-            void RegisterEvents() override;
+            void RegisterEventHandlers() override;
 
             void Init() override;
 

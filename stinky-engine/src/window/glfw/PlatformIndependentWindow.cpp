@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <event/MouseEvent.h>
 #include <event/platform/glfw/GLFWWindowEvent.h>
+#include <Tracy.hpp>
 
 #include "event/WindowsEvent.h"
 #include "event/EventController.h"
@@ -31,12 +32,6 @@ namespace stinky {
     };
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void PlatformIndependentWindow::RegisterEvents() {
-        Window::RegisterEvents();
-        m_EventController.RegisterEvent(EventType::GLFWWindowPostInitEvent);
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////
     void PlatformIndependentWindow::Init() {
         int status = glfwInit();
 
@@ -54,7 +49,8 @@ namespace stinky {
         // create context for current window
         glfwMakeContextCurrent(m_Window);
 
-        glfwSwapInterval(5);
+        //VSync
+        glfwSwapInterval(0);
 
         AssertReturnUnless(gladLoadGLLoader((GLADloadproc) glfwGetProcAddress));
 
@@ -135,12 +131,12 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void PlatformIndependentWindow::OnUpdate(const Event &onUpdateEvent) {
+        ZoneScopedN("GLFWUpdate")
+        //poll for process events
+        glfwPollEvents();
 
         // swap front and back buffer
         glfwSwapBuffers(m_Window);
-
-        //poll for process events
-        glfwPollEvents();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

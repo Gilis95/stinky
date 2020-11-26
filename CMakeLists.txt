@@ -12,6 +12,7 @@ set(GLAD_DIR ${PROJECT_SOURCE_DIR}/vendor/glad/)
 set(GLFW_DIR ${PROJECT_SOURCE_DIR}/vendor/glfw/)
 set(GLM_DIR ${PROJECT_SOURCE_DIR}/vendor/glm)
 set(SPDLOG_DIR ${PROJECT_SOURCE_DIR}/vendor/spdlog)
+set(TRACY_DIR ${PROJECT_SOURCE_DIR}/vendor/tracy)
 
 set(ENTT_DIR_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/vendor/entt/src)
 set(OPENGL_INCLUDE_DIRS ${GLAD_DIR}/include)
@@ -26,6 +27,7 @@ add_subdirectory(${GLAD_DIR})
 add_subdirectory(${GLFW_DIR})
 add_subdirectory(${GLM_DIR})
 add_subdirectory(${SPDLOG_DIR})
+add_subdirectory(${TRACY_DIR})
 
 #Submodules
 add_subdirectory(stinky-engine)

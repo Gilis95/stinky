@@ -5,9 +5,9 @@
 #pragma once
 
 #include <entt/entity/registry.hpp>
-#include <renderer/Renderer.h>
-#include <ecs/Entity.h>
-#include "stinkypch.h"
+
+#include "ecs/Entity.h"
+#include "renderer/Renderer.h"
 #include "StinkyPrerequisites.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////

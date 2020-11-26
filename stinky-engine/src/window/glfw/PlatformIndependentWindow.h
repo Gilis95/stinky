@@ -31,8 +31,6 @@ namespace stinky {
 
         ~PlatformIndependentWindow() override;
 
-        void RegisterEvents() override;
-
         void Init() override;
 
         void OnUpdate(const Event &) override;

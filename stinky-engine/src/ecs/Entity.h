@@ -2,22 +2,22 @@
 
 #include <cstdint>
 #include <entt/entity/registry.hpp>
-
-#include "stinkypch.h"
+#include "core/StinkyMacros.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
     class Entity {
     public:
-        explicit Entity(): m_Registry(nullptr){
-        }
-        /////////////////////////////////////////////////////////////////////////////////////////
-        explicit Entity(entt::registry* registry) : m_Registry(registry), m_EntityHandle(registry->create()) {
+        explicit Entity() : m_Registry(nullptr) {
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////
-        explicit Entity(entt::registry* registry, const entt::entity &entt) : m_Registry(registry),
+        explicit Entity(entt::registry *registry) : m_Registry(registry), m_EntityHandle(registry->create()) {
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////////
+        explicit Entity(entt::registry *registry, const entt::entity &entt) : m_Registry(registry),
                                                                               m_EntityHandle(entt) {
         }
 
@@ -40,10 +40,9 @@ namespace stinky {
 
         /////////////////////////////////////////////////////////////////////////////////////////
         template<typename T>
-        [[nodiscard]] std::pair<bool, std::reference_wrapper<T>> GetComponent() {
-            static T s_Empty;
-            AssertReturnUnless(HasComponent<T>(), std::make_pair(false, std::reference_wrapper<T>(s_Empty)));
-            return std::make_pair(true, std::reference_wrapper<T>(m_Registry->get<T>(m_EntityHandle)));
+        [[nodiscard]] std::optional<std::reference_wrapper<T>> GetComponent() {
+            ReturnUnless(HasComponent<T>(), {});
+            return {std::reference_wrapper<T>(m_Registry->get<T>(m_EntityHandle))};
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////
@@ -80,7 +79,7 @@ namespace stinky {
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////
-        Entity &operator=(const Entity& copy) noexcept = default;
+        Entity &operator=(const Entity &copy) noexcept = default;
 
         /////////////////////////////////////////////////////////////////////////////////////////
         Entity &operator=(Entity &&copy) noexcept {
@@ -91,7 +90,7 @@ namespace stinky {
 
     private:
         entt::entity m_EntityHandle{entt::null};
-        entt::registry* m_Registry;
+        entt::registry *m_Registry;
     };
 }
 /////////////////////////////////////////////////////////////////////////////////////////

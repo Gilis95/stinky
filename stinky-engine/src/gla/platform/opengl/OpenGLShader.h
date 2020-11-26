@@ -3,7 +3,7 @@
 //
 #pragma once
 
-#include "stinkypch.h"
+#include <unordered_map>
 
 #include "gla/Shader.h"
 
@@ -12,17 +12,11 @@
 namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    struct ShaderElements {
-        std::string vertex;
-        std::string fragment;
-    };
-
-    /////////////////////////////////////////////////////////////////////////////////////////
     class OpenGLShader : public Shader {
     public:
-        OpenGLShader(const std::string &filePath);
+        explicit OpenGLShader(const std::string &filePath);
 
-        ~OpenGLShader();
+        ~OpenGLShader() override;
 
         void Bind() const override;
 
@@ -33,6 +27,7 @@ namespace stinky {
         void SetFloat4(const std::string &name, glm::vec4 vector) override;
 
         void SetMat4(const std::string &name, glm::mat4 matrix) override;
+
     private:
         uint32_t m_RendererID;
         std::unordered_map<uint32_t, std::string> m_ShaderSources;

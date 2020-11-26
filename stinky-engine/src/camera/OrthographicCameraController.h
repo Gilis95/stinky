@@ -4,13 +4,12 @@
 
 #pragma once
 
-#include <list>
 #include <unordered_map>
 #include <functional>
 
-#include "event/KeyEvent.h"
-#include "event/Timestep.h"
-#include "OrthographicCamera.h"
+#include "StinkyPrerequisites.h"
+#include "core/KeyboardCodes.h"
+
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -20,7 +19,7 @@ namespace stinky {
         explicit OrthographicCameraController(OrthographicCamera &camera, float aspectRatio);
 
         void OnUpdate(const Timestep &ts);
-        void OnKeyboardEvent(const Event &keyPressedEvent);
+        void OnKeyboardEvent(const KeyPressedEvent &keyPressedEvent);
 
         void MoveLeft();
         void MoveRight();
@@ -29,10 +28,10 @@ namespace stinky {
         void RotateLeft();
         void RotateRight();
 
-        void OnWindowResize(const Event &event);
+        void OnWindowResize(const WindowResizeEvent &event);
         void WindowResize(float width, float height);
 
-        void OnZoom(const Event &e);
+        void OnZoom(const MouseScrolledEvent &e);
 
     private:
         OrthographicCamera &m_Camera;

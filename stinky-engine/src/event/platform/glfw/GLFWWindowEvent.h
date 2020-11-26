@@ -5,12 +5,14 @@
 #pragma once
 
 #include <GLFW/glfw3.h>
+#include <sstream>
+
 #include "event/Event.h"
 
 namespace stinky {
     class GLFWWindowPostInitEvent : public Event {
     public:
-        GLFWWindowPostInitEvent(GLFWwindow *window)
+        explicit GLFWWindowPostInitEvent(GLFWwindow *window)
                 : EVENT_CONSTRUCTOR(GLFWWindowPostInitEvent), m_Window(window) {
         }
 
@@ -22,6 +24,5 @@ namespace stinky {
 
     public:
         GLFWwindow *m_Window;
-
     };
 }

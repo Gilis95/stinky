@@ -1,6 +1,7 @@
 //
 // Created by christian on 06/08/2020.
 //
+#include <Tracy.hpp>
 #include "renderer/Renderer.h"
 
 #include "ecs/MaterialComponent.h"
@@ -13,6 +14,7 @@
 #include "gla/RendererApi.h"
 #include "gla/Shader.h"
 #include "gla/Texture.h"
+#include "stinkypch.h"
 
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -46,7 +48,7 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void Renderer::Draw(const RenderCommand &command) {
-
+        ZoneScopedN("RenderDrawCall")
         glm::mat4 translation = glm::translate(glm::mat4(1.0f), command.transformComponent.translation);
         glm::mat4 translationRotationX = glm::rotate(translation, command.transformComponent.rotation.x,
                                                      glm::vec3(1.0, 0.0, 0.0));

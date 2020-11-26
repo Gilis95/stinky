@@ -19,3 +19,6 @@
 [submodule "hoatzin-editor/vendor/imgui"]
 	path = hoatzin-editor/vendor/imgui
 	url = git@github.com:Gilis95/imgui.git
+[submodule "vendor/tracy"]
+	path = vendor/tracy
+	url = git@github.com:Gilis95/tracy.git

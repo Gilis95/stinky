@@ -6,6 +6,7 @@
 #include <glad/glad.h>
 #include <fstream>
 #include <glm/ext.hpp>
+#include <Tracy.hpp>
 
 #include "core/StinkyMacros.h"
 #include "gla/platform/opengl/OpenGLShader.h"
@@ -28,6 +29,7 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     [[nodiscard]] static std::string readFile(const std::string &filepath) {
+        ZoneScopedN("ShaderFileRead")
         std::string result;
         std::ifstream in(filepath, std::ios::in | std::ios::binary);
         AssertReturnUnless(in, result);
@@ -35,7 +37,7 @@ namespace stinky {
         in.seekg(0, std::ios::end);
         size_t size = in.tellg();
 
-        AssertReturnUnless(size == -1, result);
+        AssertReturnIf(size == -1, result);
         result.resize(size);
         in.seekg(0, std::ios::beg);
         in.read(&result[0], size);
@@ -45,7 +47,7 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    OpenGLShader::OpenGLShader(const std::string &filePath) {
+    OpenGLShader::OpenGLShader(const std::string &filePath) : m_RendererID(0) {
         ParseShaders(readFile(filePath));
         CreateProgram();
     }
@@ -79,6 +81,7 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void OpenGLShader::ParseShaders(const std::string &source) {
+        ZoneScopedN("ShaderParse")
         const char *typeToken = "#type";
         size_t typeTokenLength = strlen(typeToken);
         size_t pos = source.find(typeToken, 0); //Start of shader type declaration line
@@ -101,16 +104,15 @@ namespace stinky {
             AssertReturnIf(nextLinePos == std::string::npos);
             pos = source.find(typeToken, nextLinePos); //Start of next shader type declaration line
 
-            m_ShaderSources[shaderTypeEnum] = (pos == std::string::npos) ? source.substr(
-                    nextLinePos)
-                                                                         : source.substr(
-                            nextLinePos,
-                            pos - nextLinePos);
+            m_ShaderSources[shaderTypeEnum] = (pos == std::string::npos) ?
+                                              source.substr(nextLinePos) :
+                                              source.substr(nextLinePos, pos - nextLinePos);
         }
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void OpenGLShader::CreateProgram() {
+        ZoneScopedN("ShaderBind")
         m_RendererID = glCreateProgram();
         std::array<GLenum, 2> glShaderIDs{};
         int glShaderIDIndex = 0;
@@ -159,6 +161,7 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     GLuint OpenGLShader::CompileShader(GLenum type, const std::string &shaderCode) {
+        ZoneScopedN("ShaderCompile")
         unsigned int shaderId = glCreateShader(type);
         const char *shaderCStr = shaderCode.c_str();
 

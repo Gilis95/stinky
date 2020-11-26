@@ -2,8 +2,7 @@
 
 #include <utility>
 
-#include "stinkypch.h"
-
+#include "core/StinkyMemory.h"
 #include "event/Event.h"
 
 namespace stinky {
@@ -34,12 +33,10 @@ namespace stinky {
 
         Window(EventController &controller);
 
-        static Scope <Window>
+        static Scope<Window>
         Create(const API &api, EventController &eventController, const WindowProperties &properties = {});
 
         virtual ~Window() = default;
-
-        virtual void RegisterEvents();
 
         virtual void Init() = 0;
 

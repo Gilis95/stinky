@@ -3,12 +3,15 @@
 //
 
 #include <imgui.h>
+#include <Tracy.hpp>
 #include "panels/ScenePanel.h"
 
 namespace stinky::hoatzin::ScenePanel {
     /////////////////////////////////////////////////////////////////////////////////////////
     void Render(uint32_t textureId, glm::vec2 &outViewportSize) {
         {
+            ZoneScopedN("ScenePanel")
+
             ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{0, 0});
             ImGui::Begin("Scene");
 

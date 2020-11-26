@@ -1,15 +1,10 @@
 #pragma once
 
-#include "stinkypch.h"
-
 #include "event/Event.h"
 #include "event/EventController.h"
 #include "event/LayerStack.h"
 
-namespace stinky{
-    class Window;
-    class Layer;
-}
+#include "StinkyPrerequisites.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -20,7 +15,7 @@ namespace stinky {
 
         virtual ~Application();
 
-        virtual void RegisterEvents();
+        virtual void RegisterEventHandlers();
 
         virtual void Init();
 

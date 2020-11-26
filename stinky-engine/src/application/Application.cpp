@@ -1,9 +1,12 @@
+#include <GLFW/glfw3.h>
+#include <Tracy.hpp>
+
 #include "application/Application.h"
-#include "stinkypch.h"
 #include "event/ApplicationEvent.h"
 #include "event/Event.h"
+#include "event/Timestep.h"
 #include "window/Window.h"
-#include <GLFW/glfw3.h>
+#include "stinkypch.h"
 
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -15,23 +18,13 @@ namespace stinky {
     Application::~Application() = default;
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void Application::RegisterEvents(){
-        GetWindow()->RegisterEvents();
-        //AppTick, AppUpdate, AppRender,
-        m_EventController.RegisterEvent(EventType::AppRender);
-        m_EventController.RegisterEvent(EventType::AppTick);
-        m_EventController.RegisterEvent(EventType::AppUpdate);
-
-        m_EventController.RegisterEventHandler(
-                {
-                        EventType::WindowClose, [this](const Event &event) { Close(); }
-                }
+    void Application::RegisterEventHandlers() {
+        m_EventController.RegisterEventHandler<WindowCloseEvent>(
+                [this](const Event &event) { Close(); }
         );
 
-        m_EventController.RegisterEventHandler(
-                {
-                        EventType::AppUpdate, [window = GetWindow()](const Event &event) { window->OnUpdate(event); }
-                }
+        m_EventController.RegisterEventHandler<AppUpdateEvent>(
+                [window = GetWindow()](const Event &event) { window->OnUpdate(event); }
         );
     }
 
@@ -39,6 +32,13 @@ namespace stinky {
     void Application::Init() {
         Log::Init();
         GetWindow()->Init();
+        std::string applicationRevision("Revision: 1234");
+
+
+        std::string applicationName("Application Name: stinky");
+
+        TracyAppInfo(applicationName.c_str(), applicationName.size())
+        TracyAppInfo(applicationRevision.c_str(),applicationRevision.size())
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -49,10 +49,11 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     void Application::Run() {
         m_IsRunning = true;
+        AppUpdateEvent updateEvent;
 
         while (m_IsRunning) {
             //TODO:: Use platform independent tool
-            float time = (float) glfwGetTime();
+            auto time = (float) glfwGetTime();
             Timestep timestep = time - m_LastFrameTime;
             m_LastFrameTime = time;
 
@@ -63,7 +64,8 @@ namespace stinky {
                         layer->OnUpdate(timestep);
                     });
 
-            m_EventController.OnEvent(AppUpdateEvent());
+            m_EventController.OnEvent(updateEvent);
+            FrameMark
         }
     }
 
