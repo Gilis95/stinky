@@ -14,7 +14,7 @@ namespace stinky {
         Window *GetWindow() override;
 
     private:
-        Scope<PerspectiveCameraController>  m_CameraController;
+        Scope<FPSCameraController>  m_CameraController;
         Scope<GraphicLayerAbstractionFactory> m_GLAFactory;
         Scope<Window> m_Window;
     };

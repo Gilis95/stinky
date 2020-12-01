@@ -14,7 +14,7 @@ set(STINKY_ENGINE_DIR ${PROJECT_SOURCE_DIR}/../stinky-engine)
 set(HDR_FILES  
     ${HDR_DIR}/StinkyApplication.h 
     ${HDR_DIR}/StinkyLayer.h
-    )
+        ../stinky-engine/src/camera/FPSCamera.h)
 
 set(SRC_FILES 
     ${SRC_DIR}/StinkyApplication.cpp

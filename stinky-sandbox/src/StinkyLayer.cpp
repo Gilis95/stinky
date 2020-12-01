@@ -1,7 +1,8 @@
 #include <glm/ext.hpp>
 #include "StinkyLayer.h"
 
-#include "camera/PerspectiveCamera.h"
+#include "camera/FPSCamera.h"
+#include "camera/FPSCameraController.h"
 #include "ecs/CameraComponent.h"
 #include "ecs/Entity.h"
 #include "ecs/MaterialComponent.h"
@@ -9,6 +10,7 @@
 #include "ecs/ProgramComponent.h"
 #include "ecs/TransformComponent.h"
 #include "event/ApplicationEvent.h"
+#include "gla/FrameBuffer.h"
 #include "gla/GraphicLayerAbstractionFactory.h"
 #include "gla/VertexArray.h"
 #include "gla/VertexBuffer.h"
@@ -66,11 +68,11 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    StinkyLayer::StinkyLayer(GraphicLayerAbstractionFactory *glaFactory, PerspectiveCameraController *cameraController,
+    StinkyLayer::StinkyLayer(GraphicLayerAbstractionFactory *glaFactory, FPSCameraController *cameraController,
                              EventController &eventController, unsigned width, unsigned height)
             : Layer("Stinky Layer"),
               m_GLAFactory(glaFactory),
-              m_Camera(CreateScope<PerspectiveCamera>()),
+              m_Camera(CreateScope<FPSCamera>()),
               m_CameraController(cameraController),
               m_Scene(glaFactory) {
     }
@@ -100,7 +102,7 @@ namespace stinky {
 
         auto entity1 = m_Scene.CreateEntity();
         entity1.AddComponent<MeshComponent>(cubeVertexArray);
-        entity1.AddComponent<TransformComponent>(glm::vec3(0.8f, 0.0f, -2.0f), glm::vec3(0.5f, 0.5f, 0.5f),
+        entity1.AddComponent<TransformComponent>(glm::vec3(0.8f, 0.0f, -5.0f), glm::vec3(0.5f, 0.5f, 0.5f),
                                                  glm::vec3(0.0f));
         entity1.AddComponent<ProgramComponent>(m_GLAFactory->CreateShader(
                 "/home/christian/workspace/stinky/stinky-sandbox/assets/shaders/basic.shader"));

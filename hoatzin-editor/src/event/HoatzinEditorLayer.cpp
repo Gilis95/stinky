@@ -1,7 +1,7 @@
 #include <backends/imgui_impl_opengl3.h>
 #include <backends/imgui_impl_glfw.h>
-#include <camera/PerspectiveCamera.h>
-#include <camera/PerspectiveCameraController.h>
+#include <camera/ArcballCamera.h>
+#include <camera/ArcballCameraController.h>
 #include <ecs/CameraComponent.h>
 #include <gla/FrameBuffer.h>
 #include <gla/GraphicLayerAbstractionFactory.h>
@@ -23,14 +23,14 @@ namespace stinky::hoatzin {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     HoatzinEditorLayer::HoatzinEditorLayer(GraphicLayerAbstractionFactory *glaFactory,
-                                           PerspectiveCameraController *cameraController,
+                                           ArcballCameraController *cameraController,
                                            EventController &eventController,
                                            uint32_t width, uint32_t height)
             : Layer("Hoatzin HoatzinEditorEditor Layer"), m_GLAFactory(glaFactory),
               m_Scene(glaFactory),
               m_SceneManager(glaFactory, m_Scene),
               m_FrameBuffer(glaFactory->CreateFrameBuffer({width, height})),
-              m_CameraController(cameraController), m_Camera(CreateScope<PerspectiveCamera>(width, height)),
+              m_CameraController(cameraController), m_Camera(CreateScope<ArcballCamera>(width, height)),
               m_EventController(eventController) {
         Entity entity(m_Scene.CreateEntity());
         entity.AddComponent<CameraComponent>(m_Camera.get(), true);

@@ -25,6 +25,10 @@ namespace stinky {
             return m_ViewMatrix;
         }
 
+        void SetViewMatrix(const glm::mat4& viewMatrix) {
+            m_ViewMatrix = viewMatrix;
+        }
+
         [[nodiscard]] const glm::mat4 &GetViewProjectionMatrix() {
             RecalculateViewProjectionMatrix();
             return m_ViewProjectionMatrix;

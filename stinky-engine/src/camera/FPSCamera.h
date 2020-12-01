@@ -10,12 +10,11 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    class PerspectiveCamera : public Camera {
+    class FPSCamera : public Camera {
     public:
-        explicit PerspectiveCamera(int screenWidth = 1280, int screenHeight = 720, float fov = 45.0f,
+        explicit FPSCamera(int screenWidth = 1280, int screenHeight = 720, float fov = 45.0f,
                                    float zNear = 1.0f, float zFar = -1.0f);
-        ~PerspectiveCamera() override = default;
-
+        ~FPSCamera() override = default;
 
         void SetProjectionRH(float fov, float aspectRatio, float zNear, float zFar);
 
@@ -24,19 +23,12 @@ namespace stinky {
         // applied in world-space.
         void Translate(const glm::vec3 &delta, bool local = true);
 
-        void SetRotation(const glm::quat &rot);
-        [[nodiscard]] glm::quat GetRotation() const;
-
-        void SetEulerAngles(const glm::vec3 &eulerAngles);
-        [[nodiscard]] glm::vec3 GetEulerAngles() const;
-
-        // Rotate the camera by some amount.
-        void Rotate(const glm::quat &rot);
+        void Rotate(float x, float y);
     protected:
         void RecalculateViewProjectionMatrix() override;
         void RecalculateViewMatrix() override;
-    protected:
-        glm::quat m_Rotation;
+    private:
+        glm::vec3 m_Rotation;
     };
 }
 /////////////////////////////////////////////////////////////////////////////////////////
