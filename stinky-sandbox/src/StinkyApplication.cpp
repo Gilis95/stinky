@@ -1,6 +1,6 @@
 
 #include <application/EntryPoint.h>
-#include <camera/PerspectiveCameraController.h>
+#include <camera/FPSCameraController.h>
 #include <event/Event.h>
 #include <event/Layer.h>
 #include <gla/GraphicLayerAbstractionFactory.h>
@@ -18,13 +18,19 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     StinkyApplication::StinkyApplication()
             : Application(),
-              m_CameraController(CreateScope<PerspectiveCameraController>()),
+              m_CameraController(CreateScope<FPSCameraController>()),
               m_GLAFactory(GraphicLayerAbstractionFactory::create(GraphicLayerAbstractionFactory::API::OpenGL)),
               m_Window(Window::Create(Window::API::GLFW, m_EventController, {"Hoatzin", WIDTH, HEIGHT})) {
     }
 
     void StinkyApplication::RegisterEventHandlers() {
         Application::RegisterEventHandlers();
+
+        m_EventController.RegisterEventHandler<MouseScrolledEvent>(
+                [cameraController = m_CameraController.get()](const MouseScrolledEvent &event) {
+                    cameraController->OnMouseScrolled(event);
+                }
+        );
 
         m_EventController.RegisterEventHandler<MouseButtonPressedEvent>(
                 [cameraController = m_CameraController.get()](const MouseButtonPressedEvent &event) {

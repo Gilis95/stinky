@@ -3,7 +3,7 @@
 //
 
 #include <application/EntryPoint.h>
-#include <camera/PerspectiveCameraController.h>
+#include <camera/ArcballCameraController.h>
 #include <event/Event.h>
 #include <event/Layer.h>
 #include <gla/GraphicLayerAbstractionFactory.h>
@@ -22,7 +22,7 @@ namespace stinky {
 
         /////////////////////////////////////////////////////////////////////////////////////////
         HoatzinApplication::HoatzinApplication()
-                : Application(), m_CameraController(CreateScope<PerspectiveCameraController>()),
+                : Application(), m_CameraController(CreateScope<ArcballCameraController>()),
                   m_GLAFactory(GraphicLayerAbstractionFactory::create(GraphicLayerAbstractionFactory::API::OpenGL)),
                   m_Window(Window::Create(Window::API::GLFW, m_EventController, {"Hoatzin", WIDTH, HEIGHT})) {
         }
@@ -37,11 +37,16 @@ namespace stinky {
                     }
             );
 
+            m_EventController.RegisterEventHandler<MouseScrolledEvent>(
+                    [cameraController = m_CameraController.get()](const MouseScrolledEvent &event) {
+                        cameraController->OnMouseScrolled(event);
+                    }
+            );
+
             m_EventController.RegisterEventHandler<MouseButtonPressedEvent>(
                     [cameraController = m_CameraController.get()](const MouseButtonPressedEvent &event) {
                         cameraController->OnMousePressed(event);
                     }
-
             );
 
             m_EventController.RegisterEventHandler<MouseMovedEvent>(
@@ -64,7 +69,7 @@ namespace stinky {
 
             m_EventController.RegisterEventHandler<WindowResizeEvent>(
                     [cameraController = m_CameraController.get()](const WindowResizeEvent &event) {
-                        cameraController->OnWindowResize(event);
+                        cameraController->PerspectiveCameraController::OnWindowResize(event);
                     }
             );
 

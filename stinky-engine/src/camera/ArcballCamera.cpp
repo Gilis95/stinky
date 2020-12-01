@@ -2,26 +2,26 @@
 // Created by christian on 29/08/2020.
 //
 
-#include "camera/PerspectiveCamera.h"
+#include "camera/ArcballCamera.h"
 
 #include "stinkypch.h"
 
 namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    PerspectiveCamera::PerspectiveCamera(int screenWidth, int screenHeight, float fov, float zNear, float zFar)
+    ArcballCamera::ArcballCamera(int screenWidth, int screenHeight, float fov, float zNear, float zFar)
             : Camera(glm::perspective(glm::radians(fov), (float) screenWidth / (float) screenHeight, zNear, zFar)),
               m_Rotation(1.0, 0.0, 0.0, 0.0) {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void PerspectiveCamera::SetProjectionRH(float fov, float aspectRatio, float zNear, float zFar) {
+    void ArcballCamera::SetProjectionRH(float fov, float aspectRatio, float zNear, float zFar) {
         m_ProjectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, zNear, zFar);
         m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void PerspectiveCamera::Translate(const glm::vec3 &delta, bool local /* = true */ ) {
+    void ArcballCamera::Translate(const glm::vec3 &delta, bool local /* = true */ ) {
         if (local) {
             m_Position += m_Rotation * delta;
         } else {
@@ -31,53 +31,50 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void PerspectiveCamera::SetRotation(const glm::quat &rot) {
+    void ArcballCamera::SetRotation(const glm::quat &rot) {
         m_Rotation = rot;
         m_ViewDirty = true;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    glm::quat PerspectiveCamera::GetRotation() const {
+    glm::quat ArcballCamera::GetRotation() const {
         return m_Rotation;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void PerspectiveCamera::SetEulerAngles(const glm::vec3 &eulerAngles) {
+    void ArcballCamera::SetEulerAngles(const glm::vec3 &eulerAngles) {
         m_Rotation = glm::quat(glm::radians(eulerAngles));
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    glm::vec3 PerspectiveCamera::GetEulerAngles() const {
+    glm::vec3 ArcballCamera::GetEulerAngles() const {
         return glm::degrees(glm::eulerAngles(m_Rotation));
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void PerspectiveCamera::Rotate(const glm::quat &rot) {
-        m_Rotation = m_Rotation * rot;
+    void ArcballCamera::Rotate(const glm::quat &rot) {
+        m_Rotation *= rot;
         m_ViewDirty = true;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void PerspectiveCamera::RecalculateViewProjectionMatrix() {
+    void ArcballCamera::RecalculateViewProjectionMatrix() {
         ReturnUnless(m_ViewDirty)
         glm::mat4 translate = glm::translate(-m_Position);
-        // Since we know the rotation matrix is orthonormalized, we can simply
-        // transpose the rotation matrix instead of inversing.
-        glm::mat4 rotate = glm::transpose(glm::toMat4(m_Rotation));
+        glm::mat4 rotate = glm::toMat4(m_Rotation);
 
-        m_ViewMatrix = rotate * translate;
+        m_ViewMatrix = translate * rotate;
         m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
         m_ViewDirty = false;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void PerspectiveCamera::RecalculateViewMatrix() {
+    void ArcballCamera::RecalculateViewMatrix() {
         ReturnUnless(m_ViewDirty)
         glm::mat4 translate = glm::translate(-m_Position);
-        // Since we know the rotation matrix is orthonormalized, we can simply
-        // transpose the rotation matrix instead of inversing.
-        glm::mat4 rotate = glm::transpose(glm::toMat4(m_Rotation));
+        glm::mat4 rotate = glm::toMat4(m_Rotation);
 
-        m_ViewMatrix = rotate * translate;
+        m_ViewMatrix = translate * rotate;
+        m_ViewDirty = false;
     }
 }

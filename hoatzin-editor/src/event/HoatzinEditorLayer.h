@@ -6,9 +6,9 @@
 #include "save/SaveManager.h"
 
 namespace stinky {
-    class PerspectiveCameraController;
+    class ArcballCameraController;
 
-    class PerspectiveCamera;
+    class ArcballCamera;
 
     class FrameBuffer;
 
@@ -23,7 +23,7 @@ namespace stinky::hoatzin {
     /////////////////////////////////////////////////////////////////////////////////////////
     class HoatzinEditorLayer : public Layer {
     public:
-        HoatzinEditorLayer(GraphicLayerAbstractionFactory *glaFactory, PerspectiveCameraController *cameraController,
+        HoatzinEditorLayer(GraphicLayerAbstractionFactory *glaFactory, ArcballCameraController *cameraController,
                            EventController &eventController, unsigned width, unsigned height);
 
         void OnAttach() override;
@@ -38,8 +38,8 @@ namespace stinky::hoatzin {
         Scene m_Scene;
         SaveManager m_SceneManager;
         Ref<FrameBuffer> m_FrameBuffer;
-        PerspectiveCameraController *m_CameraController;
-        Scope<PerspectiveCamera> m_Camera;
+        ArcballCameraController *m_CameraController;
+        Scope<ArcballCamera> m_Camera;
         EventController &m_EventController;
 
 

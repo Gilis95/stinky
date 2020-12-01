@@ -9,7 +9,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    class PerspectiveCameraController;
+    class ArcballCameraController;
     class GraphicLayerAbstractionFactory;
     class Window;
 }
@@ -31,7 +31,7 @@ namespace stinky {
 
             Window* GetWindow() override;
         private:
-            Scope<PerspectiveCameraController> m_CameraController;
+            Scope<ArcballCameraController> m_CameraController;
             Scope<GraphicLayerAbstractionFactory> m_GLAFactory;
             Scope<Window> m_Window;
         };
