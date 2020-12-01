@@ -29,7 +29,7 @@
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
-#define REGISTER_EVENT_HANDLER(EventType) \
+#define DEFINE_EVENT_HANDLER(EventType) \
     template<>\
     void EventController::RegisterEventHandler<EventType>(const EventHandlerFn<EventType> &handler) { \
          m_EventHandler##EventType.emplace_back(handler);\

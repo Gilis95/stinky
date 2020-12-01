@@ -10,6 +10,7 @@
 #include "ecs/TransformComponent.h"
 #include "event/ApplicationEvent.h"
 #include "gla/GraphicLayerAbstractionFactory.h"
+#include "gla/VertexArray.h"
 #include "gla/VertexBuffer.h"
 
 namespace stinky {
@@ -65,73 +66,70 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    StinkyLayer::StinkyLayer(EventController &eventController)
+    StinkyLayer::StinkyLayer(GraphicLayerAbstractionFactory *glaFactory, PerspectiveCameraController *cameraController,
+                             EventController &eventController, unsigned width, unsigned height)
             : Layer("Stinky Layer"),
-              m_RendererFactory(GraphicLayerAbstractionFactory::create(GraphicLayerAbstractionFactory::API::OpenGL)),
+              m_GLAFactory(glaFactory),
               m_Camera(CreateScope<PerspectiveCamera>()),
-              m_CameraController(CreateScope<PerspectiveCameraController>(m_Camera.get())),
-              m_Scene(m_RendererFactory.get()) {
-        Entity entity(m_Scene.CreateEntity());
-        entity.AddComponent<CameraComponent>(m_Camera.get(), true);
-
-        eventController.RegisterEventHandler(
-                {
-                        EventType::MouseButtonPressed,
-                        [cameraController = m_CameraController.get()](const Event &event) {
-                            cameraController->OnMousePressed(event);
-                        }
-                }
-        );
-
-        eventController.RegisterEventHandler(
-                {
-                        EventType::MouseMoved,
-                        [capture0 = m_CameraController.get()](const Event &event) {
-                            capture0->OnMouseMoved(event);
-                        }
-                }
-        );
-
-        eventController.RegisterEventHandler(
-                {
-                        EventType::MouseButtonReleased,
-                        [cameraController = m_CameraController.get()](const Event &event) {
-                            cameraController->OnMouseReleased(event);
-                        }
-                }
-        );
-
-        eventController.RegisterEventHandler(
-                {
-                        EventType::KeyPressed,
-                        [cameraController = m_CameraController.get()](const Event &event) {
-                            cameraController->OnKeyboardEvent(event);
-                        }
-                }
-        );
+              m_CameraController(cameraController),
+              m_Scene(glaFactory) {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void StinkyLayer::OnAttach() {
-        m_FrameBuffer = m_RendererFactory->CreateFrameBuffer({1280, 720});
-        m_Camera->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+        Entity cameraEntity(m_Scene.CreateEntity());
+        cameraEntity.AddComponent<CameraComponent>(m_Camera.get(), true);
 
-        auto entity = m_Scene.CreateEntity();
-        entity.AddComponent<MeshComponent>(16, quadVertices, 6, quadIndices);
-        entity.AddComponent<TranslateComponent>(glm::vec3(0.0f, 0.0f, -10.0f));
-        entity.AddComponent<ScaleComponent>(glm::vec3(2.0f, 2.0f, 2.0f));
-        entity.AddComponent<ProgramComponent>(m_RendererFactory->CreateShader(
-                "/home/christian/workspace/stinky/stinky-sandbox/resources/shaders/skybox.glsl"));
-        entity.AddComponent<MaterialComponent>(m_RendererFactory->CreateCubeTexture(
-                "/home/christian/workspace/stinky/stinky-sandbox/resources/skybox.png"));
+        m_CameraController->SetCamera(m_Camera.get());
+
+        m_FrameBuffer = m_GLAFactory->CreateFrameBuffer({1280, 720});
+        m_Camera->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+        //create array buffer, containing shape positions and bind it
+        const auto cubeVertexBuffer = m_GLAFactory->CreateVertexBuffer(cubeVertices,
+                                                                       CUBE_VERTICES_COUNT *
+                                                                       sizeof(float), {
+                                                                               {ShaderDataType::Float4, "position"}
+                                                                       });
+        //Create index buffer, that will define shape vertex positions
+        const auto cubeIndexBuffer = m_GLAFactory->CreateIndexBuffer(cubeIndices, CUBE_INDICES_COUNT);
+
+        auto cubeVertexArray = m_GLAFactory->CreateVertexArray();
+        //bind currently bound array buffer to first element of currently bound vertex array
+        cubeVertexArray->AddVertexBuffer(cubeVertexBuffer);
+        cubeVertexArray->SetIndexBuffer(cubeIndexBuffer);
 
         auto entity1 = m_Scene.CreateEntity();
-        entity1.AddComponent<MeshComponent>(CUBE_VERTICES_COUNT, cubeVertices, CUBE_INDICES_COUNT, cubeIndices);
-        entity1.AddComponent<TranslateComponent>(glm::vec3(0.8f, 0.0f, -2.0f));
-        entity1.AddComponent<ScaleComponent>(glm::vec3(0.5f, 0.5f, 0.5f));
-        entity1.AddComponent<ProgramComponent>(m_RendererFactory->CreateShader(
-                "/home/christian/workspace/stinky/stinky-sandbox/resources/shaders/basic.shader"));
+        entity1.AddComponent<MeshComponent>(cubeVertexArray);
+        entity1.AddComponent<TransformComponent>(glm::vec3(0.8f, 0.0f, -2.0f), glm::vec3(0.5f, 0.5f, 0.5f),
+                                                 glm::vec3(0.0f));
+        entity1.AddComponent<ProgramComponent>(m_GLAFactory->CreateShader(
+                "/home/christian/workspace/stinky/stinky-sandbox/assets/shaders/basic.shader"));
         entity1.AddComponent<MaterialComponent>(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+
+
+        //create array buffer, containing shape positions and bind it
+        const auto quadVertexBuffer = m_GLAFactory->CreateVertexBuffer(quadVertices,
+                                                                       16 *
+                                                                       sizeof(float), {
+                                                                               {ShaderDataType::Float4, "position"}
+                                                                       });
+
+        //Create index buffer, that will define shape vertex positions
+        const auto quadIndexBuffer = m_GLAFactory->CreateIndexBuffer(quadIndices, 6);
+
+        auto quadVertexArray = m_GLAFactory->CreateVertexArray();
+        //bind currently bound array buffer to first element of currently bound vertex array
+        quadVertexArray->AddVertexBuffer(quadVertexBuffer);
+        quadVertexArray->SetIndexBuffer(quadIndexBuffer);
+
+        auto entity = m_Scene.CreateEntity();
+        entity.AddComponent<MeshComponent>(quadVertexArray);
+        entity.AddComponent<TransformComponent>(glm::vec3(0.0f, 0.0f, -10.0f), glm::vec3(2.0f, 2.0f, 2.0f),
+                                                glm::vec3(0.0f));
+        entity.AddComponent<ProgramComponent>(m_GLAFactory->CreateShader(
+                "/home/christian/workspace/stinky/stinky-sandbox/assets/shaders/skybox.glsl"));
+        entity.AddComponent<MaterialComponent>(m_GLAFactory->CreateCubeTexture(
+                "/home/christian/workspace/stinky/stinky-sandbox/assets/textures/skybox.png"));
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

@@ -100,7 +100,7 @@ namespace stinky::hoatzin {
         entity1.AddComponent<TransformComponent>(glm::vec3(0.8f, 0.0f, -2.0f), glm::vec3(0.5f, 0.5f, 0.5f),
                                                  glm::vec3(0.0f, 0.0f, 0.0f));
         entity1.AddComponent<ProgramComponent>(m_GLAFactory->CreateShader(
-                "/home/christian/workspace/stinky/stinky-sandbox/resources/shaders/basic.shader"));
+                "/home/christian/workspace/stinky/hoatzin-editor/assets/shaders/basic.shader"));
         entity1.AddComponent<MaterialComponent>(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
         entity1.AddComponent<TagComponent>("Cube");
 
@@ -123,9 +123,9 @@ namespace stinky::hoatzin {
         entity.AddComponent<TransformComponent>(glm::vec3(1.0f), glm::vec3(1.0f),
                                                 glm::vec3(1.0f));
         entity.AddComponent<ProgramComponent>(m_GLAFactory->CreateShader(
-                "/home/christian/workspace/stinky/stinky-sandbox/resources/shaders/skybox.glsl"));
+                "/home/christian/workspace/stinky/hoatzin-editor/assets/shaders/skybox.glsl"));
         entity.AddComponent<MaterialComponent>(m_GLAFactory->CreateCubeTexture(
-                "/home/christian/workspace/stinky/hoatzin-editor/assets/blue-atmosphere.png"));
+                "/home/christian/workspace/stinky/hoatzin-editor/assets/textures/blue-atmosphere.png"));
         entity.AddComponent<TagComponent>("Skybox");
     }
 }

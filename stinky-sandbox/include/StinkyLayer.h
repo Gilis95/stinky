@@ -14,7 +14,8 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     class StinkyLayer : public Layer {
     public:
-        explicit StinkyLayer(EventController &eventController);
+        explicit StinkyLayer(GraphicLayerAbstractionFactory *glaFactory, PerspectiveCameraController *cameraController,
+                             EventController &eventController, unsigned width, unsigned height);
 
         void OnAttach() override;
 
@@ -23,11 +24,11 @@ namespace stinky {
         void OnUpdate(const Timestep &ts) override;
 
     private:
-        Ref<GraphicLayerAbstractionFactory> m_RendererFactory;
+        GraphicLayerAbstractionFactory*     m_GLAFactory;
         Scene                               m_Scene;
         Ref<FrameBuffer>                    m_FrameBuffer;
         Scope<PerspectiveCamera>            m_Camera;
-        Scope<PerspectiveCameraController>  m_CameraController;
+        PerspectiveCameraController*        m_CameraController;
     };
     /////////////////////////////////////////////////////////////////////////////////////////
 }
