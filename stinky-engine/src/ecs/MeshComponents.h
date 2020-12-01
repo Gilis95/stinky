@@ -5,31 +5,26 @@
 #pragma once
 
 #include "glm/glm.hpp"
+#include "StinkyPrerequisites.h"
+#include "core/StinkyMemory.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
     class MeshComponent {
     public:
-        explicit MeshComponent(unsigned verticesCount, glm::vec4 *vertices, unsigned indicesCount, unsigned *indices);
+        MeshComponent() = default;
+        explicit MeshComponent(Ref<VertexArray> vertexArray);
         MeshComponent(MeshComponent &&) = default;
         virtual ~MeshComponent() = default;
 
         MeshComponent &operator=(MeshComponent &&copy) noexcept {
-            vertices = copy.vertices;
-            verticesCount = copy.verticesCount;
-
-            indices = copy.indices;
-            indicesCount = copy.indicesCount;
+            vertexArray = copy.vertexArray;
 
             return *this;
         }
 
-        unsigned verticesCount;
-        glm::vec4 *vertices;
-
-        unsigned indicesCount;
-        unsigned *indices;
+        Ref<VertexArray> vertexArray;
     };
 }
 /////////////////////////////////////////////////////////////////////////////////////////

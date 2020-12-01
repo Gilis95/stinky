@@ -1,14 +1,13 @@
 #pragma once
 
-#include "stinkypch.h"
-#include "event/Timestep.h"
+#include "StinkyPrerequisites.h"
 
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
     class Layer {
     public:
-        Layer(const std::string &name = "Layer");
+        explicit Layer(std::string name = "Layer");
 
         virtual ~Layer() = default;
 
@@ -18,9 +17,9 @@ namespace stinky {
 
         virtual void OnUpdate(const Timestep &ts) {}
 
-        const std::string &GetName() const { return m_DebugName; }
+        [[nodiscard]] const std::string &GetName() const { return m_DebugName; }
 
     protected:
-        std::string m_DebugName;
+        const std::string m_DebugName;
     };
 }

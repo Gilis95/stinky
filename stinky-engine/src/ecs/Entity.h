@@ -2,20 +2,27 @@
 
 #include <cstdint>
 #include <entt/entity/registry.hpp>
-
-#include "stinkypch.h"
+#include "core/StinkyMacros.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
     class Entity {
     public:
-        /////////////////////////////////////////////////////////////////////////////////////////
-        explicit Entity(entt::registry &registry) : m_Registry(registry), m_EntityHandle(registry.create()) {
+        explicit Entity() : m_Registry(nullptr) {
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////
-        Entity(const Entity &other) : m_Registry(other.m_Registry), m_EntityHandle(other.m_EntityHandle){
+        explicit Entity(entt::registry *registry) : m_Registry(registry), m_EntityHandle(registry->create()) {
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////////
+        explicit Entity(entt::registry *registry, const entt::entity &entt) : m_Registry(registry),
+                                                                              m_EntityHandle(entt) {
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////////
+        Entity(const Entity &other) : m_Registry(other.m_Registry), m_EntityHandle(other.m_EntityHandle) {
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////
@@ -25,31 +32,30 @@ namespace stinky {
 
         /////////////////////////////////////////////////////////////////////////////////////////
         template<typename T, typename... Args>
-        bool AddComponent(Args &&... args) {
+        [[nodiscard]] bool AddComponent(Args &&... args) {
             AssertReturnIf(HasComponent<T>(), false);
-            m_Registry.emplace<T>(m_EntityHandle, std::forward<Args>(args)...);
+            m_Registry->emplace<T>(m_EntityHandle, std::forward<Args>(args)...);
             return true;
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////
         template<typename T>
-        std::pair<bool, T> GetComponent() {
-            static T s_Empty;
-            AssertReturnUnless(HasComponent<T>(), std::make_pair(false, s_Empty));
-            return std::make_pair(true, m_Registry.get<T>(m_EntityHandle));
+        [[nodiscard]] std::optional<std::reference_wrapper<T>> GetComponent() {
+            ReturnUnless(HasComponent<T>(), {});
+            return {std::reference_wrapper<T>(m_Registry->get<T>(m_EntityHandle))};
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////
         template<typename T>
-        bool HasComponent() {
-            return m_Registry.has<T>(m_EntityHandle);
+        [[nodiscard]] bool HasComponent() const {
+            return m_Registry->has<T>(m_EntityHandle);
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////
         template<typename T>
-        bool RemoveComponent() {
+        [[nodiscard]] bool RemoveComponent() {
             AssertReturnUnless(HasComponent<T>(), false);
-            m_Registry.remove<T>(m_EntityHandle);
+            m_Registry->remove<T>(m_EntityHandle);
             return true;
         }
 
@@ -73,15 +79,18 @@ namespace stinky {
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////
+        Entity &operator=(const Entity &copy) noexcept = default;
+
+        /////////////////////////////////////////////////////////////////////////////////////////
         Entity &operator=(Entity &&copy) noexcept {
-            m_Registry = std::forward<entt::registry>(copy.m_Registry);
+            m_Registry = copy.m_Registry;
             m_EntityHandle = std::move(copy).m_EntityHandle;
             return *this;
         }
 
     private:
         entt::entity m_EntityHandle{entt::null};
-        entt::registry &m_Registry;
+        entt::registry *m_Registry;
     };
 }
 /////////////////////////////////////////////////////////////////////////////////////////

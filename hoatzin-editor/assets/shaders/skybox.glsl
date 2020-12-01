@@ -3,18 +3,20 @@
 
 layout(location = 0) in vec4 position;
 
-uniform mat4 u_ViewProjection;
+uniform mat4 u_ViewMatrix;
+uniform mat4 u_ProjectionMatrix;
+uniform mat4 u_ModelMatrix;
+
 out vec4 v_TexCoord;
 
 void main()
 {
-    vec4 pos = vec4(position.xy, -3.0, 1.0);
-    gl_Position = pos;
-    v_TexCoord = u_ViewProjection * pos;
+    gl_Position =  position;
+    v_TexCoord = u_ViewMatrix * vec4(position.xyz, 0.0f);
 }
 
-    #type fragment
-    #version 330 core
+#type fragment
+#version 330 core
 
 layout(location = 0) out vec4 color;
 

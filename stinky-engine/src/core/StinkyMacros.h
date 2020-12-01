@@ -5,6 +5,8 @@
 
 #include <memory>
 
+#include "core/StinkyLogger.h"
+
 // Platform detection using predefined macros
 #ifdef _WIN32
 /* Windows x64/x86 */
@@ -39,50 +41,26 @@
 #define SK_PLATFORM_ANDROID
 #error "Android is not supported!"
 #elif defined(__linux__)
-#define PLATFORM_LINUX
+#define SK_PLATFORM_LINUX
 #else
-/* Unknown compiler/platform */
-#error "Unknown platform!"
+
 #endif // End of platform detection
 
-#ifdef DEBUG
-#if defined(PLATFORM_WINDOWS)
+#ifdef STINKY_ENGINE_DEBUG
 #define ENABLE_ASSERTS
+#if defined(PLATFORM_WINDOWS)
 #define DEBUGBREAK() __debugbreak()
-#elif defined(PLATFORM_LINUX)
+#elif defined(SK_PLATFORM_LINUX)
 
 #include <signal.h>
-#include <memory>
 
 #define DEBUGBREAK() raise(SIGTRAP)
 #else
 #error "Platform doesn't support debugbreak yet!"
 #endif
-#define ENABLE_ASSERTS
 #else
 #define DEBUGBREAK()
 #endif
-
-namespace stinky {
-    template<typename T>
-    using Ref = std::shared_ptr<T>;
-
-    template<typename T>
-    using Scope = std::unique_ptr<T>;
-
-    template<typename T, typename ... Args>
-    constexpr Scope<T> CreateScope(Args &&... args) {
-        return std::make_unique<T>(std::forward<Args>(args)...);
-    }
-
-    template<typename T>
-    using Ref = std::shared_ptr<T>;
-
-    template<typename T, typename ... Args>
-    constexpr Ref<T> CreateRef(Args &&... args) {
-        return std::make_shared<T>(std::forward<Args>(args)...);
-    }
-}
 
 #define STINKY_BIND(function) std::bind(&function, this, std::placeholders::_1)
 
@@ -99,7 +77,7 @@ namespace stinky {
 #define ReturnUnless(x, ...) { if(!(x)) { return __VA_ARGS__;}}
 
 #define AssertReturnIf(x, ...) { if(x) { STINKY_LOG_ERROR_AND_BREAK("Assertion Failed: {0} {1} {2}", __FILE__, __LINE__ , __FUNCTION__); return __VA_ARGS__;}}
-#define AssertReturnUnless(x, ...) { if(!x) { STINKY_LOG_ERROR_AND_BREAK("Assertion Failed: {0} {1} {2}", __FILE__, __LINE__ , __FUNCTION__); return __VA_ARGS__;}}
+#define AssertReturnUnless(x, ...) { if(!(x)) { STINKY_LOG_ERROR_AND_BREAK("Assertion Failed: {0} {1} {2}", __FILE__, __LINE__ , __FUNCTION__); return __VA_ARGS__;}}
 
 #define ContinueIf(x) { if(x) { continue;}}
 #define ContinueUnless(x) { if(!(x)) { continue;}}

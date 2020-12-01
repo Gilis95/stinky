@@ -5,8 +5,9 @@
 #pragma once
 
 #include <entt/entity/registry.hpp>
-#include <renderer/Renderer.h>
-#include "stinkypch.h"
+
+#include "ecs/Entity.h"
+#include "renderer/Renderer.h"
 #include "StinkyPrerequisites.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -18,9 +19,15 @@ namespace stinky {
     public:
         explicit Scene(const GraphicLayerAbstractionFactory *rendererFactory);
         ~Scene() = default;
-        Entity CreateEntity();
 
         void OnUpdate();
+
+        void OnClose();
+
+        /** NOTE:: maybe in separate class */
+        Entity CreateEntity();
+
+        void each(std::function<void (Entity& entt)> func);
     private:
         entt::registry m_Registry;
         Scope<Renderer> m_Renderer;

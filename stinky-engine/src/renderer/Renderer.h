@@ -4,21 +4,17 @@
 
 #pragma once
 
-#include "stinkypch.h"
-#include "StinkyPrerequisites.h"
-
 #include <glm/glm.hpp>
+
+#include "core/StinkyMemory.h"
+#include "StinkyPrerequisites.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    class RendererApi;
-    class GraphicLayerAbstractionFactory;
-
     struct RenderCommand {
         const MeshComponent &meshComponent;
-        const TranslateComponent &translateComponent;
-        const ScaleComponent &scaleComponent;
+        const TransformComponent &transformComponent;
         const ProgramComponent &programComponent;
         const MaterialComponent &materialComponent;
     };
@@ -30,13 +26,14 @@ namespace stinky {
 
         void Init() const;
         void Clear() const;
-        void BeginScene(const glm::mat4 &viewProjection);
+        void BeginScene(const glm::mat4 &view, const glm::mat4 &projection);
         void Draw(const RenderCommand &command);
         void EndScene();
     protected:
         const GraphicLayerAbstractionFactory *m_RendererFactory;
         Scope<RendererApi> m_RendererApi;
-        glm::mat4 m_ViewProjection{};
+        glm::mat4 m_View{};
+        glm::mat4 m_Projection{};
         int m_TextureId = 0;
     };
 }

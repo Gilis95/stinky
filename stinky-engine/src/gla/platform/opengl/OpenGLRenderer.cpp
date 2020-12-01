@@ -1,6 +1,7 @@
 #include "gla/platform/opengl/OpenGLRenderer.h"
 
 #include <glad/glad.h>
+#include <Tracy.hpp>
 
 #include "stinkypch.h"
 
@@ -55,6 +56,8 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     void
     OpenGLRenderer::DrawIndexed(Ref<VertexArray> vertexArray, uint32_t indexCount) const {
+        ZoneScopedN("RenderApiDrawCall")
+
         uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
 
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);

@@ -4,21 +4,20 @@
 
 #include "camera/PerspectiveCamera.h"
 
-#include <glm/glm.hpp>
-#include <glm/gtx/transform.hpp>
-#include <glm/gtx/quaternion.hpp>
+#include "stinkypch.h"
 
 namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     PerspectiveCamera::PerspectiveCamera(int screenWidth, int screenHeight, float fov, float zNear, float zFar)
             : Camera(glm::perspective(glm::radians(fov), (float) screenWidth / (float) screenHeight, zNear, zFar)),
-              m_Viewport(0, 0, screenWidth, screenHeight), m_Rotation() {
+              m_Rotation(1.0, 0.0, 0.0, 0.0) {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void PerspectiveCamera::SetProjectionRH(float fov, float aspectRatio, float zNear, float zFar) {
         m_ProjectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, zNear, zFar);
+        m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -59,16 +58,26 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void PerspectiveCamera::RecalculateViewMatrix() {
-        if (m_ViewDirty) {
-            glm::mat4 translate = glm::translate(-m_Position);
-            // Since we know the rotation matrix is orthonormalized, we can simply
-            // transpose the rotation matrix instead of inversing.
-            glm::mat4 rotate = glm::transpose(glm::toMat4(m_Rotation));
+    void PerspectiveCamera::RecalculateViewProjectionMatrix() {
+        ReturnUnless(m_ViewDirty)
+        glm::mat4 translate = glm::translate(-m_Position);
+        // Since we know the rotation matrix is orthonormalized, we can simply
+        // transpose the rotation matrix instead of inversing.
+        glm::mat4 rotate = glm::transpose(glm::toMat4(m_Rotation));
 
-            m_ViewMatrix = rotate * translate;
-            m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
-            m_ViewDirty = false;
-        }
+        m_ViewMatrix = rotate * translate;
+        m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
+        m_ViewDirty = false;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void PerspectiveCamera::RecalculateViewMatrix() {
+        ReturnUnless(m_ViewDirty)
+        glm::mat4 translate = glm::translate(-m_Position);
+        // Since we know the rotation matrix is orthonormalized, we can simply
+        // transpose the rotation matrix instead of inversing.
+        glm::mat4 rotate = glm::transpose(glm::toMat4(m_Rotation));
+
+        m_ViewMatrix = rotate * translate;
     }
 }

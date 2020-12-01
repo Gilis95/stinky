@@ -2,9 +2,13 @@
 // Created by christian on 23/08/2020.
 //
 
-#include <event/MouseEvent.h>
-#include <event/ApplicationEvent.h>
+#include "camera/OrthographicCamera.h"
 #include "camera/OrthographicCameraController.h"
+#include "event/ApplicationEvent.h"
+#include "event/KeyEvent.h"
+#include "event/MouseEvent.h"
+#include "event/Timestep.h"
+#include "event/WindowsEvent.h"
 
 namespace stinky {
 
@@ -15,17 +19,17 @@ namespace stinky {
               m_CameraRotation(m_Camera.GetRotation()), m_CameraMoveFunctions(7),
               m_CameraRotationSpeed(180.0f), m_AspectRatio(aspectRatio), m_ZoomLevel(1.0) {
         m_CameraMoveFunctions.emplace(KeyCode::Left,
-                                      std::bind(&OrthographicCameraController::MoveLeft, this));
+                                      [this] { MoveLeft(); });
         m_CameraMoveFunctions.emplace(KeyCode::Right,
-                                      std::bind(&OrthographicCameraController::MoveRight, this));
+                                      [this] { MoveRight(); });
         m_CameraMoveFunctions.emplace(KeyCode::Up,
-                                      std::bind(&OrthographicCameraController::MoveUp, this));
+                                      [this] { MoveUp(); });
         m_CameraMoveFunctions.emplace(KeyCode::Down,
-                                      std::bind(&OrthographicCameraController::MoveDown, this));
+                                      [this] { MoveDown(); });
         m_CameraMoveFunctions.emplace(KeyCode::Q,
-                                      std::bind(&OrthographicCameraController::RotateLeft, this));
+                                      [this] { RotateLeft(); });
         m_CameraMoveFunctions.emplace(KeyCode::E,
-                                      std::bind(&OrthographicCameraController::RotateRight, this));
+                                      [this] { RotateRight(); });
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -49,8 +53,8 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void OrthographicCameraController::OnKeyboardEvent(const Event &keyPressedEvent) {
-        const auto keyCode = dynamic_cast<const KeyPressedEvent &>(keyPressedEvent).m_Key;
+    void OrthographicCameraController::OnKeyboardEvent(const KeyPressedEvent &keyPressedEvent) {
+        const auto keyCode = keyPressedEvent.m_Key;
 
         auto functionToExecute = m_CameraMoveFunctions.find(keyCode);
         ReturnIf(functionToExecute == m_CameraMoveFunctions.end())
@@ -89,10 +93,9 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void OrthographicCameraController::OnWindowResize(const Event &event) {
-        auto resizeEvent = dynamic_cast<const WindowResizeEvent &>(event);
+    void OrthographicCameraController::OnWindowResize(const WindowResizeEvent &event) {
 
-        WindowResize(static_cast<float>(resizeEvent.m_Width), static_cast<float>(resizeEvent
+        WindowResize(static_cast<float>(event.m_Width), static_cast<float>(event
                 .m_Height));
     }
 
@@ -104,8 +107,8 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void OrthographicCameraController::OnZoom(const Event &e) {
-        m_ZoomLevel -= dynamic_cast<const MouseScrolledEvent &>(e).m_YOffset * 0.25f;
+    void OrthographicCameraController::OnZoom(const MouseScrolledEvent &e) {
+        m_ZoomLevel -= e.m_YOffset * 0.25f;
         m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
         m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel,
                                -m_ZoomLevel, m_ZoomLevel);

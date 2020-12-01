@@ -4,8 +4,7 @@
 
 #pragma once
 
-#include "stinkypch.h"
-
+#include <glm/detail/type_quat.hpp>
 #include "camera/Camera.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -34,9 +33,9 @@ namespace stinky {
         // Rotate the camera by some amount.
         void Rotate(const glm::quat &rot);
     protected:
+        void RecalculateViewProjectionMatrix() override;
         void RecalculateViewMatrix() override;
     protected:
-        glm::vec4 m_Viewport;
         glm::quat m_Rotation;
     };
 }

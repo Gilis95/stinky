@@ -15,5 +15,3 @@ namespace stinky {
     MaterialComponent::MaterialComponent(glm::vec4 colour) : colour(colour), type(MaterialType::SOLID) {
     }
 }
-
-

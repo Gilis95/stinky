@@ -4,7 +4,9 @@
 
 #pragma once
 
-#include <core/MouseCodes.h>
+#include <sstream>
+
+#include "core/MouseCodes.h"
 #include "event/Event.h"
 
 namespace stinky {

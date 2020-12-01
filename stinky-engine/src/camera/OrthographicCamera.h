@@ -26,6 +26,7 @@ namespace stinky {
         [[nodiscard]] float GetRotation() const { return m_Rotation; }
 
     protected:
+        void RecalculateViewProjectionMatrix() override;
         void RecalculateViewMatrix() override;
     private:
         float m_Rotation;

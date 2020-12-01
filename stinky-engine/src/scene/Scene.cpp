@@ -5,6 +5,7 @@
 #include "scene/Scene.h"
 
 #include <entt/entt.hpp>
+#include <Tracy.hpp>
 
 #include "camera/Camera.h"
 #include "ecs/CameraComponent.h"
@@ -12,7 +13,7 @@
 #include "ecs/MaterialComponent.h"
 #include "ecs/MeshComponents.h"
 #include "ecs/ProgramComponent.h"
-#include "ecs/TransformationComponents.h"
+#include "ecs/TransformComponent.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -24,15 +25,12 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    Entity Scene::CreateEntity() {
-        return Entity(m_Registry);
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////
     void Scene::OnUpdate() {
-        auto camerasView = m_Registry.view<CameraComponent>();
-
         Camera *camera;
+
+        ZoneScopedN("SceneUpdate")
+
+        auto camerasView = m_Registry.view<CameraComponent>();
 
         for (auto cameraView:  camerasView) {
             auto &tmpCameraRef = camerasView.get<CameraComponent>(cameraView);
@@ -40,21 +38,42 @@ namespace stinky {
             camera = tmpCameraRef.m_Camera;
         }
 
-        m_Renderer->Clear();
-        m_Renderer->BeginScene(camera->GetViewProjectionMatrix());
+        AssertReturnUnless(camera);
 
-        auto meshesGroup = m_Registry.group<MeshComponent, TranslateComponent, ScaleComponent, ProgramComponent, MaterialComponent>();
+        m_Renderer->Clear();
+        m_Renderer->BeginScene(camera->GetViewMatrix(), camera->GetProjectionMatrix());
+
+        auto meshesGroup = m_Registry.group<MeshComponent, TransformComponent, ProgramComponent, MaterialComponent>();
 
         for (auto mesh : meshesGroup) {
             m_Renderer->Draw({
                                      meshesGroup.get<MeshComponent>(mesh),
-                                     meshesGroup.get<TranslateComponent>(mesh),
-                                     meshesGroup.get<ScaleComponent>(mesh),
+                                     meshesGroup.get<TransformComponent>(mesh),
                                      meshesGroup.get<ProgramComponent>(mesh),
                                      meshesGroup.get<MaterialComponent>(mesh)
                              });
         }
 
         m_Renderer->EndScene();
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void Scene::OnClose() {
+        m_Registry.clear<>();
+    }
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    Entity Scene::CreateEntity() {
+        return Entity(&m_Registry);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void Scene::each(std::function<void(Entity &entt)> func) {
+
+        m_Registry.each([this, &func](const auto &it) -> void {
+            Entity entt(&m_Registry, it);
+            func(entt);
+        });
     }
 }

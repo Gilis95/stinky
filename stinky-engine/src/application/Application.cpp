@@ -1,67 +1,44 @@
+#include <GLFW/glfw3.h>
+#include <Tracy.hpp>
+
 #include "application/Application.h"
-
-
-#include "stinkypch.h"
 #include "event/ApplicationEvent.h"
-
 #include "event/Event.h"
-#include "GLFW/glfw3.h"
+#include "event/Timestep.h"
+#include "window/Window.h"
+#include "stinkypch.h"
 
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
-    Application::Application(Window::API windowApi) :
+    Application::Application() :
             m_IsRunning(false), m_EventController() {
-        Init(windowApi);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    Application::~Application() {
+    Application::~Application() = default;
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void Application::RegisterEventHandlers() {
+        m_EventController.RegisterEventHandler<WindowCloseEvent>(
+                [this](const Event &event) { Close(); }
+        );
+
+        m_EventController.RegisterEventHandler<AppUpdateEvent>(
+                [window = GetWindow()](const Event &event) { window->OnUpdate(event); }
+        );
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void Application::Init(Window::API windowApi) {
+    void Application::Init() {
         Log::Init();
-
-        m_Window = Window::Create(windowApi);
-
-        m_Window->SetEventCallback(
-                [ObjectPtr = &m_EventController](const Event &event) -> void { ObjectPtr->OnEvent(event); });
-
-        // KeyPressed, KeyReleased, KeyTyped,
-        m_EventController.RegisterEvent(EventType::KeyPressed);
-        m_EventController.RegisterEvent(EventType::KeyReleased);
-        m_EventController.RegisterEvent(EventType::KeyTyped);
-
-        // MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled 
-        m_EventController.RegisterEvent(EventType::MouseButtonPressed);
-        m_EventController.RegisterEvent(EventType::MouseButtonReleased);
-        m_EventController.RegisterEvent(EventType::MouseMoved);
-        m_EventController.RegisterEvent(EventType::MouseScrolled);
+        GetWindow()->Init();
+        std::string applicationRevision("Revision: 1234");
 
 
-        // WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
-        m_EventController.RegisterEvent(EventType::WindowClose);
-        m_EventController.RegisterEvent(EventType::WindowResize);
-        m_EventController.RegisterEvent(EventType::WindowFocus);
-        m_EventController.RegisterEvent(EventType::WindowLostFocus);
-        m_EventController.RegisterEvent(EventType::WindowMoved);
+        std::string applicationName("Application Name: stinky");
 
-        //AppTick, AppUpdate, AppRender,
-        m_EventController.RegisterEvent(EventType::AppRender);
-        m_EventController.RegisterEvent(EventType::AppTick);
-        m_EventController.RegisterEvent(EventType::AppUpdate);
-
-        m_EventController.RegisterEventHandler(
-                {
-                        EventType::WindowClose, [this](const Event &event) { Close(); }
-                }
-        );
-
-        m_EventController.RegisterEventHandler(
-                {
-                        EventType::AppUpdate, [window = m_Window.get()](const Event &event) { window->OnUpdate(event); }
-                }
-        );
+        TracyAppInfo(applicationName.c_str(), applicationName.size())
+        TracyAppInfo(applicationRevision.c_str(),applicationRevision.size())
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -72,10 +49,11 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     void Application::Run() {
         m_IsRunning = true;
+        AppUpdateEvent updateEvent;
 
         while (m_IsRunning) {
             //TODO:: Use platform independent tool
-            float time = (float) glfwGetTime();
+            auto time = (float) glfwGetTime();
             Timestep timestep = time - m_LastFrameTime;
             m_LastFrameTime = time;
 
@@ -86,9 +64,9 @@ namespace stinky {
                         layer->OnUpdate(timestep);
                     });
 
-            m_EventController.OnEvent(AppUpdateEvent());
+            m_EventController.OnEvent(updateEvent);
+            FrameMark
         }
-
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

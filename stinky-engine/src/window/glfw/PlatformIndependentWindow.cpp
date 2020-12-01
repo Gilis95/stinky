@@ -1,8 +1,11 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <event/MouseEvent.h>
+#include <event/platform/glfw/GLFWWindowEvent.h>
+#include <Tracy.hpp>
 
-#include "event/ApplicationEvent.h"
+#include "event/WindowsEvent.h"
+#include "event/EventController.h"
 #include "event/KeyEvent.h"
 #include "window/glfw/PlatformIndependentWindow.h"
 
@@ -17,12 +20,10 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    PlatformIndependentWindow::PlatformIndependentWindow(const WindowProperties &properties) {
-        m_Data.height = properties.m_Height;
-        m_Data.width = properties.m_Width;
-        m_Data.titile = properties.m_Title;
-
-        PlatformIndependentWindow::Init();
+    PlatformIndependentWindow::PlatformIndependentWindow(const WindowProperties &properties,
+                                                         EventController &eventController)
+            : Window(eventController),
+              m_Data(eventController, properties.m_Title, properties.m_Width, properties.m_Height) {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -32,23 +33,24 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void PlatformIndependentWindow::Init() {
-
         int status = glfwInit();
 
         AssertReturnUnless(status);
         glfwSetErrorCallback(GLFWErrorCallback);
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-        m_Window = glfwCreateWindow(m_Data.width, m_Data.height, m_Data.titile.c_str(), NULL, NULL);
+        m_Window = glfwCreateWindow(m_Data.width, m_Data.height, m_Data.title.c_str(), NULL, NULL);
 
         // create context for current window
         glfwMakeContextCurrent(m_Window);
 
-        glfwSwapInterval(5);
+        //VSync
+        glfwSwapInterval(0);
 
         AssertReturnUnless(gladLoadGLLoader((GLADloadproc) glfwGetProcAddress));
 
@@ -56,7 +58,7 @@ namespace stinky {
 
         glfwSetWindowCloseCallback(m_Window, [](GLFWwindow *window) {
                                        WindowData &data = *(WindowData *) glfwGetWindowUserPointer(window);
-                                       data.eventHandlerFn(WindowCloseEvent());
+                                       data.eventController.OnEvent(WindowCloseEvent());
                                    }
         );
 
@@ -66,27 +68,26 @@ namespace stinky {
             data.width = width;
 
             WindowResizeEvent event(width, height);
-            data.eventHandlerFn(event);
+            data.eventController.OnEvent(event);
         });
 
         glfwSetKeyCallback(m_Window,
                            [](GLFWwindow *window, int key, int scanCode, int action, int mods) {
                                WindowData &data = *(WindowData *) glfwGetWindowUserPointer(window);
-
                                switch (action) {
                                    case GLFW_PRESS: {
                                        KeyPressedEvent event(static_cast<KeyCode>(key));
-                                       data.eventHandlerFn(event);
+                                       data.eventController.OnEvent(event);
                                        break;
                                    }
                                    case GLFW_RELEASE: {
                                        KeyReleasedEvent event(static_cast<KeyCode>(key));
-                                       data.eventHandlerFn(event);
+                                       data.eventController.OnEvent(event);
                                        break;
                                    }
                                    case GLFW_REPEAT: {
                                        KeyPressedEvent event(static_cast<KeyCode>(key));
-                                       data.eventHandlerFn(event);
+                                       data.eventController.OnEvent(event);
                                        break;
                                    }
                                }
@@ -96,58 +97,46 @@ namespace stinky {
             WindowData &data = *(WindowData *) glfwGetWindowUserPointer(window);
 
             KeyTypedEvent event(static_cast<KeyCode>(keyCode));
-            data.eventHandlerFn(event);
+            data.eventController.OnEvent(event);
         });
 
         glfwSetScrollCallback(m_Window, [](GLFWwindow *window, double xOffset, double yOffset) {
             WindowData &data = *(WindowData *) glfwGetWindowUserPointer(window);
 
-            MouseScrolledEvent event((float) xOffset, (float) yOffset);
-            data.eventHandlerFn(event);
+            data.eventController.OnEvent(MouseScrolledEvent((float) xOffset, (float) yOffset));
         });
 
         glfwSetCursorPosCallback(m_Window, [](GLFWwindow *window, double xPos, double yPos) {
-            WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+            WindowData &data = *(WindowData *) glfwGetWindowUserPointer(window);
 
-            MouseMovedEvent event((float)xPos, (float)yPos);
-            data.eventHandlerFn(event);
+            data.eventController.OnEvent(MouseMovedEvent((float) xPos, (float) yPos));
         });
 
-        glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods)
-        {
-            WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
-
-            switch (action)
-            {
-                case GLFW_PRESS:
-                {
-                    MouseButtonPressedEvent event(static_cast<MouseCode>(button));
-                    data.eventHandlerFn(event);
+        glfwSetMouseButtonCallback(m_Window, [](GLFWwindow *window, int button, int action, int mods) {
+            WindowData &data = *(WindowData *) glfwGetWindowUserPointer(window);
+            switch (action) {
+                case GLFW_PRESS: {
+                    data.eventController.OnEvent(MouseButtonPressedEvent(static_cast<MouseCode>(button)));
                     break;
                 }
-                case GLFW_RELEASE:
-                {
-                    MouseButtonReleasedEvent event(static_cast<MouseCode>(button));
-                    data.eventHandlerFn(event);
+                case GLFW_RELEASE: {
+                    data.eventController.OnEvent(MouseButtonReleasedEvent(static_cast<MouseCode>(button)));
                     break;
                 }
             }
         });
-    }
 
-    /////////////////////////////////////////////////////////////////////////////////////////
-    void PlatformIndependentWindow::SetEventCallback(EventHandler::EventHandlerFn eventHandlerFn) {
-        m_Data.eventHandlerFn = eventHandlerFn;
+        m_EventController.OnEvent(GLFWWindowPostInitEvent(m_Window));
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void PlatformIndependentWindow::OnUpdate(const Event &onUpdateEvent) {
+        ZoneScopedN("GLFWUpdate")
+        //poll for process events
+        glfwPollEvents();
 
         // swap front and back buffer
         glfwSwapBuffers(m_Window);
-
-        //poll for process events
-        glfwPollEvents();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -155,4 +144,5 @@ namespace stinky {
         glfwDestroyWindow(m_Window);
         glfwTerminate();
     }
+
 }

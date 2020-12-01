@@ -10,6 +10,11 @@ namespace stinky {
     class CubeTexture : public Texture {
     private:
         typedef unsigned char byte;
+
+        enum class InputImageFormat {
+            RGB = 0,
+            RGBA
+        };
     public:
         explicit CubeTexture(std::string path);
 
@@ -36,6 +41,7 @@ namespace stinky {
         byte *m_Front = nullptr;
 
         uint32_t m_FaceHeight, m_FaceWidth;
+        InputImageFormat m_InputFormat = InputImageFormat::RGB;
     private:
         std::string m_Path;
     };

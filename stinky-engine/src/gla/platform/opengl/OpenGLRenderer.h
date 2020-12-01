@@ -9,13 +9,13 @@ namespace stinky {
     public:
         OpenGLRenderer() = default;
 
-        ~OpenGLRenderer() = default;
+        ~OpenGLRenderer() override = default;
 
         void Init() const override;
 
         void Clear() const override;
 
-        void DrawIndexed(Ref<VertexArray> vertexArray, uint32_t indexCount) const override;
+        void DrawIndexed(Ref<VertexArray> vertexArray, uint32_t indexCount = 0) const override;
     };
 }
 /////////////////////////////////////////////////////////////////////////////////////////

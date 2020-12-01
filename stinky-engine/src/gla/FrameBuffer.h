@@ -3,7 +3,8 @@
 //
 #pragma once
 
-#include "stinkypch.h"
+
+#include <cstdint>
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -17,7 +18,7 @@ namespace stinky {
 
     class FrameBuffer {
     public:
-        FrameBuffer(const FrameBufferSpecification &spec) : m_Specification(spec) {
+        explicit FrameBuffer(const FrameBufferSpecification &spec) : m_Specification(spec) {
         }
 
         virtual ~FrameBuffer() = default;
