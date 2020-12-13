@@ -11,7 +11,7 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     class StinkyLayer : public Layer {
     public:
-        explicit StinkyLayer(GraphicLayerAbstractionFactory *glaFactory, FPSCameraController *cameraController,
+        explicit StinkyLayer(GraphicLayerAbstractionFactory *glaFactory, FPSCamera *cameraController,
                              EventController &eventController, unsigned width, unsigned height);
 
         void OnAttach() override;
@@ -24,8 +24,7 @@ namespace stinky {
         GraphicLayerAbstractionFactory *m_GLAFactory;
         Scene m_Scene;
         Ref<FrameBuffer> m_FrameBuffer;
-        Scope<FPSCamera> m_Camera;
-        FPSCameraController *m_CameraController;
+        FPSCamera *m_Camera;
     };
     /////////////////////////////////////////////////////////////////////////////////////////
 }

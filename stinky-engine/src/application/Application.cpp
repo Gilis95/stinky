@@ -32,9 +32,8 @@ namespace stinky {
     void Application::Init() {
         Log::Init();
         GetWindow()->Init();
+
         std::string applicationRevision("Revision: 1234");
-
-
         std::string applicationName("Application Name: stinky");
 
         TracyAppInfo(applicationName.c_str(), applicationName.size())

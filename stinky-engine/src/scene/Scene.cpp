@@ -25,7 +25,7 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void Scene::OnUpdate() {
+    void Scene::Render() {
         Camera *camera;
 
         ZoneScopedN("SceneUpdate")

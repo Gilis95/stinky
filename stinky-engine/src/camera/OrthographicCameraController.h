@@ -40,8 +40,6 @@ namespace stinky {
         float m_CameraSpeed;
         float m_CameraRotation, m_CameraRotationSpeed;
         float m_AspectRatio, m_ZoomLevel;
-
-        std::unordered_map<KeyCode, std::function<void()>> m_CameraMoveFunctions;
     };
 }
 /////////////////////////////////////////////////////////////////////////////////////////

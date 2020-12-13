@@ -46,13 +46,12 @@ set(HDR_FILES
         ${APPLICATION_HDR_DIR}/EntryPoint.h
 
         # Camera module
-        ${CAMERA_HDR_DIR}/ArcballCamera.h
-        ${CAMERA_HDR_DIR}/ArcballCameraController.h
         ${CAMERA_HDR_DIR}/Camera.h
-        ${CAMERA_HDR_DIR}/FPSCameraController.h
+        ${CAMERA_HDR_DIR}/FPSCamera.h
         ${CAMERA_HDR_DIR}/OrthographicCamera.h
         ${CAMERA_HDR_DIR}/OrthographicCameraController.h
         ${CAMERA_HDR_DIR}/PerspectiveCameraController.h
+        ${CAMERA_HDR_DIR}/TrackBallCamera.h
 
 
         #Core component
@@ -125,14 +124,12 @@ set(SRC_FILES
         ${APPLICATION_SRC_DIR}/Application.cpp
 
         # Camera
-        ${CAMERA_SRC_DIR}/ArcballCamera.cpp
-        ${CAMERA_SRC_DIR}/ArcballCameraController.cpp
         ${CAMERA_SRC_DIR}/Camera.cpp
-        ${CAMERA_SRC_DIR}/FPSCameraController.cpp
         ${CAMERA_SRC_DIR}/FPSCamera.cpp
         ${CAMERA_SRC_DIR}/OrthographicCamera.cpp
         ${CAMERA_SRC_DIR}/OrthographicCameraController.cpp
         ${CAMERA_SRC_DIR}/PerspectiveCameraController.cpp
+        ${CAMERA_SRC_DIR}/TrackBallCamera.cpp
 
         ${CORE_SRC_DIR}/StinkyMemory.h
 

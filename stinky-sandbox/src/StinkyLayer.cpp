@@ -2,7 +2,6 @@
 #include "StinkyLayer.h"
 
 #include "camera/FPSCamera.h"
-#include "camera/FPSCameraController.h"
 #include "ecs/CameraComponent.h"
 #include "ecs/Entity.h"
 #include "ecs/MaterialComponent.h"
@@ -68,21 +67,19 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    StinkyLayer::StinkyLayer(GraphicLayerAbstractionFactory *glaFactory, FPSCameraController *cameraController,
+    StinkyLayer::StinkyLayer(GraphicLayerAbstractionFactory *glaFactory, FPSCamera *camera,
                              EventController &eventController, unsigned width, unsigned height)
             : Layer("Stinky Layer"),
               m_GLAFactory(glaFactory),
-              m_Camera(CreateScope<FPSCamera>()),
-              m_CameraController(cameraController),
+              m_Camera(camera),
               m_Scene(glaFactory) {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void StinkyLayer::OnAttach() {
         Entity cameraEntity(m_Scene.CreateEntity());
-        cameraEntity.AddComponent<CameraComponent>(m_Camera.get(), true);
+        cameraEntity.AddComponent<CameraComponent>(m_Camera, true);
 
-        m_CameraController->SetCamera(m_Camera.get());
 
         m_FrameBuffer = m_GLAFactory->CreateFrameBuffer({1280, 720});
         m_Camera->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -102,7 +99,7 @@ namespace stinky {
 
         auto entity1 = m_Scene.CreateEntity();
         entity1.AddComponent<MeshComponent>(cubeVertexArray);
-        entity1.AddComponent<TransformComponent>(glm::vec3(0.8f, 0.0f, -5.0f), glm::vec3(0.5f, 0.5f, 0.5f),
+        entity1.AddComponent<TransformComponent>(glm::vec3(0.8f, 0.0f, -10.0f), glm::vec3(0.5f, 0.5f, 0.5f),
                                                  glm::vec3(0.0f));
         entity1.AddComponent<ProgramComponent>(m_GLAFactory->CreateShader(
                 "/home/christian/workspace/stinky/stinky-sandbox/assets/shaders/basic.shader"));
@@ -141,8 +138,9 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     void StinkyLayer::OnUpdate(const Timestep &ts) {
         m_FrameBuffer->Unbind();
-        m_Scene.OnUpdate();
-        m_CameraController->OnUpdate(ts);
+
+        m_Camera->OnUpdate(ts);
+        m_Scene.Render();
 
         m_FrameBuffer->Bind();
     }

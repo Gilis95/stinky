@@ -16,20 +16,8 @@ namespace stinky {
     OrthographicCameraController::OrthographicCameraController(OrthographicCamera &camera,
                                                                float aspectRatio)
             : m_Camera(camera), m_CameraPosition(camera.GetPosition()), m_CameraSpeed(1.0f),
-              m_CameraRotation(m_Camera.GetRotation()), m_CameraMoveFunctions(7),
+              m_CameraRotation(m_Camera.GetRotation()),
               m_CameraRotationSpeed(180.0f), m_AspectRatio(aspectRatio), m_ZoomLevel(1.0) {
-        m_CameraMoveFunctions.emplace(KeyCode::Left,
-                                      [this] { MoveLeft(); });
-        m_CameraMoveFunctions.emplace(KeyCode::Right,
-                                      [this] { MoveRight(); });
-        m_CameraMoveFunctions.emplace(KeyCode::Up,
-                                      [this] { MoveUp(); });
-        m_CameraMoveFunctions.emplace(KeyCode::Down,
-                                      [this] { MoveDown(); });
-        m_CameraMoveFunctions.emplace(KeyCode::Q,
-                                      [this] { RotateLeft(); });
-        m_CameraMoveFunctions.emplace(KeyCode::E,
-                                      [this] { RotateRight(); });
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -54,12 +42,19 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void OrthographicCameraController::OnKeyboardEvent(const KeyPressedEvent &keyPressedEvent) {
-        const auto keyCode = keyPressedEvent.m_Key;
-
-        auto functionToExecute = m_CameraMoveFunctions.find(keyCode);
-        ReturnIf(functionToExecute == m_CameraMoveFunctions.end())
-
-        functionToExecute->second();
+        if (!(keyPressedEvent.m_Key ^ Key::Left)) {
+            MoveLeft();
+        } else if (!(keyPressedEvent.m_Key ^ Key::Right)) {
+            MoveRight();
+        } else if (!(keyPressedEvent.m_Key ^ Key::Up)) {
+            MoveUp();
+        } else if (!(keyPressedEvent.m_Key ^ Key::Down)) {
+            MoveDown();
+        } else if (!(keyPressedEvent.m_Key ^ Key::Q)) {
+            RotateLeft();
+        } else if (!(keyPressedEvent.m_Key ^ Key::E)) {
+            RotateRight();
+        }
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

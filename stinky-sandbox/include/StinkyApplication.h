@@ -1,4 +1,7 @@
-#include "application/Application.h"
+#include <application/Application.h>
+
+#include <StinkyPrerequisites.h>
+
 
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -14,7 +17,7 @@ namespace stinky {
         Window *GetWindow() override;
 
     private:
-        Scope<FPSCameraController>  m_CameraController;
+        Scope<FPSCamera>  m_Camera;
         Scope<GraphicLayerAbstractionFactory> m_GLAFactory;
         Scope<Window> m_Window;
     };

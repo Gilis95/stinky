@@ -3,14 +3,12 @@
 //
 #pragma once
 
+#include <application/Application.h>
 #include <scene/Scene.h>
-#include "application/Application.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    class ArcballCameraController;
-    class GraphicLayerAbstractionFactory;
     class Window;
 }
 
@@ -31,7 +29,7 @@ namespace stinky {
 
             Window* GetWindow() override;
         private:
-            Scope<ArcballCameraController> m_CameraController;
+            Scope<TrackBallCamera> m_Camera;
             Scope<GraphicLayerAbstractionFactory> m_GLAFactory;
             Scope<Window> m_Window;
         };

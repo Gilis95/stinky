@@ -31,13 +31,9 @@ namespace stinky {
     /** ################################ Entity Component Classes ################################################ */
 
     /** ################################ Cameras ################################################################# */
-    class ArcballCamera;
-    class OrthographicCamera;
     class FPSCamera;
-
-    class ArcballCameraController;
-    class OrthographicCameraController;
-    class FPSCameraController;
+    class OrthographicCamera;
+    class TrackBallCamera;
     /** ################################ Cameras ################################################################# */
 
     /** ################################ Events ################################################################# */

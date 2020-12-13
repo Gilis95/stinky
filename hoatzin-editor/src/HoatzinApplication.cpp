@@ -3,7 +3,7 @@
 //
 
 #include <application/EntryPoint.h>
-#include <camera/ArcballCameraController.h>
+#include <camera/TrackBallCamera.h>
 #include <event/Event.h>
 #include <event/Layer.h>
 #include <gla/GraphicLayerAbstractionFactory.h>
@@ -22,7 +22,7 @@ namespace stinky {
 
         /////////////////////////////////////////////////////////////////////////////////////////
         HoatzinApplication::HoatzinApplication()
-                : Application(), m_CameraController(CreateScope<ArcballCameraController>()),
+                : Application(), m_Camera(CreateScope<TrackBallCamera>(WIDTH, HEIGHT)),
                   m_GLAFactory(GraphicLayerAbstractionFactory::create(GraphicLayerAbstractionFactory::API::OpenGL)),
                   m_Window(Window::Create(Window::API::GLFW, m_EventController, {"Hoatzin", WIDTH, HEIGHT})) {
         }
@@ -38,38 +38,38 @@ namespace stinky {
             );
 
             m_EventController.RegisterEventHandler<MouseScrolledEvent>(
-                    [cameraController = m_CameraController.get()](const MouseScrolledEvent &event) {
-                        cameraController->OnMouseScrolled(event);
+                    [camera = m_Camera.get()](const MouseScrolledEvent &event) {
+                        camera->OnMouseScrolled(event);
                     }
             );
 
             m_EventController.RegisterEventHandler<MouseButtonPressedEvent>(
-                    [cameraController = m_CameraController.get()](const MouseButtonPressedEvent &event) {
-                        cameraController->OnMousePressed(event);
+                    [camera = m_Camera.get()](const MouseButtonPressedEvent &event) {
+                        camera->OnMousePressed(event);
                     }
             );
 
             m_EventController.RegisterEventHandler<MouseMovedEvent>(
-                    [cameraController = m_CameraController.get()](const MouseMovedEvent &event) {
-                        cameraController->OnMouseMoved(event);
+                    [camera = m_Camera.get()](const MouseMovedEvent &event) {
+                        camera->OnMouseMoved(event);
                     }
             );
 
             m_EventController.RegisterEventHandler<MouseButtonReleasedEvent>(
-                    [cameraController = m_CameraController.get()](const MouseButtonReleasedEvent &event) {
-                        cameraController->OnMouseReleased(event);
+                    [camera = m_Camera.get()](const MouseButtonReleasedEvent &event) {
+                        camera->OnMouseReleased(event);
                     }
             );
 
             m_EventController.RegisterEventHandler<KeyPressedEvent>(
-                    [cameraController = m_CameraController.get()](const KeyPressedEvent &event) {
-                        cameraController->OnKeyboardEvent(event);
+                    [camera = m_Camera.get()](const KeyPressedEvent &event) {
+                        camera->OnKeyboardEvent(event);
                     }
             );
 
             m_EventController.RegisterEventHandler<WindowResizeEvent>(
-                    [cameraController = m_CameraController.get()](const WindowResizeEvent &event) {
-                        cameraController->PerspectiveCameraController::OnWindowResize(event);
+                    [camera = m_Camera.get()](const WindowResizeEvent &event) {
+                        camera->PerspectiveCameraController::OnWindowResize(event);
                     }
             );
 
@@ -85,7 +85,7 @@ namespace stinky {
             Application::Init();
 
             PushLayer(
-                    new HoatzinEditorLayer(m_GLAFactory.get(), m_CameraController.get(), m_EventController, WIDTH,
+                    new HoatzinEditorLayer(m_GLAFactory.get(), m_Camera.get(), m_EventController, WIDTH,
                                            HEIGHT));
         }
     }

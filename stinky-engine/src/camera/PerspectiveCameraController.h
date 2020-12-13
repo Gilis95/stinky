@@ -17,44 +17,59 @@
 namespace stinky {
     class PerspectiveCameraController {
     public:
-    PerspectiveCameraController();
+        PerspectiveCameraController(float translationSpeed, float rotationSpeed);
 
-    ~PerspectiveCameraController();
+        ~PerspectiveCameraController();
 
+    public:
+        //Camera Rotation
+        virtual void Rotate(const glm::vec3 &oldMousePosition, const glm::vec3 &newMousePosition, const Timestep &ts) = 0;
 
-    //Camera Rotation
-    virtual void Rotate(const Timestep &ts) = 0;
-    virtual void Translate(const Timestep &ts) = 0;
+        // Translate the camera by some amount. If local is TRUE (default) then the translation should
+        // be applied in the local-space of the camera. If local is FALSE, then the translation is
+        // applied in world-space.
+        virtual void Translate(const glm::vec3 &delta, bool local = false) = 0;
 
-    // Camera move trough XYZ
-    void MoveLeft();
-    void MoveRight();
-    void MoveUp();
-    void MoveDown();
-    void MoveNear();
-    void MoveFar();
+    public:
+        // Camera move trough XYZ
+        void MoveLeft();
 
-    void OnUpdate(const Timestep &ts);
+        void MoveRight();
 
-    void OnKeyboardEvent(const KeyPressedEvent &keyPressedEvent);
+        void MoveUp();
 
-    void OnMouseScrolled(const MouseScrolledEvent &event);
-    void OnMousePressed(const MouseButtonPressedEvent &event);
-    void OnMouseReleased(const MouseButtonReleasedEvent &event);
-    void OnMouseMoved(const MouseMovedEvent &event);
+        void MoveDown();
 
-    void OnWindowResize(const WindowResizeEvent &event);
-    virtual void OnWindowResize(uint32_t width, uint32_t height) = 0;
+        void MoveNear();
+
+        void MoveFar();
+
+        void OnUpdate(const Timestep &ts);
+
+        void OnKeyboardEvent(const KeyPressedEvent &keyPressedEvent);
+
+        void OnMouseScrolled(const MouseScrolledEvent &event);
+
+        void OnMousePressed(const MouseButtonPressedEvent &event);
+
+        void OnMouseReleased(const MouseButtonReleasedEvent &event);
+
+        void OnMouseMoved(const MouseMovedEvent &event);
+
+        void OnWindowResize(const WindowResizeEvent &event);
+
+        virtual void OnWindowResize(uint32_t width, uint32_t height) = 0;
 
     protected:
-        glm::vec2 m_OldMousePosition{1.0f, 1.0f};
-        glm::vec2 m_NewMousePosition{1.0f, 1.0f};
+        float m_TranslationSpeed = 300.0f;
+        float m_RotationSpeed;
+    private:
+        glm::vec3 m_OldMousePosition{1.0f, 1.0f, 0.0f};
+        glm::vec3 m_NewMousePosition{1.0f, 1.0f, 0.0f};
         bool m_MousePressed = false;
         bool m_Rotate = false;
 
-        glm::vec3 m_CameraPosition{0.0f, 0.0f, 0.0f};
-    private:
-        std::unordered_map<KeyCode, std::function<void()>> m_CameraMoveFunctions;
+        glm::vec3 m_TranslationVec{0.0f, 0.0f, 0.0f};
     };
 }
 /////////////////////////////////////////////////////////////////////////////////////////

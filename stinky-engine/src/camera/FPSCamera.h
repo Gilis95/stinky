@@ -6,11 +6,12 @@
 
 #include <glm/detail/type_quat.hpp>
 #include "camera/Camera.h"
+#include "PerspectiveCameraController.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    class FPSCamera : public Camera {
+    class FPSCamera : public Camera, public PerspectiveCameraController {
     public:
         explicit FPSCamera(int screenWidth = 1280, int screenHeight = 720, float fov = 45.0f,
                                    float zNear = 1.0f, float zFar = -1.0f);
@@ -18,17 +19,20 @@ namespace stinky {
 
         void SetProjectionRH(float fov, float aspectRatio, float zNear, float zFar);
 
-        // Translate the camera by some amount. If local is TRUE (default) then the translation should
-        // be applied in the local-space of the camera. If local is FALSE, then the translation is
-        // applied in world-space.
-        void Translate(const glm::vec3 &delta, bool local = true);
-
-        void Rotate(float x, float y);
+        // Controller extension
+        void Rotate(const glm::vec3 &oldMousePosition, const glm::vec3 &newMousePosition,  const Timestep& ts) override;
+        void Translate(const glm::vec3 &delta, bool local) override;
+        void OnWindowResize(uint32_t width, uint32_t height) override;
+        // Controller extension
     protected:
         void RecalculateViewProjectionMatrix() override;
         void RecalculateViewMatrix() override;
     private:
-        glm::vec3 m_Rotation;
+        float m_Yaw;
+        float m_Pitch;
+
+        glm::quat m_QuatRotation;
+        glm::mat4 m_Mat4Rotation;
     };
 }
 /////////////////////////////////////////////////////////////////////////////////////////

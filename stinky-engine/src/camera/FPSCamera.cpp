@@ -3,6 +3,7 @@
 //
 
 #include "camera/FPSCamera.h"
+#include "event/Timestep.h"
 
 #include "stinkypch.h"
 
@@ -11,7 +12,10 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     FPSCamera::FPSCamera(int screenWidth, int screenHeight, float fov, float zNear, float zFar)
             : Camera(glm::perspective(glm::radians(fov), (float) screenWidth / (float) screenHeight, zNear, zFar)),
-              m_Rotation(0.0f, 0.0f, -1.0f) {
+              PerspectiveCameraController(300.0f, 20.0f),
+              m_Yaw(0.0f), m_Pitch(0.0f),
+              m_QuatRotation(1.0, 0.0, 0.0, 0.0),
+              m_Mat4Rotation(glm::toMat4(m_QuatRotation)) {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -21,29 +25,11 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void FPSCamera::Translate(const glm::vec3 &delta, bool local /* = true */ ) {
-        m_Position += delta;
-        m_ViewDirty = true;
-    }
-
-
-    /////////////////////////////////////////////////////////////////////////////////////////
-    void FPSCamera::Rotate(float x, float y) {
-        m_Rotation.x += x;
-        m_Rotation.y += y;
-        m_ViewDirty = true;
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////
     void FPSCamera::RecalculateViewProjectionMatrix() {
         ReturnUnless(m_ViewDirty)
         glm::mat4 translate = glm::translate(-m_Position);
 
-        m_ViewMatrix = glm::lookAt(
-                m_Position,
-                m_Rotation,
-                glm::vec3(0, 1, 0)
-        );
+        m_ViewMatrix = translate * m_Mat4Rotation;
         m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
         m_ViewDirty = false;
     }
@@ -53,11 +39,35 @@ namespace stinky {
         ReturnUnless(m_ViewDirty)
         glm::mat4 translate = glm::translate(-m_Position);
 
-        m_ViewMatrix = glm::lookAt(
-                m_Position,
-                m_Rotation,
-                glm::vec3(0, 1, 0)
-        );
+        m_ViewMatrix = translate * m_Mat4Rotation;
         m_ViewDirty = false;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void FPSCamera::Translate(const glm::vec3 &delta, bool local /* = true */ ) {
+        if (local) {
+            m_Position += (m_QuatRotation * delta);
+        } else {
+            m_Position += delta;
+        }
+        m_ViewDirty = true;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void FPSCamera::Rotate(const glm::vec3 &oldMousePosition, const glm::vec3 &newMousePosition, const Timestep &ts) {
+        glm::vec3 delta = newMousePosition - oldMousePosition;
+        m_Pitch += delta.y * m_RotationSpeed * ts;
+        m_Yaw += delta.x * m_RotationSpeed * ts;
+
+        m_Mat4Rotation = glm::eulerAngleXY(m_Pitch, m_Yaw);
+        m_QuatRotation = glm::toQuat(m_Mat4Rotation);
+
+        m_ViewDirty = true;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    void FPSCamera::OnWindowResize(uint32_t width, uint32_t height) {
+        float aspectRatio = static_cast<float>(width) / static_cast<float>(height);
+        SetProjectionRH(45, aspectRatio, 1, -1);
     }
 }

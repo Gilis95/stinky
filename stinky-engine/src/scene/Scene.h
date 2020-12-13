@@ -20,7 +20,7 @@ namespace stinky {
         explicit Scene(const GraphicLayerAbstractionFactory *rendererFactory);
         ~Scene() = default;
 
-        void OnUpdate();
+        void Render();
 
         void OnClose();
 

@@ -1,7 +1,6 @@
 #include <backends/imgui_impl_opengl3.h>
 #include <backends/imgui_impl_glfw.h>
-#include <camera/ArcballCamera.h>
-#include <camera/ArcballCameraController.h>
+#include <camera/TrackBallCamera.h>
 #include <ecs/CameraComponent.h>
 #include <gla/FrameBuffer.h>
 #include <gla/GraphicLayerAbstractionFactory.h>
@@ -23,23 +22,22 @@ namespace stinky::hoatzin {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     HoatzinEditorLayer::HoatzinEditorLayer(GraphicLayerAbstractionFactory *glaFactory,
-                                           ArcballCameraController *cameraController,
+                                           TrackBallCamera *camera,
                                            EventController &eventController,
                                            uint32_t width, uint32_t height)
             : Layer("Hoatzin HoatzinEditorEditor Layer"), m_GLAFactory(glaFactory),
               m_Scene(glaFactory),
               m_SceneManager(glaFactory, m_Scene),
               m_FrameBuffer(glaFactory->CreateFrameBuffer({width, height})),
-              m_CameraController(cameraController), m_Camera(CreateScope<ArcballCamera>(width, height)),
+             m_Camera(camera),
               m_EventController(eventController) {
-        Entity entity(m_Scene.CreateEntity());
-        entity.AddComponent<CameraComponent>(m_Camera.get(), true);
-
-        m_CameraController->SetCamera(m_Camera.get());
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void HoatzinEditorLayer::OnAttach() {
+        Entity entity(m_Scene.CreateEntity());
+        entity.AddComponent<CameraComponent>(m_Camera, true);
+
         m_Camera->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 
         m_SceneManager.LoadSceneFromFile("default");
@@ -59,13 +57,13 @@ namespace stinky::hoatzin {
                 !(m_ViewportSize.x == frameBufferSpecification.Width &&
                   m_ViewportSize.y == frameBufferSpecification.Height)) {
                 m_FrameBuffer->WindowResize(m_ViewportSize.x, m_ViewportSize.y);
-                m_CameraController->OnWindowResize(m_ViewportSize.x, m_ViewportSize.y);
+                m_Camera->OnWindowResize(m_ViewportSize.x, m_ViewportSize.y);
             }
             /** Render current scene */
             m_FrameBuffer->Bind();
 
-            m_CameraController->OnUpdate(ts);
-            m_Scene.OnUpdate();
+            m_Camera->OnUpdate(ts);
+            m_Scene.Render();
 
             m_FrameBuffer->Unbind();
             /** Render current scene */
