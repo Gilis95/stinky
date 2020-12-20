@@ -23,12 +23,15 @@ namespace stinky {
 
     public:
         //Camera Rotation
-        virtual void Rotate(const glm::vec3 &oldMousePosition, const glm::vec3 &newMousePosition, const Timestep &ts) = 0;
+        virtual void
+        Rotate(const glm::vec3 &oldMousePosition, const glm::vec3 &newMousePosition, const TimeFrame &ts) = 0;
 
         // Translate the camera by some amount. If local is TRUE (default) then the translation should
         // be applied in the local-space of the camera. If local is FALSE, then the translation is
         // applied in world-space.
         virtual void Translate(const glm::vec3 &delta, bool local = false) = 0;
+
+        virtual void OnWindowResize(uint32_t width, uint32_t height) = 0;
 
     public:
         // Camera move trough XYZ
@@ -44,7 +47,7 @@ namespace stinky {
 
         void MoveFar();
 
-        void OnUpdate(const Timestep &ts);
+        void OnUpdate(const TimeFrame &ts);
 
         void OnKeyboardEvent(const KeyPressedEvent &keyPressedEvent);
 
@@ -57,9 +60,6 @@ namespace stinky {
         void OnMouseMoved(const MouseMovedEvent &event);
 
         void OnWindowResize(const WindowResizeEvent &event);
-
-        virtual void OnWindowResize(uint32_t width, uint32_t height) = 0;
-
     protected:
         float m_TranslationSpeed = 300.0f;
         float m_RotationSpeed;

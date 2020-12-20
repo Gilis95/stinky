@@ -1,11 +1,13 @@
 
 #include <application/EntryPoint.h>
-#include <camera/FPSCamera.h>
+#include <camera/TrackBallCamera.h>
+#include <core/StinkyMacros.h>
+#include <core/Time.h>
 #include <event/Event.h>
 #include <event/Layer.h>
 #include <gla/GraphicLayerAbstractionFactory.h>
-#include <window/Window.h>
 
+#include <window/Window.h>
 #include "StinkyApplication.h"
 #include "StinkyLayer.h"
 
@@ -17,8 +19,8 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     StinkyApplication::StinkyApplication()
-            : Application(),
-              m_Camera(CreateScope<FPSCamera>()),
+            : Application(TimeFrame(3333333)),
+              m_Camera(CreateScope<TrackBallCamera>()),
               m_GLAFactory(GraphicLayerAbstractionFactory::create(GraphicLayerAbstractionFactory::API::OpenGL)),
               m_Window(Window::Create(Window::API::GLFW, m_EventController, {"Hoatzin", WIDTH, HEIGHT})) {
     }

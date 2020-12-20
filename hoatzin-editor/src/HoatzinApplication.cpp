@@ -3,7 +3,8 @@
 //
 
 #include <application/EntryPoint.h>
-#include <camera/TrackBallCamera.h>
+#include <camera/FPSCamera.h>
+#include <core/Time.h>
 #include <event/Event.h>
 #include <event/Layer.h>
 #include <gla/GraphicLayerAbstractionFactory.h>
@@ -22,7 +23,7 @@ namespace stinky {
 
         /////////////////////////////////////////////////////////////////////////////////////////
         HoatzinApplication::HoatzinApplication()
-                : Application(), m_Camera(CreateScope<TrackBallCamera>(WIDTH, HEIGHT)),
+                : Application(TimeFrame(10000000)), m_Camera(CreateScope<FPSCamera>(WIDTH, HEIGHT)),
                   m_GLAFactory(GraphicLayerAbstractionFactory::create(GraphicLayerAbstractionFactory::API::OpenGL)),
                   m_Window(Window::Create(Window::API::GLFW, m_EventController, {"Hoatzin", WIDTH, HEIGHT})) {
         }

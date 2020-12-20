@@ -11,20 +11,20 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     class StinkyLayer : public Layer {
     public:
-        explicit StinkyLayer(GraphicLayerAbstractionFactory *glaFactory, FPSCamera *cameraController,
+        explicit StinkyLayer(GraphicLayerAbstractionFactory *glaFactory, TrackBallCamera *cameraController,
                              EventController &eventController, unsigned width, unsigned height);
 
         void OnAttach() override;
 
         void OnDetach() override;
 
-        void OnUpdate(const Timestep &ts) override;
+        void OnUpdate(const TimeFrame &ts) override;
 
     private:
         GraphicLayerAbstractionFactory *m_GLAFactory;
         Scene m_Scene;
         Ref<FrameBuffer> m_FrameBuffer;
-        FPSCamera *m_Camera;
+        TrackBallCamera *m_Camera;
     };
     /////////////////////////////////////////////////////////////////////////////////////////
 }

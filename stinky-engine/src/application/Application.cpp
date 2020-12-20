@@ -1,17 +1,17 @@
 #include <GLFW/glfw3.h>
 #include <Tracy.hpp>
+#include <core/Time.h>
 
 #include "application/Application.h"
 #include "event/ApplicationEvent.h"
 #include "event/Event.h"
-#include "event/Timestep.h"
 #include "window/Window.h"
 #include "stinkypch.h"
 
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
-    Application::Application() :
-            m_IsRunning(false), m_EventController() {
+    Application::Application(TimeFrame &&minTimestep) :
+            m_IsRunning(false), m_EventController(), m_MinTimestep(std::forward<TimeFrame>(minTimestep)) {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -37,7 +37,7 @@ namespace stinky {
         std::string applicationName("Application Name: stinky");
 
         TracyAppInfo(applicationName.c_str(), applicationName.size())
-        TracyAppInfo(applicationRevision.c_str(),applicationRevision.size())
+        TracyAppInfo(applicationRevision.c_str(), applicationRevision.size())
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -50,20 +50,38 @@ namespace stinky {
         m_IsRunning = true;
         AppUpdateEvent updateEvent;
 
+        TimeFrame begin;
+        TimeFrame timestep;
+        TimeFrame leftFrameTime;
         while (m_IsRunning) {
-            //TODO:: Use platform independent tool
-            auto time = (float) glfwGetTime();
-            Timestep timestep = time - m_LastFrameTime;
-            m_LastFrameTime = time;
+            begin.AssignCurrentTime();
 
             std::for_each(
                     m_LayerStack.begin(),
                     m_LayerStack.end(),
                     [&](Layer *layer) -> void {
-                        layer->OnUpdate(timestep);
+                        layer->OnUpdate(std::max(m_MinTimestep, timestep));
                     });
 
             m_EventController.OnEvent(updateEvent);
+            {
+                ZoneScopedN("LimitFrameRate")
+
+                bool first = true;
+
+                do {
+                    // Capture the end of frame
+                    timestep.AssignCurrentTime();
+                    // Subtract frame start from it. This will be the time, that frame has taken until now.
+                    timestep -= begin;
+                    ContinueUnless(first)
+                    // Subtract timestep from min timestep. If this value is greater than 0, we should wait this amount
+                    // of time before next frame.
+                    leftFrameTime = m_MinTimestep;
+                    leftFrameTime -= timestep;
+                    first = false;
+                } while (stinky::this_thread::sleep(leftFrameTime, leftFrameTime));
+            }
             FrameMark
         }
     }

@@ -4,7 +4,7 @@
 
 #include <Tracy.hpp>
 #include "camera/TrackBallCamera.h"
-#include "event/Timestep.h"
+#include "core/Time.h"
 
 #include "stinkypch.h"
 
@@ -13,7 +13,7 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     TrackBallCamera::TrackBallCamera(int screenWidth, int screenHeight, float fov, float zNear, float zFar)
             : Camera(glm::perspective(glm::radians(fov), (float) screenWidth / (float) screenHeight, zNear, zFar)),
-              PerspectiveCameraController(300.0f, 3.0f),
+              PerspectiveCameraController(0.04f, 0.0006f),
               m_Rotation(1.0, 0.0, 0.0, 0.0) {
     }
 
@@ -72,9 +72,11 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void TrackBallCamera::Rotate(const glm::vec3 &oldMousePosition, const glm::vec3 &newMousePosition, const Timestep& ts) {
-        glm::vec3 rotVector = glm::normalize(glm::cross(newMousePosition - oldMousePosition, glm::vec3(0,0,1)));
-        float rotationAngle = glm::dot(glm::normalize(oldMousePosition), glm::normalize(newMousePosition)) * m_RotationSpeed * ts;
+    void TrackBallCamera::Rotate(const glm::vec3 &oldMousePosition, const glm::vec3 &newMousePosition, const TimeFrame &ts) {
+        glm::vec3 rotVector = glm::normalize(glm::cross(newMousePosition - oldMousePosition, glm::vec3(0, 0, -2)));
+        float rotationAngle =
+                ts.MiliSeconds() * glm::dot(glm::normalize(oldMousePosition), glm::normalize(newMousePosition)) *
+                m_RotationSpeed;
 
         glm::quat rotQuat(glm::cos(rotationAngle), glm::sin(rotationAngle) * rotVector);
 //        glm::quat rotQuatPrime(glm::cos(-rotationAngle), glm::sin(-rotationAngle) * rotVector);

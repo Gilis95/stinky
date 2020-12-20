@@ -1,14 +1,15 @@
 #include <glm/ext.hpp>
 #include "StinkyLayer.h"
 
-#include "camera/FPSCamera.h"
+#include "camera/TrackBallCamera.h"
+#include "core/Time.h"
 #include "ecs/CameraComponent.h"
 #include "ecs/Entity.h"
 #include "ecs/MaterialComponent.h"
 #include "ecs/MeshComponents.h"
 #include "ecs/ProgramComponent.h"
 #include "ecs/TransformComponent.h"
-#include "event/ApplicationEvent.h"
+#include "event/WindowsEvent.h"
 #include "gla/FrameBuffer.h"
 #include "gla/GraphicLayerAbstractionFactory.h"
 #include "gla/VertexArray.h"
@@ -67,12 +68,15 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    StinkyLayer::StinkyLayer(GraphicLayerAbstractionFactory *glaFactory, FPSCamera *camera,
+    StinkyLayer::StinkyLayer(GraphicLayerAbstractionFactory *glaFactory, TrackBallCamera *camera,
                              EventController &eventController, unsigned width, unsigned height)
             : Layer("Stinky Layer"),
               m_GLAFactory(glaFactory),
               m_Camera(camera),
               m_Scene(glaFactory) {
+        eventController.RegisterEventHandler<WindowResizeEvent>([this](const WindowResizeEvent &resizeEvent) -> void {
+            m_FrameBuffer->WindowResize(resizeEvent.m_Width, resizeEvent.m_Height);
+        });
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -136,7 +140,7 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void StinkyLayer::OnUpdate(const Timestep &ts) {
+    void StinkyLayer::OnUpdate(const TimeFrame &ts) {
         m_FrameBuffer->Unbind();
 
         m_Camera->OnUpdate(ts);

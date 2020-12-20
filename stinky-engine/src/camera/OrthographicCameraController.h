@@ -18,7 +18,7 @@ namespace stinky {
     public:
         explicit OrthographicCameraController(OrthographicCamera &camera, float aspectRatio);
 
-        void OnUpdate(const Timestep &ts);
+        void OnUpdate(const TimeFrame &ts);
         void OnKeyboardEvent(const KeyPressedEvent &keyPressedEvent);
 
         void MoveLeft();

@@ -28,7 +28,7 @@ namespace stinky {
         void Rotate(const glm::quat &rot);
 
         // Controller functions
-        void Rotate(const glm::vec3 &oldMousePosition, const glm::vec3 &newMousePosition, const Timestep &ts) override;
+        void Rotate(const glm::vec3 &oldMousePosition, const glm::vec3 &newMousePosition, const TimeFrame &ts) override;
         void Translate(const glm::vec3 &delta, bool local) override;
         void OnWindowResize(uint32_t width, uint32_t height) override;
         // Controller functions

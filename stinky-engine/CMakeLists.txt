@@ -59,6 +59,9 @@ set(HDR_FILES
         ${CORE_HDR_DIR}/MouseCodes.h
         ${CORE_HDR_DIR}/StinkyLogger.h
         ${CORE_HDR_DIR}/StinkyMacros.h
+        ${CORE_HDR_DIR}/StinkyMemory.h
+        ${CORE_HDR_DIR}/ThreadUtils.h
+        ${CORE_HDR_DIR}/Time.h
 
         # Entity Component System
         ${ECS_HDR_DIR}/CameraComponent.h
@@ -75,7 +78,6 @@ set(HDR_FILES
         ${EVENT_HDR_DIR}/Layer.h
         ${EVENT_HDR_DIR}/LayerStack.h
         ${EVENT_HDR_DIR}/MouseEvent.h
-        ${EVENT_HDR_DIR}/Timestep.h
         ${EVENT_HDR_DIR}/ApplicationEvent.h
         ${EVENT_HDR_DIR}/platform/glfw/GLFWWindowEvent.h
         ${EVENT_HDR_DIR}/WindowsEvent.h
@@ -131,7 +133,8 @@ set(SRC_FILES
         ${CAMERA_SRC_DIR}/PerspectiveCameraController.cpp
         ${CAMERA_SRC_DIR}/TrackBallCamera.cpp
 
-        ${CORE_SRC_DIR}/StinkyMemory.h
+        ${CORE_SRC_DIR}/Time.cpp
+        ${CORE_SRC_DIR}/ThreadUtils.cpp
 
         # Entity Component System
         ${ECS_SRC_DIR}/CameraComponent.cpp

@@ -1,6 +1,6 @@
 #include <backends/imgui_impl_opengl3.h>
 #include <backends/imgui_impl_glfw.h>
-#include <camera/TrackBallCamera.h>
+#include <camera/FPSCamera.h>
 #include <ecs/CameraComponent.h>
 #include <gla/FrameBuffer.h>
 #include <gla/GraphicLayerAbstractionFactory.h>
@@ -22,7 +22,7 @@ namespace stinky::hoatzin {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     HoatzinEditorLayer::HoatzinEditorLayer(GraphicLayerAbstractionFactory *glaFactory,
-                                           TrackBallCamera *camera,
+                                           FPSCamera *camera,
                                            EventController &eventController,
                                            uint32_t width, uint32_t height)
             : Layer("Hoatzin HoatzinEditorEditor Layer"), m_GLAFactory(glaFactory),
@@ -49,7 +49,7 @@ namespace stinky::hoatzin {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void HoatzinEditorLayer::OnUpdate(const Timestep &ts) {
+    void HoatzinEditorLayer::OnUpdate(const TimeFrame &ts) {
         {
             ZoneScopedN("FrameBufferSceneRender")
             const auto &frameBufferSpecification = m_FrameBuffer->GetSpecification();

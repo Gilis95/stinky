@@ -10,12 +10,12 @@ namespace stinky::hoatzin {
     /////////////////////////////////////////////////////////////////////////////////////////
     class HoatzinEditorLayer : public Layer {
     public:
-        HoatzinEditorLayer(GraphicLayerAbstractionFactory *glaFactory, TrackBallCamera *camera,
+        HoatzinEditorLayer(GraphicLayerAbstractionFactory *glaFactory, FPSCamera *camera,
                            EventController &eventController, unsigned width, unsigned height);
 
         void OnAttach() override;
 
-        void OnUpdate(const Timestep &ts) override;
+        void OnUpdate(const TimeFrame &ts) override;
 
         void OnClose();
 
@@ -30,7 +30,7 @@ namespace stinky::hoatzin {
         Scene m_Scene;
         SaveManager m_SceneManager;
         Ref<FrameBuffer> m_FrameBuffer;
-        TrackBallCamera *m_Camera;
+        FPSCamera *m_Camera;
         EventController &m_EventController;
 
         Entity m_SelectedEntt;

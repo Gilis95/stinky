@@ -4,10 +4,10 @@
 
 #include "camera/OrthographicCamera.h"
 #include "camera/OrthographicCameraController.h"
+#include "core/Time.h"
 #include "event/ApplicationEvent.h"
 #include "event/KeyEvent.h"
 #include "event/MouseEvent.h"
-#include "event/Timestep.h"
 #include "event/WindowsEvent.h"
 
 namespace stinky {
@@ -21,10 +21,10 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void OrthographicCameraController::OnUpdate(const Timestep &ts) {
+    void OrthographicCameraController::OnUpdate(const TimeFrame &ts) {
         // Translation
         if (m_CameraPosition.x != 0 || m_CameraPosition.y != 0) {
-            m_CameraPosition *= (ts * m_CameraSpeed);
+            m_CameraPosition *= (ts.MiliSeconds() * m_CameraSpeed);
 
             m_Camera.Translate(m_CameraPosition);
 
@@ -34,7 +34,7 @@ namespace stinky {
 
         // Rotation
         ReturnUnless(m_CameraRotation != 0)
-        m_CameraRotation *= (ts * m_CameraRotationSpeed);
+        m_CameraRotation *= (ts.MiliSeconds() * m_CameraRotationSpeed);
         m_Camera.Rotate(m_CameraRotation);
 
         m_CameraRotation = 0;

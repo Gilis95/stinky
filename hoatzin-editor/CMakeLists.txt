@@ -50,7 +50,7 @@ set(SRC_FILES
         )
 
 # Definitions
-add_definitions(-DIMGUI_IMPL_OPENGL_LOADER_GLAD -DSTINKY_ENABLE_LOG -DTRACY_ENABLE )
+add_definitions(-DIMGUI_IMPL_OPENGL_LOADER_GLAD -DSTINKY_ENABLE_LOG -DTRACY_ENABLE -DSK_PLATFORM_LINUX)
 
 #3rd party libraries
 add_subdirectory(${IMGUI_DEAR_DIR})

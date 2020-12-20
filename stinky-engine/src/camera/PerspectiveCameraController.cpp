@@ -4,9 +4,9 @@
 #include <Tracy.hpp>
 #include "camera/TrackBallCamera.h"
 #include "camera/PerspectiveCameraController.h"
+#include "core/Time.h"
 #include "event/MouseEvent.h"
 #include "event/KeyEvent.h"
-#include "event/Timestep.h"
 #include "event/WindowsEvent.h"
 #include "stinkypch.h"
 
@@ -51,12 +51,12 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void PerspectiveCameraController::OnUpdate(const Timestep &ts) {
+    void PerspectiveCameraController::OnUpdate(const TimeFrame &ts) {
         ZoneScopedN("CameraUpdate")
         if (m_TranslationVec.x != 0 || m_TranslationVec.y != 0 || m_TranslationVec.z != 0) {
             ZoneScopedN("CameraTranslation")
 
-            m_TranslationVec *= (m_TranslationSpeed * ts);
+            m_TranslationVec *= (ts.MiliSeconds() * m_TranslationSpeed);
             Translate(m_TranslationVec);
 
             m_TranslationVec.x = 0;

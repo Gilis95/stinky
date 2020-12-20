@@ -3,7 +3,7 @@
 //
 
 #include "camera/FPSCamera.h"
-#include "event/Timestep.h"
+#include "core/Time.h"
 
 #include "stinkypch.h"
 
@@ -12,7 +12,7 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     FPSCamera::FPSCamera(int screenWidth, int screenHeight, float fov, float zNear, float zFar)
             : Camera(glm::perspective(glm::radians(fov), (float) screenWidth / (float) screenHeight, zNear, zFar)),
-              PerspectiveCameraController(300.0f, 20.0f),
+              PerspectiveCameraController(0.09f, 0.001f),
               m_Yaw(0.0f), m_Pitch(0.0f),
               m_QuatRotation(1.0, 0.0, 0.0, 0.0),
               m_Mat4Rotation(glm::toMat4(m_QuatRotation)) {
@@ -54,10 +54,10 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void FPSCamera::Rotate(const glm::vec3 &oldMousePosition, const glm::vec3 &newMousePosition, const Timestep &ts) {
+    void FPSCamera::Rotate(const glm::vec3 &oldMousePosition, const glm::vec3 &newMousePosition, const TimeFrame &ts) {
         glm::vec3 delta = newMousePosition - oldMousePosition;
-        m_Pitch += delta.y * m_RotationSpeed * ts;
-        m_Yaw += delta.x * m_RotationSpeed * ts;
+        m_Pitch += ts.MiliSeconds() * delta.y * m_RotationSpeed ;
+        m_Yaw += ts.MiliSeconds() * delta.x * m_RotationSpeed ;
 
         m_Mat4Rotation = glm::eulerAngleXY(m_Pitch, m_Yaw);
         m_QuatRotation = glm::toQuat(m_Mat4Rotation);
