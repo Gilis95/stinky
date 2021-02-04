@@ -12,7 +12,7 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     FPSCamera::FPSCamera(int screenWidth, int screenHeight, float fov, float zNear, float zFar)
             : Camera(glm::perspective(glm::radians(fov), (float) screenWidth / (float) screenHeight, zNear, zFar)),
-              PerspectiveCameraController(0.09f, 0.001f),
+              PerspectiveCameraController(0.09f, 0.0005f),
               m_Yaw(0.0f), m_Pitch(0.0f),
               m_QuatRotation(1.0, 0.0, 0.0, 0.0),
               m_Mat4Rotation(glm::toMat4(m_QuatRotation)) {

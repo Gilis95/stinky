@@ -1,7 +1,5 @@
 #pragma once
 
-#include <utility>
-
 #include <ostream>
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -12,7 +10,7 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     class Event {
     public:
-        Event(std::string name) :
+        explicit Event(std::string name) :
                 m_Name(std::move(name)) {}
 
         virtual ~Event() = default;

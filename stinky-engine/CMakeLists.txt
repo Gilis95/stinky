@@ -147,7 +147,6 @@ set(SRC_FILES
         #Events
         ${EVENT_SRC_DIR}/LayerStack.cpp
         ${EVENT_SRC_DIR}/Layer.cpp
-        ${EVENT_SRC_DIR}/EventController.cpp
 
         # Graphic Layer Abstraction
         ${GLA_SRC_DIR}/GraphicLayerAbstractionFactory.cpp

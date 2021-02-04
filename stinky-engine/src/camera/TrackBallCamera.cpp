@@ -13,7 +13,7 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     TrackBallCamera::TrackBallCamera(int screenWidth, int screenHeight, float fov, float zNear, float zFar)
             : Camera(glm::perspective(glm::radians(fov), (float) screenWidth / (float) screenHeight, zNear, zFar)),
-              PerspectiveCameraController(0.04f, 0.0006f),
+              PerspectiveCameraController(0.04f, 0.28f),
               m_Rotation(1.0, 0.0, 0.0, 0.0) {
     }
 
@@ -72,14 +72,21 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void TrackBallCamera::Rotate(const glm::vec3 &oldMousePosition, const glm::vec3 &newMousePosition, const TimeFrame &ts) {
+    void
+    TrackBallCamera::Rotate(const glm::vec3 &oldMousePosition, const glm::vec3 &newMousePosition, const TimeFrame &ts) {
         glm::vec3 rotVector = glm::normalize(glm::cross(newMousePosition - oldMousePosition, glm::vec3(0, 0, -2)));
-        float rotationAngle =
-                ts.MiliSeconds() * glm::dot(glm::normalize(oldMousePosition), glm::normalize(newMousePosition)) *
-                m_RotationSpeed;
 
-        glm::quat rotQuat(glm::cos(rotationAngle), glm::sin(rotationAngle) * rotVector);
-//        glm::quat rotQuatPrime(glm::cos(-rotationAngle), glm::sin(-rotationAngle) * rotVector);
+        float rotationAngle =
+                glm::acos(std::max(
+                        std::min(glm::dot(glm::normalize(oldMousePosition), glm::normalize(newMousePosition)), 1.0f),
+                        -1.0f)) * ts.MiliSeconds() * m_RotationSpeed;
+        float rotationAngleCos = glm::cos(rotationAngle);
+        float rotationAngleSin = glm::sin(rotationAngle);
+
+        glm::quat rotQuat(rotationAngleCos,
+                          rotationAngleSin *
+                          rotVector);
+
         Rotate(rotQuat);
     }
 
