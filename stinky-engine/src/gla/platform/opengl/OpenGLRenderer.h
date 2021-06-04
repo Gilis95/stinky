@@ -15,7 +15,7 @@ namespace stinky {
 
         void Clear() const override;
 
-        void DrawIndexed(Ref<VertexArray> vertexArray, uint32_t indexCount = 0) const override;
+        void DrawIndexed(uint32_t indexCount, bool depthTest) const override;
     };
 }
 /////////////////////////////////////////////////////////////////////////////////////////

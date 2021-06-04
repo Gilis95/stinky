@@ -9,6 +9,7 @@
 #include "ecs/ProgramComponent.h"
 #include "ecs/TransformComponent.h"
 #include "gla/GraphicLayerAbstractionFactory.h"
+#include "gla/IndexBuffer.h"
 #include "gla/VertexBuffer.h"
 #include "gla/VertexArray.h"
 #include "gla/RendererApi.h"
@@ -69,7 +70,8 @@ namespace stinky {
 
             // draw
             command.meshComponent.vertexArray->Bind();
-            m_RendererApi->DrawIndexed(command.meshComponent.vertexArray);
+            m_RendererApi->DrawIndexed(command.meshComponent.vertexArray->GetIndexBuffer()->GetCount(),
+                                       command.materialComponent.GetFlag(stinky::MaterialFlag::DepthTest));
 
             // cleanup
             command.meshComponent.vertexArray->Unbind();
@@ -86,7 +88,8 @@ namespace stinky {
 
             // draw
             command.meshComponent.vertexArray->Bind();
-            m_RendererApi->DrawIndexed(command.meshComponent.vertexArray);
+            m_RendererApi->DrawIndexed(command.meshComponent.vertexArray->GetIndexBuffer()->GetCount(),
+                                       command.materialComponent.GetFlag(stinky::MaterialFlag::DepthTest));
 
             // cleanup
             command.meshComponent.vertexArray->Unbind();

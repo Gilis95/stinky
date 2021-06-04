@@ -29,7 +29,7 @@ namespace stinky::hoatzin {
               m_Scene(glaFactory),
               m_SceneManager(glaFactory, m_Scene),
               m_FrameBuffer(glaFactory->CreateFrameBuffer({width, height})),
-             m_Camera(camera),
+              m_Camera(camera),
               m_EventController(eventController) {
     }
 

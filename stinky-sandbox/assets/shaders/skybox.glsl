@@ -11,7 +11,7 @@ out vec4 v_TexCoord;
 
 void main()
 {
-    gl_Position =  position;
+    gl_Position =  vec4(position.xy, 1.0, 1.0);
     v_TexCoord = u_ViewMatrix * vec4(position.xyz, 0.0f);
 }
 

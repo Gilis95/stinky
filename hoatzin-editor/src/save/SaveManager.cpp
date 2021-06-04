@@ -74,14 +74,14 @@ namespace stinky::hoatzin {
                                                                                          m_Scene(scene) {}
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void SaveManager::SaveSceneToFile(std::string path) {
+    void SaveManager::SaveSceneToFile(const std::string& path) {
         //TODO:: Fill in implementation
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void SaveManager::LoadSceneFromFile(std::string path) {
 
-        //create array buffer, containing shape positions and bind it
+//        //create array buffer, containing shape positions and bind it
         const auto cubeVertexBuffer = m_GLAFactory->CreateVertexBuffer(cubeVertices,
                                                                        CUBE_VERTICES_COUNT *
                                                                        sizeof(float), {
@@ -156,7 +156,7 @@ namespace stinky::hoatzin {
         entity.AddComponent<ProgramComponent>(m_GLAFactory->CreateShader(
                 "/home/christian/workspace/stinky/hoatzin-editor/assets/shaders/skybox.glsl"));
         entity.AddComponent<MaterialComponent>(m_GLAFactory->CreateCubeTexture(
-                "/home/christian/workspace/stinky/hoatzin-editor/assets/textures/daylight.png"));
+                "/home/christian/workspace/stinky/hoatzin-editor/assets/textures/daylight.png"), false);
         entity.AddComponent<TagComponent>("Skybox");
     }
 }

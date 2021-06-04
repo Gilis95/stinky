@@ -6,12 +6,12 @@
 
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
-    OpenGLIndexBuffer::OpenGLIndexBuffer(const void *data, unsigned int count) : m_Count(count),
+    OpenGLIndexBuffer::OpenGLIndexBuffer(const void *data, uint32_t count) : m_Count(count),
                                                                                  m_RendererID(0) {
         glGenBuffers(1, &m_RendererID);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_Count * sizeof(unsigned int), data, GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_Count * sizeof(uint32_t), data, GL_STATIC_DRAW);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

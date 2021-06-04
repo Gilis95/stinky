@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <optional>
 #include <entt/entity/registry.hpp>
 #include "core/StinkyMacros.h"
 

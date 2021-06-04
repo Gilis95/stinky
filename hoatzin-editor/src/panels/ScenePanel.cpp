@@ -8,7 +8,7 @@
 
 namespace stinky::hoatzin::ScenePanel {
     /////////////////////////////////////////////////////////////////////////////////////////
-    void Render(uint32_t textureId, glm::vec2 &outViewportSize) {
+    void Render(uint32_t textureId, glm::vec<2, uint32_t, glm::defaultp> &outViewportSize) {
         {
             ZoneScopedN("ScenePanel")
 
@@ -20,7 +20,7 @@ namespace stinky::hoatzin::ScenePanel {
             outViewportSize = {viewportPanelSize.x, viewportPanelSize.y};
 
 
-            ImGui::Image(reinterpret_cast<void *>(textureId), ImVec2{outViewportSize.x, outViewportSize.y},
+            ImGui::Image(reinterpret_cast<void *>(textureId), ImVec2{static_cast<float>(outViewportSize.x), static_cast<float>(outViewportSize.y)},
                          ImVec2{0, 1},
                          ImVec2{1, 0});
             ImGui::End();

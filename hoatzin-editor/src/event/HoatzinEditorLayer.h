@@ -34,7 +34,7 @@ namespace stinky::hoatzin {
         EventController &m_EventController;
 
         Entity m_SelectedEntt;
-        glm::vec2 m_ViewportSize{0, 0};
+        glm::vec<2, uint32_t, glm::defaultp> m_ViewportSize{0, 0};
     };
     /////////////////////////////////////////////////////////////////////////////////////////
 }

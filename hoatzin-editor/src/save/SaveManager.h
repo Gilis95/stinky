@@ -18,7 +18,7 @@ namespace stinky::hoatzin {
     public:
         SaveManager(GraphicLayerAbstractionFactory* glaFactory, Scene &scene);
 
-        void SaveSceneToFile(std::string path);
+        void SaveSceneToFile(const std::string& path);
 
         void LoadSceneFromFile(std::string path);
     private:

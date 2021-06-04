@@ -46,7 +46,7 @@ namespace stinky {
     void OpenGLRenderer::Init() const {
         glEnable(GL_DEBUG_OUTPUT);
         glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-        glDebugMessageCallback(OpenGLMessageCallback, nullptr);
+//        glDebugMessageCallback(OpenGLMessageCallback, nullptr);
         glEnable(GL_DEPTH_TEST);
 
         glEnable(GL_BLEND);
@@ -54,13 +54,16 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void
-    OpenGLRenderer::DrawIndexed(Ref<VertexArray> vertexArray, uint32_t indexCount) const {
+    void OpenGLRenderer::DrawIndexed(uint32_t indexCount, bool depthTest) const {
         ZoneScopedN("RenderApiDrawCall")
 
-        uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
+        if(!depthTest)
+            glDisable(GL_DEPTH_TEST);
 
-        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+        glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);
+
+        if(!depthTest)
+            glEnable(GL_DEPTH_TEST);
     }
 
 }

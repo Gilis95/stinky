@@ -20,5 +20,5 @@ namespace stinky::hoatzin::ScenePanel {
      * @param outViewportSize - If there is new size of view port it will be written in this variable. If there is
      * no new size, old one will be written.
      */
-    void Render(uint32_t textureId, glm::vec2& outViewportSize);
+    void Render(uint32_t textureId, glm::vec<2, uint32_t, glm::defaultp> &outViewportSize);
 }

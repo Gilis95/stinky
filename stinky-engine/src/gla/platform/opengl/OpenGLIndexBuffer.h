@@ -10,9 +10,9 @@ namespace stinky {
         uint32_t m_RendererID;
         const uint32_t m_Count;
     public:
-        OpenGLIndexBuffer(const void *data, unsigned int count);
+        OpenGLIndexBuffer(const void *data, uint32_t count);
 
-        ~OpenGLIndexBuffer();
+        ~OpenGLIndexBuffer() override;
 
         void Bind() const override;
 

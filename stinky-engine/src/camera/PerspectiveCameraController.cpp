@@ -56,7 +56,7 @@ namespace stinky {
         if (m_TranslationVec.x != 0 || m_TranslationVec.y != 0 || m_TranslationVec.z != 0) {
             ZoneScopedN("CameraTranslation")
 
-            m_TranslationVec *= (ts.MiliSeconds() * m_TranslationSpeed);
+            m_TranslationVec *= ts.MiliSeconds();
             Translate(m_TranslationVec);
 
             m_TranslationVec.x = 0;
@@ -64,13 +64,18 @@ namespace stinky {
             m_TranslationVec.z = 0;
         }
 
-        ReturnUnless(m_Rotate)
-        {
+        if (m_Pan) {
+            Pan(m_OldMousePosition, m_NewMousePosition, ts);
+            m_Pan = false;
+        }
+
+        if (m_Rotate) {
             ZoneScopedN("CameraRotation")
 
             Rotate(m_OldMousePosition, m_NewMousePosition, ts);
             m_Rotate = false;
         }
+
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -91,39 +96,40 @@ namespace stinky {
     }
 
     void PerspectiveCameraController::OnMouseScrolled(const MouseScrolledEvent &event) {
-        m_TranslationVec.z -= event.m_YOffset;
-        m_TranslationVec.x -= event.m_XOffset;
+        m_TranslationVec.z += event.m_YOffset;
+        m_TranslationVec.x += event.m_XOffset;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void PerspectiveCameraController::OnMousePressed(const MouseButtonPressedEvent &event) {
-        m_MousePressed = true;
+        m_LeftMouseButtonPressed = event.m_Button == MouseCode::ButtonLeft;
+        m_MiddleMouseButtonPressed = event.m_Button == MouseCode::ButtonMiddle;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void PerspectiveCameraController::OnMouseReleased(const MouseButtonReleasedEvent &event) {
-        m_MousePressed = false;
+        m_LeftMouseButtonPressed = event.m_Button != MouseCode::ButtonLeft && m_LeftMouseButtonPressed;
+        m_MiddleMouseButtonPressed = event.m_Button != MouseCode::ButtonMiddle && m_MiddleMouseButtonPressed;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void PerspectiveCameraController::OnMouseMoved(const MouseMovedEvent &event) {
-        const auto mouseMovedEvent = dynamic_cast<const MouseMovedEvent &>(event);
-
-        if (m_MousePressed) {
+        if (m_LeftMouseButtonPressed || m_MiddleMouseButtonPressed) {
             m_OldMousePosition.x = m_NewMousePosition.x;
             m_OldMousePosition.y = m_NewMousePosition.y;
 
-            m_NewMousePosition.x = mouseMovedEvent.m_MouseX;
-            m_NewMousePosition.y = mouseMovedEvent.m_MouseY;
+            m_NewMousePosition.x = event.m_MouseX;
+            m_NewMousePosition.y = event.m_MouseY;
 
-            m_Rotate = true;
+            m_Rotate = m_LeftMouseButtonPressed;
+            m_Pan = m_MiddleMouseButtonPressed;
             return;
         } else {
-            // if button is released new frame must update according last change, before we update new position
-            ReturnIf(m_Rotate)
+            // if button is released frame must be updated according last change, before we update new position
+            ReturnIf(m_Rotate || m_Pan)
 
-            m_NewMousePosition.x = mouseMovedEvent.m_MouseX;
-            m_NewMousePosition.y = mouseMovedEvent.m_MouseY;
+            m_NewMousePosition.x = event.m_MouseX;
+            m_NewMousePosition.y = event.m_MouseY;
         }
     }
 

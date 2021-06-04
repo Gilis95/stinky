@@ -15,7 +15,7 @@ namespace stinky {
 
         virtual void Unbind() const = 0;
 
-        virtual unsigned int GetCount() const = 0;
+        virtual uint32_t GetCount() const = 0;
     };
 }
 /////////////////////////////////////////////////////////////////////////////////////////
