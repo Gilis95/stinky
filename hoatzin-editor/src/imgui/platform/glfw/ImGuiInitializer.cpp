@@ -13,8 +13,8 @@
 
 namespace stinky::hoatzin::ImGuiInitializer {
     /////////////////////////////////////////////////////////////////////////////////////////
-    void HandleGLFWInit(const Event &event) {
-        ImGuiInitializer::Execute(dynamic_cast<const GLFWWindowPostInitEvent &>(event).m_Window);
+    void HandleGLFWInit(const GLFWWindowPostInitEvent &event) {
+        ImGuiInitializer::Execute(event.m_Window);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

@@ -33,7 +33,7 @@ namespace stinky {
             Application::RegisterEventHandlers();
 
             m_EventController.RegisterEventHandler<GLFWWindowPostInitEvent>(
-                    [](const Event &event) {
+                    [](const GLFWWindowPostInitEvent &event) {
                         ImGuiInitializer::HandleGLFWInit(event);
                     }
             );

@@ -1,202 +1,96 @@
-cmake_minimum_required(VERSION 3.2)
-project(stinky-engine)
-
-set(CMAKE_CXX_STANDARD 17)
+project(stinky-engine VERSION 1.0.0 LANGUAGES CXX)
 
 add_definitions(-DSTINKY_ENABLE_LOG -D_CRT_SECURE_NO_WARNINGS -DSTINKY_ENGINE_DEBUG -DTRACY_ENABLE)
 
-################################################################################################
-#Project Header directory
-set(HDR_DIR ${PROJECT_SOURCE_DIR}/src)
+option(STINKY_ENGINE_INSTALL "Generate installation target" OFF)
 
-set(APPLICATION_HDR_DIR ${HDR_DIR}/application)
-set(CAMERA_HDR_DIR ${HDR_DIR}/camera)
-set(CORE_HDR_DIR ${HDR_DIR}/core)
-set(ECS_HDR_DIR ${HDR_DIR}/ecs)
-set(EVENT_HDR_DIR ${HDR_DIR}/event)
-set(GLA_HDR_DIR ${HDR_DIR}/gla)
-set(OPENGL_HDR_DIR ${GLA_HDR_DIR}/platform/opengl)
-set(RENDERER_HDR_DIR ${HDR_DIR}/renderer)
-set(SCENE_HDR_DIR ${HDR_DIR}/scene)
-set(WINDOW_HDR_DIR ${HDR_DIR}/window)
+include(cmake/Files.cmake)
 
 ################################################################################################
-#Project source directory
-set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
+add_library(stinky-engine STATIC ${STINKY_HEADERS} ${STINKY_SOURCES})
 
-set(APPLICATION_SRC_DIR ${SRC_DIR}/application)
-set(CAMERA_SRC_DIR ${SRC_DIR}/camera)
-set(CORE_SRC_DIR ${SRC_DIR}/core)
-set(EVENT_SRC_DIR ${SRC_DIR}/event)
-set(ECS_SRC_DIR ${SRC_DIR}/ecs)
-set(GLA_SRC_DIR ${SRC_DIR}/gla)
-set(OPENGL_SRC_DIR ${GLA_SRC_DIR}/platform/opengl)
-set(RENDERER_SRC_DIR ${SRC_DIR}/renderer)
-set(SCENE_SRC_DIR ${SRC_DIR}/scene)
-set(WINDOW_SRC_DIR ${SRC_DIR}/window)
-
-################################################################################################
-#Dependencies directory
-set(STB_DIR ${PROJECT_SOURCE_DIR}/vendor/stb_image)
-
-################################################################################################
-set(HDR_FILES
-        # Application module
-        ${APPLICATION_HDR_DIR}/Application.h
-        ${APPLICATION_HDR_DIR}/EntryPoint.h
-
-        # Camera module
-        ${CAMERA_HDR_DIR}/Camera.h
-        ${CAMERA_HDR_DIR}/FPSCamera.h
-        ${CAMERA_HDR_DIR}/OrthographicCamera.h
-        ${CAMERA_HDR_DIR}/OrthographicCameraController.h
-        ${CAMERA_HDR_DIR}/PerspectiveCameraController.h
-        ${CAMERA_HDR_DIR}/TrackBallCamera.h
-
-
-        #Core component
-        ${CORE_HDR_DIR}/KeyboardCodes.h
-        ${CORE_HDR_DIR}/MouseCodes.h
-        ${CORE_HDR_DIR}/StinkyLogger.h
-        ${CORE_HDR_DIR}/StinkyMacros.h
-        ${CORE_HDR_DIR}/StinkyMemory.h
-        ${CORE_HDR_DIR}/ThreadUtils.h
-        ${CORE_HDR_DIR}/Time.h
-
-        # Entity Component System
-        ${ECS_HDR_DIR}/CameraComponent.h
-        ${ECS_HDR_DIR}/Entity.h
-        ${ECS_HDR_DIR}/TransformComponent.h
-        ${ECS_HDR_DIR}/MeshComponents.h
-        ${ECS_HDR_DIR}/ProgramComponent.h
-        ${ECS_HDR_DIR}/MaterialComponent.h
-
-        #Event submodule
-        ${EVENT_HDR_DIR}/Event.h
-        ${EVENT_HDR_DIR}/EventController.h
-        ${EVENT_HDR_DIR}/KeyEvent.h
-        ${EVENT_HDR_DIR}/Layer.h
-        ${EVENT_HDR_DIR}/LayerStack.h
-        ${EVENT_HDR_DIR}/MouseEvent.h
-        ${EVENT_HDR_DIR}/ApplicationEvent.h
-        ${EVENT_HDR_DIR}/platform/glfw/GLFWWindowEvent.h
-        ${EVENT_HDR_DIR}/WindowsEvent.h
-
-        # Graphic Layer Abstraction module
-        ${GLA_HDR_DIR}/CubeTexture.h
-        ${GLA_HDR_DIR}/FrameBuffer.h
-        ${GLA_HDR_DIR}/GraphicLayerAbstractionFactory.h
-        ${GLA_HDR_DIR}/RendererApi.h
-        ${GLA_HDR_DIR}/Shader.h
-        ${GLA_HDR_DIR}/Texture.h
-        ${GLA_HDR_DIR}/VertexBuffer.h
-        ${GLA_HDR_DIR}/VertexArray.h
-
-        # Root dir
-        ${HDR_DIR}/stinkypch.h
-        ${HDR_DIR}/StinkyPrerequisites.h
-
-        # Graphic Layer Abstraction OpenGL implementation
-        ${OPENGL_HDR_DIR}/OpenGLFrameBuffer.h
-        ${OPENGL_HDR_DIR}/OpenGLGraphicLayerFactory.h
-        ${OPENGL_HDR_DIR}/OpenGLRenderer.h
-        ${OPENGL_HDR_DIR}/OpenGLVertexBuffer.h
-        ${OPENGL_HDR_DIR}/OpenGLVertexArray.h
-        ${OPENGL_HDR_DIR}/OpenGLShader.h
-        ${OPENGL_HDR_DIR}/OpenGLCubeTexture.h
-        ${OPENGL_HDR_DIR}/OpenGLTexture.h
-
-        # Renderer API
-        ${RENDERER_HDR_DIR}/Renderer.h
-
-        # Scene
-        ${SCENE_HDR_DIR}/Scene.h
-
-        #Window submodule
-        ${WINDOW_HDR_DIR}/Window.h
-        ${WINDOW_HDR_DIR}/glfw/PlatformIndependentWindow.h
-
-        ${STB_DIR}/stb_image.h
-        ${STB_DIR}/stb_image_write.h
+target_include_directories(stinky-engine PUBLIC
+        $<BUILD_INTERFACE: ${HDR_DIR} ${STB_DIR}>
+        $<INSTALL_INTERFACE:include>
         )
 
-################################################################################################
-set(SRC_FILES
-        #Application
-        ${APPLICATION_SRC_DIR}/Application.cpp
+target_link_libraries(stinky-engine PRIVATE EnTT glad glfw glm spdlog tracy)
 
-        # Camera
-        ${CAMERA_SRC_DIR}/Camera.cpp
-        ${CAMERA_SRC_DIR}/FPSCamera.cpp
-        ${CAMERA_SRC_DIR}/OrthographicCamera.cpp
-        ${CAMERA_SRC_DIR}/OrthographicCameraController.cpp
-        ${CAMERA_SRC_DIR}/PerspectiveCameraController.cpp
-        ${CAMERA_SRC_DIR}/TrackBallCamera.cpp
+if (STINKY_ENGINE_INSTALL)
+    # cmake install dirs
+    include(GNUInstallDirs)
 
-        ${CORE_SRC_DIR}/Time.cpp
-        ${CORE_SRC_DIR}/ThreadUtils.cpp
+    set(version_config "${CMAKE_CURRENT_BINARY_DIR}/stinkyEngineConfigVersion.cmake")
+    set(project_config "${CMAKE_CURRENT_BINARY_DIR}/stinkyEngineConfig.cmake")
+    set(targets_export_name "stinkyEngineTargets")
+    set(namespace "stinky::")
 
-        # Entity Component System
-        ${ECS_SRC_DIR}/CameraComponent.cpp
-        ${ECS_SRC_DIR}/MaterialComponent.cpp
-        ${ECS_SRC_DIR}/MeshComponents.cpp
-        ${ECS_SRC_DIR}/ProgramComponent.cpp
-        ${ECS_SRC_DIR}/TagComponent.h
-        ${ECS_SRC_DIR}/TransformComponent.cpp
+    # Include module with function 'write_basic_package_version_file'
+    include(CMakePackageConfigHelpers)
 
-        #Events
-        ${EVENT_SRC_DIR}/LayerStack.cpp
-        ${EVENT_SRC_DIR}/Layer.cpp
+    # Configure 'gladConfigVersion.cmake'
+    # PROJECT_VERSION is used as a VERSION
+    write_basic_package_version_file("${version_config}" COMPATIBILITY SameMajorVersion)
 
-        # Graphic Layer Abstraction
-        ${GLA_SRC_DIR}/GraphicLayerAbstractionFactory.cpp
-        ${GLA_SRC_DIR}/CubeTexture.cpp
+    # Configure 'tracyConfig.cmake'
+    # Uses targets_export_name variable.
+    configure_package_config_file(
+            "Config.cmake.in"
+            "${project_config}"
+            INSTALL_DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}/cmake/stinky)
 
-        #Renderer OpenGL implementation
-        ${OPENGL_SRC_DIR}/OpenGLGraphicLayerFactory.cpp
-        ${OPENGL_SRC_DIR}/OpenGLFrameBuffer.cpp
-        ${OPENGL_SRC_DIR}/OpenGLIndexBuffer.cpp
-        ${OPENGL_SRC_DIR}/OpenGLRenderer.cpp
-        ${OPENGL_SRC_DIR}/OpenGLShader.cpp
-        ${OPENGL_SRC_DIR}/OpenGLTexture.cpp
-        ${OPENGL_SRC_DIR}/OpenGLVertexBuffer.cpp
-        ${OPENGL_SRC_DIR}/OpenGLVertexArray.cpp
-        ${OPENGL_SRC_DIR}/OpenGLCubeTexture.cpp
+    # Targets:
+    install(
+            TARGETS stinky-engine
+            EXPORT "${targets_export_name}"
+            LIBRARY DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+            ARCHIVE DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
+            RUNTIME DESTINATION ${CMAKE_INSTALL_FULL_BINDIR})
 
-        #Render API
-        ${RENDERER_SRC_DIR}/Renderer.cpp
+    install(FILES ${APPLICATION_HEADER} ${APPLICATION_INLINE}
+            DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR}/stinky/application)
 
-        # Scene
-        ${SCENE_SRC_DIR}/Scene.cpp
+    install(FILES ${CAMERA_HEADER} ${CAMERA_HEADER}
+            DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR}/stinky/camera)
 
-        #General purpose
-        ${SRC_DIR}/StinkyLogger.cpp
+    install(FILES ${CORE_HEADER} ${CORE_INLINE}
+            DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR}/stinky/core)
 
-        #STB dependency
-        ${STB_DIR}/stb_image.cpp
+    install(FILES ${ECS_HEADER} ${ECS_INLINE}
+            DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR}/stinky/ecs)
 
-        #Window submodule
-        ${WINDOW_SRC_DIR}/Window.cpp
-        ${WINDOW_SRC_DIR}/glfw/PlatformIndependentWindow.cpp
-        )
+    install(FILES ${EVENT_HEADER} ${EVENT_INLINE}
+            DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR}/stinky/event)
 
-add_library(stinky-engine STATIC ${SRC_FILES} ${HDR_FILES})
+    install(FILES ${GLA_HEADER} ${GLA_INLINE}
+            DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR}/stinky/gla)
 
-target_include_directories(stinky-engine PRIVATE
-        ${ENTT_DIR_INCLUDE_DIR}
-        ${GLM_DIR}
-        ${HDR_DIR}
-        ${OPENGL_INCLUDE_DIRS}
-        ${SPDLOG_DIR}/include
-        ${STB_DIR}
-        ${TRACY_DIR}
-        ${WINDOW_ABSTRACTION_INCLUDE_DIR}
-        )
+    install(FILES ${GLA_OPENGL_HEADER} ${GLA_OPENGL_INLINE}
+            DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR}/stinky/gla/platform/opengl)
 
-target_link_libraries(stinky-engine PRIVATE
-        glm
-        ${OPENGL_LIB}
-        spdlog
-        tracy
-        ${WINDOW_ABSTRACTION_LIB}
-        )
+    install(FILES ${ROOT_HEADER} ${ROOT_INLINE}
+            DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR}/stinky/)
+
+    install(FILES ${RENDERER_HEADER} ${RENDERER_INLINE}
+            DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR}/stinky/renderer)
+
+    install(FILES ${SCENE_HEADER} ${SCENE_INLINE}
+            DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR}/stinky/scene)
+
+    install(FILES ${WINDOW_HEADER} ${WINDOW_INLINE}
+            DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR}/stinky/window)
+
+    install(FILES ${WINDOW_GLFW_HEADER} ${WINDOW_GLFW_INLINE}
+            DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR}/stinky/window)
+
+    # Install stinkyConfig.cmake, stinkyConfigVersion.cmake
+    install(
+            FILES "${project_config}" "${version_config}"
+            DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}/cmake/stinky)
+
+    # Create and install stinkyTargets.cmake
+    install(
+            EXPORT "${targets_export_name}"
+            NAMESPACE "${namespace}"
+            DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}/cmake/stinky)
+endif ()

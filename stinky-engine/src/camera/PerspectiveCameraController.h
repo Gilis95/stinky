@@ -55,11 +55,10 @@ namespace stinky {
         float m_TranslationSpeed;
         float m_RotationSpeed;
     private:
-        glm::vec3 m_OldMousePosition{1.0f, 1.0f, 0.0f};
-        glm::vec3 m_NewMousePosition{1.0f, 1.0f, 0.0f};
-        bool m_LeftMouseButtonPressed = false, m_MiddleMouseButtonPressed = false, m_Rotate = false, m_Pan = false;
+        glm::vec3 m_OldMousePosition, m_NewMousePosition;
+        bool m_LeftMouseButtonPressed, m_MiddleMouseButtonPressed, m_Rotate, m_Pan;
 
-        glm::vec3 m_TranslationVec{0.0f, 0.0f, 0.0f};
+        glm::vec3 m_TranslationVec;
     };
 }
 /////////////////////////////////////////////////////////////////////////////////////////

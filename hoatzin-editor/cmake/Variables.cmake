@@ -1,0 +1,18 @@
+set(HDR_DIR ${PROJECT_SOURCE_DIR}/src)
+set(EVENT_HDR_DIR ${HDR_DIR}/event)
+set(HOATZIN_IMGUI_HDR_DIR ${HDR_DIR}/imgui)
+set(HOATZIN_IMGUI_GLFW_HDR_DIR ${HOATZIN_IMGUI_HDR_DIR}/platform/glfw)
+set(PANELS_HDR_DIR ${HDR_DIR}/panels)
+set(SAVE_HDR_DIR ${HDR_DIR}/save)
+set(STYLE_HDR_DIR ${HDR_DIR}/style)
+
+set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
+set(EVENT_SRC_DIR ${SRC_DIR}/event)
+set(HOATZIN_IMGUI_SRC_DIR ${SRC_DIR}/imgui)
+set(HOATZIN_IMGUI_GLFW_SRC_DIR ${HOATZIN_IMGUI_SRC_DIR}/platform/glfw)
+set(PANELS_SRC_DIR ${SRC_DIR}/panels)
+set(SAVE_SRC_DIR ${SRC_DIR}/save)
+set(STYLE_SRC_DIR ${SRC_DIR}/style)
+
+# Submodules dir
+set(STINKY_ENGINE_DIR ${PROJECT_SOURCE_DIR}/../stinky-engine)

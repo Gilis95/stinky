@@ -14,7 +14,10 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     PerspectiveCameraController::PerspectiveCameraController(float translationSpeed, float rotationSpeed)
-            : m_TranslationSpeed(translationSpeed), m_RotationSpeed(rotationSpeed) {
+            : m_TranslationSpeed(translationSpeed), m_RotationSpeed(rotationSpeed),
+              m_OldMousePosition(1.0f, 1.0f, 0.0f),
+              m_NewMousePosition(1.0f, 1.0f, 0.0f), m_LeftMouseButtonPressed(false), m_MiddleMouseButtonPressed(false),
+              m_Rotate(false), m_Pan(false), m_TranslationVec(0.0f, 0.0f, 0.0f) {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

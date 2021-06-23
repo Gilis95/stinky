@@ -49,7 +49,7 @@ namespace stinky {
         /////////////////////////////////////////////////////////////////////////////////////////
         template<typename T>
         [[nodiscard]] bool HasComponent() const {
-            return m_Registry->has<T>(m_EntityHandle);
+            return m_Registry->any_of<T>(m_EntityHandle);
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////
