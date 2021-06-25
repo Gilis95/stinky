@@ -132,7 +132,7 @@ namespace stinky {
         entity.AddComponent<ProgramComponent>(m_GLAFactory->CreateShader(
                 "/home/christian/workspace/stinky/stinky-sandbox/assets/shaders/skybox.glsl"));
         entity.AddComponent<MaterialComponent>(m_GLAFactory->CreateCubeTexture(
-                "/home/christian/workspace/stinky/stinky-sandbox/assets/textures/skybox.png"));
+                "/home/christian/workspace/stinky/stinky-sandbox/assets/textures/skybox.png"), false);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
