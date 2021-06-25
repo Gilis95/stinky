@@ -1,15 +1,26 @@
 # Sinky Engine
 
+## Build Status
+
+[![Build Status](https://travis-ci.com/Gilis95/stinky.svg?branch=master)](https://travis-ci.com/Gilis95/stinky)
+
 ## How to clone repo
 
-In order to clone repository with all of its dependencies following command should be used:
+Stinky is using modern CMake approach for handling 3rd party dependencies, so you're not obligated to clone recursively its submodules. However stinky is using [tracy](https://github.com/Gilis95/tracy) as a profile tool.
+If you're going to profile the engine, you must clone repository recursively and compile tracy client.
+
+To clone repository with all of its dependencies, following command should be used:
 
 ``` git clone --recursive git@github.com:Gilis95/stinky.git ```
 
+To clone repository without its dependencies, following command must be executed:
+
+``` git clone git@github.com:Gilis95/stinky.git ```
+
 ## How to build project
 
-Cmake should be used for generating platform dependent files. It's recommended to generate platform dependent files in separate directory. For example `build` directory can be created inside project root directory. 
-To build project by mentioned above method, following secuence of commands should be used:
+Project is using CMake as a build tool. It's recommended to generate platform dependent files and store them in new project root child directory, e.g. `build`. 
+To build the project by mentioned above method, following secuence of commands should be used:
 
 ```
 cd ${STINKY_PROJECT_ROOT_DIR}
@@ -17,6 +28,3 @@ mkdir build
 cd build
 cmake ../
 ```
-In case this is done Windows OS, Visual Studio solution file will be generated. Now on you can open this sln file with `Visual Studio`.
-
-In case this is done under Linux, Makefiles will be generated. Now on you can use ``` make ``` to generate `stinky-engine`(game engine) .so and `stinky-sandbox` executable.
