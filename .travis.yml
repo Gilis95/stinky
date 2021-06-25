@@ -12,7 +12,7 @@ matrix:
   include:
     - env: GCC_VERSION=8 BUILD_TYPE=Release CPP=17
       os: linux
-      dist: trusty
+      dist: focal
       sudo: require
       addons: *gcc8
 
