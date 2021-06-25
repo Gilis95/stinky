@@ -2,7 +2,7 @@ include(FetchContent)
 
 FetchContent_Declare(
         imgui
-        GIT_REPOSITORY git@github.com:Gilis95/imgui.git
+        GIT_REPOSITORY https://github.com/Gilis95/imgui.git
         GIT_TAG 5cf21ec4f7b9db6d672525fea47b59e135d6ed71
 )
 
