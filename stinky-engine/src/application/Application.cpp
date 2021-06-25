@@ -1,4 +1,3 @@
-#include <GLFW/glfw3.h>
 #include <Tracy.hpp>
 #include <core/Time.h>
 

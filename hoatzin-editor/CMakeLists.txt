@@ -1,7 +1,7 @@
 project(hoatzin-editor)
 
 # Definitions
-add_definitions(-DIMGUI_IMPL_OPENGL_LOADER_GLAD -DSTINKY_ENABLE_LOG -DSK_PLATFORM_LINUX)
+add_definitions(-DIMGUI_IMPL_OPENGL_LOADER_GLAD -DSTINKY_ENABLE_LOG -DSK_PLATFORM_LINUX -DGLFW_INCLUDE_NONE)
 
 include(cmake/Files.cmake)
 
