@@ -1,14 +1,24 @@
 language: cpp
-- os: linux
-  addons:
-    apt:
-      sources:
-        - ubuntu-toolchain-r-test
-      packages:
-        - g++-8.2
-    script:
-      - cmake --version
-      - mkdir ./stinky_17_release
-      - cd ./stinky_17_release
-      - cmake -DCMAKE_CXX_COMPILER=$COMPILER -DCMAKE_BUILD_TYPE=Release ..
-      - cmake -E time cmake --build .
+
+addons: &gcc8
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-8
+
+matrix:
+  include:
+    - env: GCC_VERSION=7 BUILD_TYPE=Release CPP=11
+      os: linux
+      addons: *gcc8
+
+before_script:
+  export CXX="g++-${GCC_VERSION}" CC="gcc-${GCC_VERSION}"
+
+script:
+  - cmake --version
+  - mkdir ./stinky_17_release
+  - cd ./stinky_17_release
+  - cmake -DCMAKE_CXX_COMPILER=$COMPILER -DCMAKE_BUILD_TYPE=Release ..
+  - cmake -E time cmake --build .
