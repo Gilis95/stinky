@@ -2,11 +2,13 @@ language: cpp
 
 addons: &gcc8
   apt:
-    sources:
-      - ubuntu-toolchain-r-test
     packages:
       - g++-8
       - cmake
+      - libxrandr-dev
+      - libxinerama-dev
+      - libxcursor-dev
+      - libxi-dev
 
 matrix:
   include:
