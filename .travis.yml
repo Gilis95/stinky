@@ -6,14 +6,14 @@ addons: &gcc8
       - ubuntu-toolchain-r-test
     packages:
       - g++-8
-      - cmake-data
       - cmake
 
 matrix:
   include:
     - env: GCC_VERSION=8 BUILD_TYPE=Release CPP=17
       os: linux
-      dist: bionic
+      dist: trusty
+      sudo: require
       addons: *gcc8
 
 before_script:
