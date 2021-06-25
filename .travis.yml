@@ -4,7 +4,6 @@ addons: &gcc8
   apt:
     sources:
       - ubuntu-toolchain-r-test
-      - george-edison55-precise-backports
     packages:
       - g++-8
       - cmake-data
