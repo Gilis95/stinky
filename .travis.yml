@@ -4,12 +4,15 @@ addons: &gcc8
   apt:
     sources:
       - ubuntu-toolchain-r-test
+      - george-edison55-precise-backports
     packages:
       - g++-8
+      - cmake-data
+      - cmake
 
 matrix:
   include:
-    - env: GCC_VERSION=7 BUILD_TYPE=Release CPP=17
+    - env: GCC_VERSION=8 BUILD_TYPE=Release CPP=17
       os: linux
       dist: bionic
       addons: *gcc8
