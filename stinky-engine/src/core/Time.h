@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "StinkyMacros.h"
+#include "stinky_macros.h"
 #include "StinkyPrerequisites.h"
 
 #ifdef SK_PLATFORM_LINUX
@@ -19,12 +19,12 @@ namespace stinky {
      * This class represents either certain time point or duration frame between two points. The precision of the class
      * is nanoseconds.
      */
-    class TimeFrame {
+    class time_frame {
     public:
-        friend int stinky::this_thread::sleep(const TimeFrame&, TimeFrame&);
+        friend int stinky::this_thread::sleep(const time_frame&, time_frame&);
 
     public:
-        [[nodiscard]] static TimeFrame now();
+        [[nodiscard]] static time_frame now();
 
     public:
 #ifdef SK_PLATFORM_LINUX
@@ -32,15 +32,15 @@ namespace stinky {
         /**
          * Initialize time point 0 nanoseconds
          */
-        TimeFrame();
+        time_frame();
 
-        TimeFrame(const TimeFrame &other);
+        time_frame(const time_frame &other);
 
-        TimeFrame(TimeFrame &&other) noexcept;
+        time_frame(time_frame &&other) noexcept;
 
-        explicit TimeFrame(__syscall_slong_t nanoseconds);
+        explicit time_frame(__syscall_slong_t nanoseconds);
 
-        explicit TimeFrame(timespec timepoint);
+        explicit time_frame(timespec timepoint);
 
         /**
          * @param nanoseconds - time point class one to be aligned with.
@@ -78,22 +78,22 @@ namespace stinky {
          * Subtract given time frame from current and return new resulting time frame.
          * New time frame is clamped in values between 0 and 999999999.
          */
-        TimeFrame operator-(const TimeFrame &other) const;
+        time_frame operator-(const time_frame &other) const;
 
         /**
          * Add given time frame to current and return new resulting time frame.
          * New time frame is clamped in values between 0 and 999999999.
          */
-        TimeFrame operator+(const TimeFrame &other) const;
+        time_frame operator+(const time_frame &other) const;
 
         /**
          * Subtract given time frame from current, time is clamped in values between 0 and 999999999.
          */
-        void operator-=(const TimeFrame &other);
+        void operator-=(const time_frame &other);
 
-        TimeFrame &operator=(const TimeFrame &other);
+        time_frame &operator=(const time_frame &other);
 
-        bool operator<(const TimeFrame &other) const;
+        bool operator<(const time_frame &other) const;
 
     private:
 #ifdef SK_PLATFORM_LINUX

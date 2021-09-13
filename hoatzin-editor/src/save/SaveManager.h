@@ -7,22 +7,22 @@
 #include <string>
 
 namespace stinky {
-    class Scene;
+    class scene;
 
-    class GraphicLayerAbstractionFactory;
+    class graphic_layer_abstraction_factory;
 }
 
 namespace stinky::hoatzin {
 
     class SaveManager {
     public:
-        SaveManager(GraphicLayerAbstractionFactory* glaFactory, Scene &scene);
+        SaveManager(graphic_layer_abstraction_factory* glaFactory, scene &scene);
 
         void SaveSceneToFile(const std::string& path);
 
         void LoadSceneFromFile(std::string path);
     private:
-        GraphicLayerAbstractionFactory *m_GLAFactory;
-        Scene &m_Scene;
+        graphic_layer_abstraction_factory *m_GLAFactory;
+        scene &m_Scene;
     };
 }

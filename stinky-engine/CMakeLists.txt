@@ -14,7 +14,7 @@ target_include_directories(stinky-engine PUBLIC
         $<INSTALL_INTERFACE:include>
         )
 
-target_link_libraries(stinky-engine PRIVATE EnTT glad glfw glm spdlog tracy)
+target_link_libraries(stinky-engine PRIVATE EnTT glad glfw glm spdlog tracy yaml-cpp)
 
 if (STINKY_ENGINE_INSTALL)
     # cmake install dirs

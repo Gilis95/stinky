@@ -2,29 +2,29 @@
 
 #include <glm/glm.hpp>
 
-#include "event/EventController.h"
-#include "event/Layer.h"
-#include "scene/Scene.h"
+#include "event/event_controller.h"
+#include "event/layer.h"
+#include "scene/scene.h"
 #include "StinkyPrerequisites.h"
 
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
-    class StinkyLayer : public Layer {
+    class StinkyLayer : public layer {
     public:
-        explicit StinkyLayer(GraphicLayerAbstractionFactory *glaFactory, TrackBallCamera *cameraController,
-                             EventController &eventController, unsigned width, unsigned height);
+        explicit StinkyLayer(graphic_layer_abstraction_factory *glaFactory, track_ball_camera *cameraController,
+                             event_controller &eventController, unsigned width, unsigned height);
 
         void OnAttach() override;
 
         void OnDetach() override;
 
-        void OnUpdate(const TimeFrame &ts) override;
+        void OnUpdate(const time_frame &ts) override;
 
     private:
-        GraphicLayerAbstractionFactory *m_GLAFactory;
-        Scene m_Scene;
-        Ref<FrameBuffer> m_FrameBuffer;
-        TrackBallCamera *m_Camera;
+        graphic_layer_abstraction_factory *m_GLAFactory;
+        scene m_Scene;
+        shared_ptr<frame_buffer> m_FrameBuffer;
+        track_ball_camera *m_Camera;
     };
     /////////////////////////////////////////////////////////////////////////////////////////
 }

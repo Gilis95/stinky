@@ -1,4 +1,4 @@
-#include <application/Application.h>
+#include <application/application.h>
 
 #include <StinkyPrerequisites.h>
 
@@ -6,23 +6,23 @@
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
-    class StinkyApplication : public Application {
+    class StinkyApplication : public application {
     public:
         StinkyApplication();
 
-        void RegisterEventHandlers() override;
+        void register_event_handlers() override;
 
-        void Init() override;
+        void init() override;
 
-        Window *GetWindow() override;
+        window *get_window() override;
 
     private:
-        Scope<TrackBallCamera>  m_Camera;
-        Scope<GraphicLayerAbstractionFactory> m_GLAFactory;
-        Scope<Window> m_Window;
+        unique_ptr<track_ball_camera>  m_Camera;
+        unique_ptr<graphic_layer_abstraction_factory> m_GLAFactory;
+        unique_ptr<window> m_Window;
     };
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    Application *CreateApplication();
+    application *create_application();
 }
 

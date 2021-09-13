@@ -5,7 +5,7 @@
 #include <imgui.h>
 #include <backends/imgui_impl_opengl3.h>
 #include <backends/imgui_impl_glfw.h>
-#include <event/platform/glfw/GLFWWindowEvent.h>
+#include <event/platform/glfw/glfw_window_event.h>
 
 #include "imgui/platform/glfw/ImGuiInitializer.h"
 #include "style/HoatzinImGui.h"
@@ -13,8 +13,8 @@
 
 namespace stinky::hoatzin::ImGuiInitializer {
     /////////////////////////////////////////////////////////////////////////////////////////
-    void HandleGLFWInit(const GLFWWindowPostInitEvent &event) {
-        ImGuiInitializer::Execute(event.m_Window);
+    void HandleGLFWInit(const glfw_window_post_init_event &event) {
+        ImGuiInitializer::Execute(event.window);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

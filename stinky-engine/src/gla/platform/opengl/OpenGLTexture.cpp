@@ -21,8 +21,8 @@ namespace stinky {
             dataFormat = GL_RGB;
         }
 
-        glGenTextures(1, &m_RendererID);
-        glBindTexture(GL_TEXTURE_2D, m_RendererID);
+        glGenTextures(1, &_M_renderer_id);
+        glBindTexture(GL_TEXTURE_2D, _M_renderer_id);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -42,36 +42,36 @@ namespace stinky {
             : m_Width(width), m_Height(height) {
         GLenum internalFormat = GL_RGBA8;
 
-        glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
-        glTextureStorage2D(m_RendererID, 1, internalFormat, m_Width, m_Height);
+        glCreateTextures(GL_TEXTURE_2D, 1, &_M_renderer_id);
+        glTextureStorage2D(_M_renderer_id, 1, internalFormat, m_Width, m_Height);
 
-        glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTextureParameteri(_M_renderer_id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTextureParameteri(_M_renderer_id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-        glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTextureParameteri(_M_renderer_id, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTextureParameteri(_M_renderer_id, GL_TEXTURE_WRAP_T, GL_REPEAT);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
     OpenGLTexture::~OpenGLTexture() {
-        glDeleteTextures(1, &m_RendererID);
+        glDeleteTextures(1, &_M_renderer_id);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void OpenGLTexture::Bind(uint32_t slot) const {
+    void OpenGLTexture::bind(uint32_t slot) const {
         glActiveTexture(GL_TEXTURE0 + slot);
-        glBindTexture(GL_TEXTURE_2D, m_RendererID);
+        glBindTexture(GL_TEXTURE_2D, _M_renderer_id);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void OpenGLTexture::Unbind(uint32_t slot) const {
+    void OpenGLTexture::unbind(uint32_t slot) const {
         glActiveTexture(GL_TEXTURE0 + slot);
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void OpenGLTexture::SetData(void *data) {
-        glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, GL_RGBA, GL_UNSIGNED_BYTE,
+    void OpenGLTexture::set_data(void *data) {
+        glTextureSubImage2D(_M_renderer_id, 0, 0, 0, m_Width, m_Height, GL_RGBA, GL_UNSIGNED_BYTE,
                             data);
     }
 }

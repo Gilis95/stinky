@@ -49,7 +49,7 @@ namespace stinky {
         glBindVertexArray(m_RendererID);
 
         ReturnUnless(m_IndexBuffer)
-        m_IndexBuffer->Bind();
+        m_IndexBuffer->bind();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -57,19 +57,19 @@ namespace stinky {
         glBindVertexArray(0);
 
         ReturnUnless(m_IndexBuffer)
-        m_IndexBuffer->Unbind();
+        m_IndexBuffer->unbind();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer> &indexBuffer) {
+    void OpenGLVertexArray::set_index_buffer(const shared_ptr<index_buffer> &indexBuffer) {
         glBindVertexArray(m_RendererID);
-        indexBuffer->Bind();
+        indexBuffer->bind();
 
         m_IndexBuffer = indexBuffer;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer> &vb) {
+    void OpenGLVertexArray::add_vertex_buffer(const shared_ptr<vertex_buffer> &vb) {
         Bind();
         vb->Bind();
 

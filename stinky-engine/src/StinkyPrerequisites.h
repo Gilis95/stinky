@@ -4,86 +4,86 @@
 
 #pragma once
 
-#include "core/StinkyLogger.h"
-#include "core/StinkyMacros.h"
-#include "core/StinkyMemory.h"
+#include "core/stinky_logger.h"
+#include "core/stinky_macros.h"
+#include "core/stinky_memory.h"
 
 namespace stinky {
     /** ################################ Graphic Layer Abstraction Classes ####################################### */
-    class CubeTexture;
+    class cube_texture;
 
-    class FrameBuffer;
+    class frame_buffer;
 
-    struct FrameBufferSpecification;
+    struct frame_buffer_specification;
 
-    class GraphicLayerAbstractionFactory;
+    class graphic_layer_abstraction_factory;
 
-    class IndexBuffer;
+    class index_buffer;
 
-    class Shader;
+    class shader;
 
-    class Texture;
+    class texture;
 
-    class VertexArray;
+    class vertex_array;
 
-    class VertexBuffer;
+    class vertex_buffer;
 
     class BufferLayout;
 
-    class RendererApi;
+    class renderer_api;
     /** ################################ Graphic Layer Abstraction Classes ####################################### */
 
     /** ################################ Entity Component Classes ################################################ */
-    class MeshComponent;
+    class mesh_component;
 
-    class TransformComponent;
+    class transform_component;
 
-    class MaterialComponent;
+    class material_component;
 
-    class ProgramComponent;
+    class program_component;
     /** ################################ Entity Component Classes ################################################ */
 
     /** ################################ Cameras ################################################################# */
-    class FPSCamera;
+    class fps_camera;
 
-    class OrthographicCamera;
+    class orthographic_camera;
 
-    class TrackBallCamera;
+    class track_ball_camera;
     /** ################################ Cameras ################################################################# */
 
     /** ################################ Events ################################################################# */
-    class AppTickEvent;
+    class app_tick_event;
 
-    class AppUpdateEvent;
+    class app_update_event;
 
-    class AppRenderEvent;
+    class app_render_event;
 
-    class KeyPressedEvent;
+    class key_pressed_event;
 
-    class KeyReleasedEvent;
+    class key_released_event;
 
-    class KeyTypedEvent;
+    class key_typed_event;
 
-    class MouseMovedEvent;
+    class mouse_moved_event;
 
-    class MouseScrolledEvent;
+    class mouse_scrolled_event;
 
-    class MouseButtonPressedEvent;
+    class mouse_button_pressed_event;
 
-    class MouseButtonReleasedEvent;
+    class mouse_button_released_event;
 
-    class TimeFrame;
+    class time_frame;
 
-    class WindowResizeEvent;
+    class window_resize_event;
 
-    class WindowCloseEvent;
+    class window_close_event;
     /** ################################ Events ################################################################# */
 
     /** ################################ Window ################################################################# */
-    class Window;
+    class window;
     /** ################################ Window ################################################################# */
 
     namespace this_thread {
-        extern int sleep(const TimeFrame &requestedTime, TimeFrame &outRemainingTime);
+        extern int sleep(const time_frame &requestedTime, time_frame &outRemainingTime);
     }
 }

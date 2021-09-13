@@ -9,4 +9,4 @@ add_executable(hoatzin-editor ${imgui_INCLUDES} ${imgui_SOURCES} ${SRC_FILES} ${
 
 target_include_directories(hoatzin-editor PRIVATE ${imgui_INCLUDES} ${stinky-engine_INCLUDES} ${HDR_DIR})
 
-target_link_libraries(hoatzin-editor PRIVATE EnTT glad glfw glm imgui spdlog stinky::stinky-engine tracy)
+target_link_libraries(hoatzin-editor PRIVATE EnTT glad glfw glm imgui spdlog tracy yaml-cpp stinky::stinky-engine)

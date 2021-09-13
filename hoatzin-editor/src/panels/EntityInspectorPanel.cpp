@@ -2,8 +2,8 @@
 // Created by christian on 05/11/2020.
 //
 
-#include <ecs/Entity.h>
-#include <ecs/TransformComponent.h>
+#include <ecs/entity.h>
+#include <ecs/transform_component.h>
 #include <imgui.h>
 #include <Tracy.hpp>
 
@@ -12,12 +12,12 @@
 
 namespace stinky::hoatzin::EntityInspectorPanel {
     /////////////////////////////////////////////////////////////////////////////////////////
-    void Render(Entity &selectedEntt) {
+    void Render(entity &selectedEntt) {
         ZoneScopedN("EntityInspectionPanel")
 
         ImGui::Begin("Inspector");
         if (selectedEntt) {
-            auto transform = selectedEntt.GetComponent<TransformComponent>();
+            auto transform = selectedEntt.get_component<transform_component>();
             if (transform.has_value()) {
                 if (ImGui::CollapsingHeader("Transformation")) {
                     HoatzinImGui::DrawVec3Control("Translation", transform.value().get().translation);

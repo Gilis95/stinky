@@ -20,9 +20,9 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtx/euler_angles.hpp>
 
-#include "core/StinkyLogger.h"
-#include "core/StinkyMacros.h"
-#include "core/StinkyMemory.h"
+#include "core/stinky_logger.h"
+#include "core/stinky_macros.h"
+#include "core/stinky_memory.h"
 
 #ifdef SK_PLATFORM_WINDOWS
 #include <Windows.h>

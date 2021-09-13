@@ -3,13 +3,13 @@
 //
 #pragma once
 
-#include <application/Application.h>
-#include <scene/Scene.h>
+#include <application/application.h>
+#include <scene/scene.h>
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    class Window;
+    class window;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -19,23 +19,23 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////
     namespace hoatzin{
-        class HoatzinApplication : public Application {
+        class HoatzinApplication : public application {
         public:
             HoatzinApplication();
 
-            void RegisterEventHandlers() override;
+            void register_event_handlers() override;
 
-            void Init() override;
+            void init() override;
 
-            Window* GetWindow() override;
+            window* get_window() override;
         private:
-            Scope<FPSCamera> m_Camera;
-            Scope<GraphicLayerAbstractionFactory> m_GLAFactory;
-            Scope<Window> m_Window;
+            unique_ptr<fps_camera> m_Camera;
+            unique_ptr<graphic_layer_abstraction_factory> m_GLAFactory;
+            unique_ptr<window> m_Window;
         };
 
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    Application *CreateApplication();
+    application *create_application();
 }

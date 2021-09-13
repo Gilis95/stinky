@@ -7,8 +7,8 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky{
-    class Scene;
-    class Entity;
+    class scene;
+    class entity;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -18,5 +18,5 @@ namespace stinky::hoatzin::SceneHierarchyPanel {
      * @param scene - scene entities will be loaded from
      * @param outSelectedEntity - selected entity will be written to this param
      */
-    void Render(Scene& scene, Entity& outSelectedEntity);
+    void Render(scene& scene, entity& outSelectedEntity);
 }

@@ -20,12 +20,12 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void OpenGLIndexBuffer::Bind() const {
+    void OpenGLIndexBuffer::bind() const {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void OpenGLIndexBuffer::Unbind() const {
+    void OpenGLIndexBuffer::unbind() const {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 }

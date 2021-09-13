@@ -1,21 +1,21 @@
 #pragma once
 
-#include "gla/RendererApi.h"
+#include "gla/renderer_api.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    class OpenGLRenderer : public RendererApi {
+    class OpenGLRenderer : public renderer_api {
     public:
         OpenGLRenderer() = default;
 
         ~OpenGLRenderer() override = default;
 
-        void Init() const override;
+        void init() const override;
 
-        void Clear() const override;
+        void clear() const override;
 
-        void DrawIndexed(uint32_t indexCount, bool depthTest) const override;
+        void draw_indexed(uint32_t indexCount, bool depthTest) const override;
     };
 }
 /////////////////////////////////////////////////////////////////////////////////////////

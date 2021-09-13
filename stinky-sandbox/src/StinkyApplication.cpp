@@ -1,13 +1,13 @@
 
-#include <application/EntryPoint.h>
-#include <camera/TrackBallCamera.h>
-#include <core/StinkyMacros.h>
+#include <application/entry_point.h>
+#include <camera/track_ball_camera.h>
+#include <core/stinky_macros.h>
 #include <core/Time.h>
-#include <event/Event.h>
-#include <event/Layer.h>
-#include <gla/GraphicLayerAbstractionFactory.h>
+#include <event/event.h>
+#include <event/layer.h>
+#include <gla/graphic_layer_abstraction_factory.h>
 
-#include <window/Window.h>
+#include <window/window.h>
 #include "StinkyApplication.h"
 #include "StinkyLayer.h"
 
@@ -19,59 +19,59 @@ namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
     StinkyApplication::StinkyApplication()
-            : Application(TimeFrame(3333333)),
-              m_Camera(CreateScope<TrackBallCamera>()),
-              m_GLAFactory(GraphicLayerAbstractionFactory::create(GraphicLayerAbstractionFactory::API::OpenGL)),
-              m_Window(Window::Create(Window::API::GLFW, m_EventController, {"Hoatzin", WIDTH, HEIGHT})) {
+            : application(time_frame(3333333)),
+              m_Camera(CreateScope<track_ball_camera>()),
+              m_GLAFactory(graphic_layer_abstraction_factory::create(graphic_layer_abstraction_factory::API::OpenGL)),
+              m_Window(window::Create(window::api::GLFW, m_EventController, {"Hoatzin", WIDTH, HEIGHT})) {
     }
 
-    void StinkyApplication::RegisterEventHandlers() {
-        Application::RegisterEventHandlers();
+    void StinkyApplication::register_event_handlers() {
+        application::register_event_handlers();
 
-        m_EventController.RegisterEventHandler<MouseScrolledEvent>(
-                [cameraController = m_Camera.get()](const MouseScrolledEvent &event) {
-                    cameraController->OnMouseScrolled(event);
+        m_EventController.RegisterEventHandler<mouse_scrolled_event>(
+                [cameraController = m_Camera.get()](const mouse_scrolled_event &event) {
+                    cameraController->on_mouse_scrolled(event);
                 }
         );
 
-        m_EventController.RegisterEventHandler<MouseButtonPressedEvent>(
-                [cameraController = m_Camera.get()](const MouseButtonPressedEvent &event) {
+        m_EventController.RegisterEventHandler<mouse_button_pressed_event>(
+                [cameraController = m_Camera.get()](const mouse_button_pressed_event &event) {
                     cameraController->OnMousePressed(event);
                 }
         );
 
-        m_EventController.RegisterEventHandler<MouseMovedEvent>(
-                [cameraController = m_Camera.get()](const MouseMovedEvent &event) {
+        m_EventController.RegisterEventHandler<mouse_moved_event>(
+                [cameraController = m_Camera.get()](const mouse_moved_event &event) {
                     cameraController->OnMouseMoved(event);
                 }
         );
 
-        m_EventController.RegisterEventHandler<MouseButtonReleasedEvent>(
-                [cameraController = m_Camera.get()](const MouseButtonReleasedEvent &event) {
+        m_EventController.RegisterEventHandler<mouse_button_released_event>(
+                [cameraController = m_Camera.get()](const mouse_button_released_event &event) {
                     cameraController->OnMouseReleased(event);
                 }
         );
 
-        m_EventController.RegisterEventHandler<KeyPressedEvent>(
-                [cameraController = m_Camera.get()](const KeyPressedEvent &event) {
-                    cameraController->OnKeyboardEvent(event);
+        m_EventController.RegisterEventHandler<key_pressed_event>(
+                [cameraController = m_Camera.get()](const key_pressed_event &event) {
+                    cameraController->on_keyboard_event(event);
                 }
         );
     }
 
-    void StinkyApplication::Init() {
-        Application::Init();
+    void StinkyApplication::init() {
+        application::init();
 
-        PushLayer(new StinkyLayer(m_GLAFactory.get(), m_Camera.get(), m_EventController, WIDTH,
-                                  HEIGHT));
+        push_lLayer(new StinkyLayer(m_GLAFactory.get(), m_Camera.get(), m_EventController, WIDTH,
+                                    HEIGHT));
     }
 
-    Window *StinkyApplication::GetWindow() {
+    window *StinkyApplication::get_window() {
         return m_Window.get();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    Application *CreateApplication() {
+    application *create_application() {
         return new StinkyApplication();
     }
 

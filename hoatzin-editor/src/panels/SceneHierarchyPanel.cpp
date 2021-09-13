@@ -1,10 +1,10 @@
 //
 // Created by christian on 05/11/2020.
 //
-#include <scene/Scene.h>
-#include <ecs/Entity.h>
+#include <scene/scene.h>
+#include <ecs/entity.h>
 #include <imgui.h>
-#include <ecs/TagComponent.h>
+#include <ecs/tag_component.h>
 #include <Tracy.hpp>
 
 #include "panels/SceneHierarchyPanel.h"
@@ -12,12 +12,12 @@
 namespace stinky::hoatzin::SceneHierarchyPanel {
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void Render(Scene &scene, Entity &outSelectedEntt) {
+    void Render(scene &scene, entity &outSelectedEntt) {
         ZoneScopedN("SceneHierarchyPanel")
 
         ImGui::Begin("Hierarchy");
-        scene.each([&outSelectedEntt](Entity &entt) {
-            auto tag = entt.GetComponent<TagComponent>();
+        scene.each([&outSelectedEntt](entity &entt) {
+            auto tag = entt.get_component<tag_component>();
             if (tag.has_value()) {
                 if (ImGui::Selectable(tag.value().get().name.c_str(), outSelectedEntt == entt)) {
                     outSelectedEntt = entt;

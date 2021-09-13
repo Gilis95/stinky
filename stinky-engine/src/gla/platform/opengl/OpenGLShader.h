@@ -5,28 +5,28 @@
 
 #include <unordered_map>
 
-#include "gla/Shader.h"
+#include "gla/shader.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    class OpenGLShader : public Shader {
+    class OpenGLShader : public shader {
     public:
         explicit OpenGLShader(const std::string &filePath);
 
         ~OpenGLShader() override;
 
-        void Bind() const override;
+        void bind() const override;
 
-        void Unbind() const override;
+        void unbind() const override;
 
-        void SetInteger(const std::string &name, int i) override;
+        void set_integer(const std::string &name, int i) override;
 
-        void SetFloat4(const std::string &name, glm::vec4 vector) override;
+        void set_float4(const std::string &name, glm::vec4 vector) override;
 
-        void SetMat4(const std::string &name, glm::mat4 matrix) override;
+        void set_mat4(const std::string &name, glm::mat4 matrix) override;
 
     private:
         uint32_t m_RendererID;

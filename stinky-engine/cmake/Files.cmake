@@ -4,6 +4,18 @@ file(GLOB APPLICATION_HEADER ${APPLICATION_HDR_DIR}/*.h)
 file(GLOB APPLICATION_INLINE ${APPLICATION_HDR_DIR}/*.hpp)
 file(GLOB APPLICATION_SOURCE ${APPLICATION_SRC_DIR}/*.cpp)
 
+file(GLOB ASSET_HEADER ${ASSET_HDR_DIR}/*.h)
+file(GLOB ASSET_INLINE ${ASSET_HDR_DIR}/*.hpp)
+file(GLOB ASSET_SOURCE ${ASSET_SRC_DIR}/*.cpp)
+
+file(GLOB ASSET_MESH_HEADER ${ASSET_MESH_HDR_DIR}/*.h)
+file(GLOB ASSET_MESH_INLINE ${ASSET_MESH_HDR_DIR}/*.hpp)
+file(GLOB ASSET_MESH_SOURCE ${ASSET_MESH_SRC_DIR}/*.cpp)
+
+file(GLOB ASSET_SERIALIZER_HEADER ${ASSET_SERIALIZER_HDR_DIR}/*.h)
+file(GLOB ASSET_SERIALIZER_INLINE ${ASSET_SERIALIZER_HDR_DIR}/*.hpp)
+file(GLOB ASSET_SERIALIZER_SOURCE ${ASSET_SERIALIZER_SRC_DIR}/*.cpp)
+
 file(GLOB CAMERA_SOURCE ${CAMERA_SRC_DIR}/*.cpp)
 file(GLOB CAMERA_HEADER ${CAMERA_HDR_DIR}/*.h)
 file(GLOB CAMERA_INLINE ${CAMERA_HDR_DIR}/*.hpp)
@@ -56,6 +68,18 @@ source_group("Header Files/application" FILES ${APPLICATION_HEADER})
 source_group("Inline Files/application" FILES ${APPLICATION_INLINE})
 source_group("Source Files/application" FILES ${APPLICATION_SOURCE})
 
+source_group("Header Files/asset" FILES ${ASSET_HEADER})
+source_group("Inline Files/asset" FILES ${ASSET_INLINE})
+source_group("Source Files/asset" FILES ${ASSET_SOURCE})
+
+source_group("Header Files/asset/mesh" FILES ${ASSET_MESH_HEADER})
+source_group("Inline Files/asset/mesh" FILES ${ASSET_MESH_INLINE})
+source_group("Source Files/asset/mesh" FILES ${ASSET_MESH_SOURCE})
+
+source_group("Header Files/asset/serializer" FILES ${ASSET_SERIALIZER_HEADER})
+source_group("Inline Files/asset/serializer" FILES ${ASSET_SERIALIZER_INLINE})
+source_group("Source Files/asset/serializer" FILES ${ASSET_SERIALIZER_SOURCE})
+
 source_group("Header Files/camera" FILES ${CAMERA_HEADER})
 source_group("Inline Files/camera" FILES ${CAMERA_INLINE})
 source_group("Source Files/camera" FILES ${CAMERA_SOURCE})
@@ -106,6 +130,12 @@ source_group("Source Files/window" FILES ${WINDOW_GLFW_SOURCE})
 set(STINKY_HEADERS
         ${APPLICATION_HEADER}
         ${APPLICATION_INLINE}
+        ${ASSET_HEADER}
+        ${ASSET_INLINE}
+        ${ASSET_MESH_HEADER}
+        ${ASSET_MESH_INLINE}
+        ${ASSET_SERIALIZER_HEADER}
+        ${ASSET_SERIALIZER_INLINE}
         ${CAMERA_HEADER}
         ${CAMERA_HEADER}
         ${CORE_HEADER}
@@ -134,6 +164,9 @@ set(STINKY_HEADERS
 
 set(STINKY_SOURCES
         ${APPLICATION_SOURCE}
+        ${ASSET_SOURCE}
+        ${ASSET_MESH_SOURCE}
+        ${ASSET_SERIALIZER_SOURCE}
         ${CAMERA_SOURCE}
         ${CORE_SOURCE}
         ${ECS_SOURCE}

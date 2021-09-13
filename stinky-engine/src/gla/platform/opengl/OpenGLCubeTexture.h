@@ -4,20 +4,20 @@
 
 #pragma once
 
-#include "gla/CubeTexture.h"
+#include "gla/cube_texture.h"
 #include <string>
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    class OpenGLCubeTexture : public CubeTexture {
+    class OpenGLCubeTexture : public cube_texture {
     public:
         explicit OpenGLCubeTexture(std::string path);
         ~OpenGLCubeTexture() override = default;
 
-        void Bind(uint32_t slot) const override;
+        void bind(uint32_t slot) const override;
 
-        void Unbind(uint32_t slot) const override;
+        void unbind(uint32_t slot) const override;
     };
 }
 /////////////////////////////////////////////////////////////////////////////////////////

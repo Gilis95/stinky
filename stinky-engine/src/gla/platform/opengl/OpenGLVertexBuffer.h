@@ -3,12 +3,12 @@
 //
 #pragma once
 
-#include "gla/VertexBuffer.h"
+#include "gla/vertex_buffer.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    class OpenGLVertexBuffer : public VertexBuffer {
+    class OpenGLVertexBuffer : public vertex_buffer {
     public:
         OpenGLVertexBuffer(BufferLayout layout, unsigned int size);
 

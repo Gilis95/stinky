@@ -1,11 +1,11 @@
 #pragma once
 
-#include "gla/IndexBuffer.h"
+#include "gla/index_buffer.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    class OpenGLIndexBuffer : public IndexBuffer {
+    class OpenGLIndexBuffer : public index_buffer {
     private:
         uint32_t m_RendererID;
         const uint32_t m_Count;
@@ -14,11 +14,11 @@ namespace stinky {
 
         ~OpenGLIndexBuffer() override;
 
-        void Bind() const override;
+        void bind() const override;
 
-        void Unbind() const override;
+        void unbind() const override;
 
-        [[nodiscard]] uint32_t GetCount() const override {
+        [[nodiscard]] uint32_t get_count() const override {
             return m_Count;
         }
     };

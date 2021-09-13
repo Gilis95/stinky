@@ -5,8 +5,8 @@
 
 #include "stinkypch.h"
 
-#include "gla/VertexArray.h"
-#include "gla/IndexBuffer.h"
+#include "gla/vertex_array.h"
+#include "gla/index_buffer.h"
 
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -37,13 +37,13 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void OpenGLRenderer::Clear() const {
+    void OpenGLRenderer::clear() const {
         glClearColor(0.1f, 0.1f, 0.1f, 0.1f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void OpenGLRenderer::Init() const {
+    void OpenGLRenderer::init() const {
         glEnable(GL_DEBUG_OUTPUT);
         glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 //        glDebugMessageCallback(OpenGLMessageCallback, nullptr);
@@ -54,7 +54,7 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void OpenGLRenderer::DrawIndexed(uint32_t indexCount, bool depthTest) const {
+    void OpenGLRenderer::draw_indexed(uint32_t indexCount, bool depthTest) const {
         ZoneScopedN("RenderApiDrawCall")
 
         if(!depthTest)

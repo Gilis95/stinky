@@ -36,4 +36,10 @@ FetchContent_Declare(
         GIT_TAG 1c0b429689045aa1ae3fcc58c8ae1617bb7f5ebf
 )
 
-FetchContent_MakeAvailable(EnTT glad glfw glm spdlog tracy)
+FetchContent_Declare(
+        yaml
+        GIT_REPOSITORY https://github.com/jbeder/yaml-cpp.git
+        GIT_TAG yaml-cpp-0.7.0
+)
+
+FetchContent_MakeAvailable(EnTT glad glfw glm spdlog tracy yaml)

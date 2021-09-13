@@ -5,8 +5,8 @@
 
 #include <glm/ext.hpp>
 
-#include "gla/VertexArray.h"
-#include "gla/VertexBuffer.h"
+#include "gla/vertex_array.h"
+#include "gla/vertex_buffer.h"
 
 namespace stinky {
 //    /////////////////////////////////////////////////////////////////////////////////////////

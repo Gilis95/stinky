@@ -1,21 +1,21 @@
 #pragma once
 
-#include <event/Layer.h>
-#include <scene/Scene.h>
+#include <event/layer.h>
+#include <scene/scene.h>
 #include <StinkyPrerequisites.h>
 
 #include "save/SaveManager.h"
 
 namespace stinky::hoatzin {
     /////////////////////////////////////////////////////////////////////////////////////////
-    class HoatzinEditorLayer : public Layer {
+    class HoatzinEditorLayer : public layer {
     public:
-        HoatzinEditorLayer(GraphicLayerAbstractionFactory *glaFactory, FPSCamera *camera,
-                           EventController &eventController, unsigned width, unsigned height);
+        HoatzinEditorLayer(graphic_layer_abstraction_factory *glaFactory, fps_camera *camera,
+                           event_controller &eventController, unsigned width, unsigned height);
 
         void OnAttach() override;
 
-        void OnUpdate(const TimeFrame &ts) override;
+        void OnUpdate(const time_frame &ts) override;
 
         void OnClose();
 
@@ -26,14 +26,14 @@ namespace stinky::hoatzin {
         void ImGuiEnd();
 
     private:
-        GraphicLayerAbstractionFactory *m_GLAFactory;
-        Scene m_Scene;
+        graphic_layer_abstraction_factory *m_GLAFactory;
+        scene m_Scene;
         SaveManager m_SceneManager;
-        Ref<FrameBuffer> m_FrameBuffer;
-        FPSCamera *m_Camera;
-        EventController &m_EventController;
+        shared_ptr<frame_buffer> m_FrameBuffer;
+        fps_camera *m_Camera;
+        event_controller &m_EventController;
 
-        Entity m_SelectedEntt;
+        entity m_SelectedEntt;
         glm::vec<2, uint32_t, glm::defaultp> m_ViewportSize{0, 0};
     };
     /////////////////////////////////////////////////////////////////////////////////////////

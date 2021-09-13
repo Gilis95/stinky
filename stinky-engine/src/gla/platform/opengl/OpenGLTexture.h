@@ -4,12 +4,12 @@
 #pragma once
 
 #include <string>
-#include "gla/Texture.h"
+#include "gla/texture.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    class OpenGLTexture : public Texture {
+    class OpenGLTexture : public texture {
     public:
         explicit OpenGLTexture(const std::string &path);
 
@@ -17,11 +17,11 @@ namespace stinky {
 
         ~OpenGLTexture() override;
 
-        void Bind(unsigned int slot = 0) const override;
+        void bind(unsigned int slot = 0) const override;
 
-        void Unbind(uint32_t slot) const override;
+        void unbind(uint32_t slot) const override;
 
-        void SetData(void *data) override;
+        void set_data(void *data) override;
 
         [[nodiscard]] int GetWidth() const override {
             return m_Width;

@@ -8,7 +8,7 @@
 #include <glm/ext.hpp>
 #include <Tracy.hpp>
 
-#include "core/StinkyMacros.h"
+#include "core/stinky_macros.h"
 #include "gla/platform/opengl/OpenGLShader.h"
 #include "stinkypch.h"
 
@@ -70,12 +70,12 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void OpenGLShader::Bind() const {
+    void OpenGLShader::bind() const {
         glUseProgram(m_RendererID);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void OpenGLShader::Unbind() const {
+    void OpenGLShader::unbind() const {
         glUseProgram(0);
     }
 
@@ -191,17 +191,17 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void OpenGLShader::SetInteger(const std::string &name, int i) {
+    void OpenGLShader::set_integer(const std::string &name, int i) {
         glUniform1i(GetUniformLocation(name), i);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void OpenGLShader::SetFloat4(const std::string &name, glm::vec4 vector) {
+    void OpenGLShader::set_float4(const std::string &name, glm::vec4 vector) {
         glUniform4f(GetUniformLocation(name), vector.x, vector.y, vector.z, vector.w);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void OpenGLShader::SetMat4(const std::string &name, glm::mat4 matrix) {
+    void OpenGLShader::set_mat4(const std::string &name, glm::mat4 matrix) {
         glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix));
     }
 

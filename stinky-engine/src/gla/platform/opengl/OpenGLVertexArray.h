@@ -5,15 +5,15 @@
 
 #include <glad/glad.h>
 
-#include "gla/IndexBuffer.h"
-#include "gla/VertexBuffer.h"
-#include "gla/VertexArray.h"
+#include "gla/index_buffer.h"
+#include "gla/vertex_buffer.h"
+#include "gla/vertex_array.h"
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    class OpenGLVertexArray : public VertexArray {
+    class OpenGLVertexArray : public vertex_array {
     public:
         OpenGLVertexArray();
 
@@ -23,21 +23,21 @@ namespace stinky {
 
         void Unbind() const override;
 
-        [[nodiscard]] const std::vector<Ref<VertexBuffer>> &
-        GetVertexBuffers() const override { return m_VertexBuffers; }
+        [[nodiscard]] const std::vector<shared_ptr<vertex_buffer>> &
+        get_vertex_buffers() const override { return m_VertexBuffers; }
 
-        [[nodiscard]] const Ref<IndexBuffer> &
-        GetIndexBuffer() const override { return m_IndexBuffer; }
+        [[nodiscard]] const shared_ptr<index_buffer> &
+        get_index_buffer() const override { return m_IndexBuffer; }
 
-        void SetIndexBuffer(const Ref<IndexBuffer> &indexBuffer) override;
+        void set_index_buffer(const shared_ptr<index_buffer> &indexBuffer) override;
 
-        void AddVertexBuffer(const Ref<VertexBuffer> &vb) override;
+        void add_vertex_buffer(const shared_ptr<vertex_buffer> &vb) override;
 
     private:
         uint32_t  m_RendererID;
         uint32_t  m_VertexBufferIndex = 0;
-        std::vector<Ref<VertexBuffer>> m_VertexBuffers;
-        Ref<IndexBuffer> m_IndexBuffer;
+        std::vector<shared_ptr<vertex_buffer>> m_VertexBuffers;
+        shared_ptr<index_buffer> m_IndexBuffer;
     };
 }
 /////////////////////////////////////////////////////////////////////////////////////////

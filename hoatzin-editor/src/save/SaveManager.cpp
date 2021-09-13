@@ -1,18 +1,18 @@
 //
 // Created by christian on 05/11/2020.
 //
-#include <ecs/Entity.h>
-#include <ecs/MaterialComponent.h>
-#include <ecs/MeshComponents.h>
-#include <ecs/ProgramComponent.h>
-#include <ecs/TagComponent.h>
-#include <ecs/TransformComponent.h>
-#include <gla/GraphicLayerAbstractionFactory.h>
-#include <gla/IndexBuffer.h>
-#include <gla/VertexArray.h>
-#include <gla/VertexBuffer.h>
+#include <ecs/entity.h>
+#include <ecs/material_component.h>
+#include <ecs/mesh_components.h>
+#include <ecs/program_component.h>
+#include <ecs/tag_component.h>
+#include <ecs/transform_component.h>
+#include <gla/graphic_layer_abstraction_factory.h>
+#include <gla/index_buffer.h>
+#include <gla/vertex_array.h>
+#include <gla/vertex_buffer.h>
 #include <glm/glm.hpp>
-#include <scene/Scene.h>
+#include <scene/scene.h>
 #include "SaveManager.h"
 
 namespace stinky::hoatzin {
@@ -70,8 +70,8 @@ namespace stinky::hoatzin {
 
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    SaveManager::SaveManager(GraphicLayerAbstractionFactory *glaFactory, Scene &scene) : m_GLAFactory(glaFactory),
-                                                                                         m_Scene(scene) {}
+    SaveManager::SaveManager(graphic_layer_abstraction_factory *glaFactory, scene &scene) : m_GLAFactory(glaFactory),
+                                                                                            m_Scene(scene) {}
 
     /////////////////////////////////////////////////////////////////////////////////////////
     void SaveManager::SaveSceneToFile(const std::string& path) {
@@ -88,52 +88,52 @@ namespace stinky::hoatzin {
                                                                                {ShaderDataType::Float4, "position"}
                                                                        });
         //Create index buffer, that will define shape vertex positions
-        const auto cubeIndexBuffer = m_GLAFactory->CreateIndexBuffer(cubeIndices, CUBE_INDICES_COUNT);
+        const auto cubeIndexBuffer = m_GLAFactory->create_index_buffer(cubeIndices, CUBE_INDICES_COUNT);
 
         auto cubeVertexArray = m_GLAFactory->CreateVertexArray();
         //bind currently bound array buffer to first element of currently bound vertex array
-        cubeVertexArray->AddVertexBuffer(cubeVertexBuffer);
-        cubeVertexArray->SetIndexBuffer(cubeIndexBuffer);
+        cubeVertexArray->add_vertex_buffer(cubeVertexBuffer);
+        cubeVertexArray->set_index_buffer(cubeIndexBuffer);
 
         auto entity1 = m_Scene.CreateEntity();
-        entity1.AddComponent<MeshComponent>(cubeVertexArray);
-        entity1.AddComponent<TransformComponent>(glm::vec3(0.0f, 0.0f, -30.0f), glm::vec3(0.5f, 0.5f, 0.5f),
-                                                 glm::vec3(0.0f, 0.0f, 0.0f));
-        entity1.AddComponent<ProgramComponent>(m_GLAFactory->CreateShader(
+        entity1.AddComponent<mesh_component>(cubeVertexArray);
+        entity1.AddComponent<transform_component>(glm::vec3(0.0f, 0.0f, -30.0f), glm::vec3(0.5f, 0.5f, 0.5f),
+                                                  glm::vec3(0.0f, 0.0f, 0.0f));
+        entity1.AddComponent<program_component>(m_GLAFactory->CreateShader(
                 "/home/christian/workspace/stinky/hoatzin-editor/assets/shaders/basic.shader"));
-        entity1.AddComponent<MaterialComponent>(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
-        entity1.AddComponent<TagComponent>("Cube");
+        entity1.AddComponent<material_component>(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+        entity1.AddComponent<tag_component>("Cube");
 
 
         auto entity2 = m_Scene.CreateEntity();
-        entity2.AddComponent<MeshComponent>(cubeVertexArray);
-        entity2.AddComponent<TransformComponent>(glm::vec3(10.0f, 0.0f, -20.0f), glm::vec3(0.5f, 0.5f, 0.5f),
-                                                 glm::vec3(0.0f, 0.0f, 0.0f));
-        entity2.AddComponent<ProgramComponent>(m_GLAFactory->CreateShader(
+        entity2.AddComponent<mesh_component>(cubeVertexArray);
+        entity2.AddComponent<transform_component>(glm::vec3(10.0f, 0.0f, -20.0f), glm::vec3(0.5f, 0.5f, 0.5f),
+                                                  glm::vec3(0.0f, 0.0f, 0.0f));
+        entity2.AddComponent<program_component>(m_GLAFactory->CreateShader(
                 "/home/christian/workspace/stinky/hoatzin-editor/assets/shaders/basic.shader"));
-        entity2.AddComponent<MaterialComponent>(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
-        entity2.AddComponent<TagComponent>("Cube1");
+        entity2.AddComponent<material_component>(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+        entity2.AddComponent<tag_component>("Cube1");
 
 
         auto entity3 = m_Scene.CreateEntity();
-        entity3.AddComponent<MeshComponent>(cubeVertexArray);
-        entity3.AddComponent<TransformComponent>(glm::vec3(0.0f, 0.0f, -10.0f), glm::vec3(0.5f, 0.5f, 0.5f),
-                                                 glm::vec3(0.0f, 0.0f, 0.0f));
-        entity3.AddComponent<ProgramComponent>(m_GLAFactory->CreateShader(
+        entity3.AddComponent<mesh_component>(cubeVertexArray);
+        entity3.AddComponent<transform_component>(glm::vec3(0.0f, 0.0f, -10.0f), glm::vec3(0.5f, 0.5f, 0.5f),
+                                                  glm::vec3(0.0f, 0.0f, 0.0f));
+        entity3.AddComponent<program_component>(m_GLAFactory->CreateShader(
                 "/home/christian/workspace/stinky/hoatzin-editor/assets/shaders/basic.shader"));
-        entity3.AddComponent<MaterialComponent>(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
-        entity3.AddComponent<TagComponent>("Cube2");
+        entity3.AddComponent<material_component>(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+        entity3.AddComponent<tag_component>("Cube2");
 
 
 
         auto entity4 = m_Scene.CreateEntity();
-        entity4.AddComponent<MeshComponent>(cubeVertexArray);
-        entity4.AddComponent<TransformComponent>(glm::vec3(-10.0f, 0.0f, -20.0f), glm::vec3(0.5f, 0.5f, 0.5f),
-                                                 glm::vec3(0.0f, 0.0f, 0.0f));
-        entity4.AddComponent<ProgramComponent>(m_GLAFactory->CreateShader(
+        entity4.AddComponent<mesh_component>(cubeVertexArray);
+        entity4.AddComponent<transform_component>(glm::vec3(-10.0f, 0.0f, -20.0f), glm::vec3(0.5f, 0.5f, 0.5f),
+                                                  glm::vec3(0.0f, 0.0f, 0.0f));
+        entity4.AddComponent<program_component>(m_GLAFactory->CreateShader(
                 "/home/christian/workspace/stinky/hoatzin-editor/assets/shaders/basic.shader"));
-        entity4.AddComponent<MaterialComponent>(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
-        entity4.AddComponent<TagComponent>("Cube3");
+        entity4.AddComponent<material_component>(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+        entity4.AddComponent<tag_component>("Cube3");
 
         //create array buffer, containing shape positions and bind it
         const auto quadVertexBuffer = m_GLAFactory->CreateVertexBuffer(quadVertices,
@@ -142,21 +142,21 @@ namespace stinky::hoatzin {
                                                                                {ShaderDataType::Float4, "position"}
                                                                        });
         //Create index buffer, that will define shape vertex positions
-        const auto quadIndexBuffer = m_GLAFactory->CreateIndexBuffer(quadIndices, 6);
+        const auto quadIndexBuffer = m_GLAFactory->create_index_buffer(quadIndices, 6);
 
         auto quadVertexArray = m_GLAFactory->CreateVertexArray();
         //bind currently bound array buffer to first element of currently bound vertex array
-        quadVertexArray->AddVertexBuffer(quadVertexBuffer);
-        quadVertexArray->SetIndexBuffer(quadIndexBuffer);
+        quadVertexArray->add_vertex_buffer(quadVertexBuffer);
+        quadVertexArray->set_index_buffer(quadIndexBuffer);
 
         auto entity = m_Scene.CreateEntity();
-        entity.AddComponent<MeshComponent>(quadVertexArray);
-        entity.AddComponent<TransformComponent>(glm::vec3(1.0f), glm::vec3(1.0f),
-                                                glm::vec3(1.0f));
-        entity.AddComponent<ProgramComponent>(m_GLAFactory->CreateShader(
+        entity.AddComponent<mesh_component>(quadVertexArray);
+        entity.AddComponent<transform_component>(glm::vec3(1.0f), glm::vec3(1.0f),
+                                                 glm::vec3(1.0f));
+        entity.AddComponent<program_component>(m_GLAFactory->CreateShader(
                 "/home/christian/workspace/stinky/hoatzin-editor/assets/shaders/skybox.glsl"));
-        entity.AddComponent<MaterialComponent>(m_GLAFactory->CreateCubeTexture(
+        entity.AddComponent<material_component>(m_GLAFactory->CreateCubeTexture(
                 "/home/christian/workspace/stinky/hoatzin-editor/assets/textures/daylight.png"), false);
-        entity.AddComponent<TagComponent>("Skybox");
+        entity.AddComponent<tag_component>("Skybox");
     }
 }
