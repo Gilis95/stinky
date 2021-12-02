@@ -6,22 +6,20 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
 #define EVENT_CONSTRUCTOR(type) event(#type)
-    /////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////
-    class event {
-    public:
-        explicit event(std::string name) :
-                m_Name(std::move(name)) {}
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+class event {
+public:
+  explicit event(std::string name) : m_Name(std::move(name)) {}
 
-        virtual ~event() = default;
+  virtual ~event() = default;
 
-        [[nodiscard]] virtual std::string to_string() const { return m_Name; }
+  [[nodiscard]] virtual std::string to_string() const { return m_Name; }
 
-        std::string m_Name;
-    };
+  std::string m_Name;
+};
 
-    inline std::ostream &operator<<(std::ostream &os, const event &e) {
-        return os << e.m_Name;
-    }
+inline std::ostream &operator<<(std::ostream &os, const event &e) {
+  return os << e.m_Name;
 }
-
+} // namespace stinky

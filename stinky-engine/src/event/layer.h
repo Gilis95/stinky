@@ -1,25 +1,25 @@
 #pragma once
 
-#include "StinkyPrerequisites.h"
+#include "stinky_prerequisites.h"
 
 namespace stinky {
-    /////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////
-    class layer {
-    public:
-        explicit layer(std::string name = "Layer");
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+class layer {
+public:
+  explicit layer(std::string name = "Layer");
 
-        virtual ~layer() = default;
+  virtual ~layer() = default;
 
-        virtual void OnAttach() {}
+  virtual void on_attach() {}
 
-        virtual void OnDetach() {}
+  virtual void on_detach() {}
 
-        virtual void OnUpdate(const time_frame &ts) {}
+  virtual void on_update(const time_frame &ts) {}
 
-        [[nodiscard]] const std::string &GetName() const { return m_DebugName; }
+  [[nodiscard]] const std::string &get_name() const { return m_DebugName; }
 
-    protected:
-        const std::string m_DebugName;
-    };
-}
+protected:
+  const std::string m_DebugName;
+};
+} // namespace stinky

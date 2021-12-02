@@ -9,7 +9,7 @@
 #include "gla/shader.h"
 
 namespace stinky {
-    /////////////////////////////////////////////////////////////////////////////////////////
-    program_component::program_component(shared_ptr<shader> program) : program(std::move(program)) {
-    }
-}
+/////////////////////////////////////////////////////////////////////////////////////////
+program_component::program_component(shared_ptr<shader> program)
+    : program(std::move(program)) {}
+} // namespace stinky

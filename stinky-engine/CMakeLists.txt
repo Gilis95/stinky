@@ -1,6 +1,7 @@
 project(stinky-engine VERSION 1.0.0 LANGUAGES CXX)
 
-add_definitions(-DSTINKY_ENABLE_LOG -D_CRT_SECURE_NO_WARNINGS -DSTINKY_ENGINE_DEBUG -DTRACY_ENABLE -DGLFW_INCLUDE_NONE)
+add_definitions(-DSTINKY_ENABLE_LOG -D_CRT_SECURE_NO_WARNINGS -DSTINKY_ENGINE_DEBUG -DTRACY_ENABLE -DGLFW_INCLUDE_NONE
+        -DTINYGLTF_NOEXCEPTION -DTINYGLTF_NO_INCLUDE_STB_IMAGE -DTINYGLTF_NO_INCLUDE_STB_IMAGE_WRITE -DTINYGLTF_USE_CPP14)
 
 option(STINKY_ENGINE_INSTALL "Generate installation target" OFF)
 
@@ -14,7 +15,9 @@ target_include_directories(stinky-engine PUBLIC
         $<INSTALL_INTERFACE:include>
         )
 
-target_link_libraries(stinky-engine PRIVATE EnTT glad glfw glm spdlog tracy yaml-cpp)
+target_link_libraries(stinky-engine PRIVATE EnTT glad glfw glm spdlog tracy yaml-cpp tinygltf)
+
+set_property(TARGET stinky-engine PROPERTY CXX_STANDARD 20)
 
 if (STINKY_ENGINE_INSTALL)
     # cmake install dirs

@@ -3,153 +3,169 @@
 //
 #pragma once
 
+#include <utility>
 #include <vector>
 
 #include "core/stinky_logger.h"
 #include "core/stinky_macros.h"
 
 namespace stinky {
-    /////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////
-    enum class ShaderDataType {
-        None = 0, Float, Float2, Float3, Float4, Mat3, Mat4, Int, Int2, Int3, Int4, Bool
-    };
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
 
-    /////////////////////////////////////////////////////////////////////////////////////////
-    static uint32_t ShaderDataTypeSize(ShaderDataType type) {
-        switch (type) {
-            case ShaderDataType::Float:
-                return sizeof(float) ;
-            case ShaderDataType::Float2:
-                return sizeof(float)  * 2;
-            case ShaderDataType::Float3:
-                return sizeof(float)  * 3;
-            case ShaderDataType::Float4:
-                return sizeof(float) * 4;
-            case ShaderDataType::Mat3:
-                return sizeof(float) * 3 * 3;
-            case ShaderDataType::Mat4:
-                return sizeof(float) * 4 * 4;
-            case ShaderDataType::Int:
-                return sizeof(int);
-            case ShaderDataType::Int2:
-                return sizeof(int) * 2;
-            case ShaderDataType::Int3:
-                return sizeof(int) * 3;
-            case ShaderDataType::Int4:
-                return sizeof(int) * 4;
-            case ShaderDataType::Bool:
-                return sizeof(bool);
-            default: STINKY_LOG_ERROR_AND_BREAK("Unknown ShaderDataType!");
-                return 0;
-        }
+/**
+ * from 1st to 16th byte
+ */
+enum class component_type : uint32_t {
+  FLOAT = 1 << 0,
+  DOUBLE = 1 << 1,
+  INT32 = 1 << 2,
+  INT64 = 1 << 3,
+  BOOL = 1 << 4
+};
+
+/**
+ * from 16th to 32nd byte
+ */
+enum class param_type : uint32_t {
+  SCALAR = 1 << 16,
+  VEC2 = 1 << 17,
+  VEC3 = 1 << 18,
+  VEC4 = 1 << 19,
+  MAT3 = 1 << 20,
+  MAT4 = 1 << 21,
+};
+
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+struct BufferElement {
+public:
+  /////////////////////////////////////////////////////////////////////////////////////////
+  BufferElement() = default;
+
+  /////////////////////////////////////////////////////////////////////////////////////////
+  BufferElement(component_type _component_type, param_type _param_type,
+                std::string _name, bool _normalized = false, size_t _offset = 0)
+      : name(std::move(_name)), type(static_cast<uint32_t>(_component_type) |
+                                     static_cast<uint32_t>(_param_type)),
+        size(ShaderDataTypeSize(type)), offset(_offset),
+        normalized(_normalized) {}
+
+public:
+  /////////////////////////////////////////////////////////////////////////////////////////
+  [[nodiscard]] static uint32_t ShaderDataTypeSize(uint32_t _type) {
+    size_t _type_size = 0;
+
+    if (_type & static_cast<uint32_t>(component_type::FLOAT)) {
+      _type_size = sizeof(float);
+    } else if (_type & static_cast<uint32_t>(component_type::INT32)) {
+      _type_size = sizeof(uint32_t);
+    } else if (_type & static_cast<uint32_t>(component_type::INT64)) {
+      _type_size = sizeof(int64_t);
+    } else if (_type & static_cast<uint32_t>(component_type::BOOL)) {
+      _type_size = sizeof(bool);
+    } else {
+      STINKY_ERROR("Unknown component type!");
+      return 0;
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////
-    struct BufferElement {
-    public:
-        /////////////////////////////////////////////////////////////////////////////////////////
-        BufferElement() = default;
+    uint32_t _elements_count = GetComponentCount(_type);
 
-        /////////////////////////////////////////////////////////////////////////////////////////
-        BufferElement(ShaderDataType type, const std::string &name, bool normalized = false,
-                      size_t offset = 0)
-                : m_Name(name), m_Type(type), m_Size(ShaderDataTypeSize(type)), m_Offset(offset),
-                  m_Normalized(normalized) {
-        }
+    return _type_size * _elements_count;
+  }
 
-        /////////////////////////////////////////////////////////////////////////////////////////
-        [[nodiscard]] uint32_t GetComponentCount() const {
-            switch (m_Type) {
-                case ShaderDataType::Float:
-                    return 1;
-                case ShaderDataType::Float2:
-                    return 2;
-                case ShaderDataType::Float3:
-                    return 3;
-                case ShaderDataType::Float4:
-                    return 4;
-                case ShaderDataType::Mat3:
-                    return 3; // 3* float3
-                case ShaderDataType::Mat4:
-                    return 4; // 4* float4
-                case ShaderDataType::Int:
-                    return 1;
-                case ShaderDataType::Int2:
-                    return 2;
-                case ShaderDataType::Int3:
-                    return 3;
-                case ShaderDataType::Int4:
-                    return 4;
-                case ShaderDataType::Bool:
-                    return 1;
-                default: STINKY_LOG_ERROR_AND_BREAK("Unknown ShaderDataType!");
-                    return 0;
-            }
-        }
+  /////////////////////////////////////////////////////////////////////////////////////////
+  [[nodiscard]] static uint32_t GetComponentCount(uint32_t _type) {
+    if (_type & static_cast<uint32_t>(param_type::SCALAR)) {
+      return 1;
+    } else if (_type & static_cast<uint32_t>(param_type::VEC2)) {
+      return 2;
+    } else if (_type & static_cast<uint32_t>(param_type::VEC3)) {
+      return 3;
+    } else if (_type & static_cast<uint32_t>(param_type::VEC4)) {
+      return 4;
+    } else if (_type & static_cast<uint32_t>(param_type::MAT3)) {
+      return 3 * 3;
+    } else if (_type & static_cast<uint32_t>(param_type::MAT4)) {
+      return 4 * 4;
+    } else {
+      STINKY_ERROR("Unknown param type!");
+      return 0;
+    }
+  }
 
-    public:
-        std::string m_Name;
-        ShaderDataType m_Type;
-        uint32_t m_Size;
-        size_t m_Offset;
-        bool m_Normalized;
-    };
+public:
+  [[nodiscard]] uint32_t GetComponentCount() const {
+    return GetComponentCount(type);
+  }
+public:
+  static const uint32_t component_mask = 0xFFFF0000; // 15th to 30th bit
+  static const uint32_t param_mask = 0x0000FFFF;     // 0 to 15th bit
+public:
+  std::string name;
+  uint32_t type{};
+  uint32_t size{};
+  size_t offset{};
+  bool normalized{};
+};
 
-    /////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////
-    class BufferLayout {
-    public:
-        BufferLayout(const std::initializer_list<BufferElement> &elements)
-                : m_Elements(elements) {
-            CalculateOffsetsAndStride();
-        }
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+class BufferLayout {
+public:
+  BufferLayout(const std::initializer_list<BufferElement> &elements)
+      : _M_elements(elements) {
+    CalculateOffsetsAndStride();
+  }
 
-        [[nodiscard]] uint32_t GetStride() const { return m_Stride; }
+  [[nodiscard]] uint32_t GetStride() const { return _M_stride; }
 
-        [[nodiscard]] const std::vector<BufferElement> &GetElements() const { return m_Elements; }
+  [[nodiscard]] const std::vector<BufferElement> &GetElements() const {
+    return _M_elements;
+  }
 
-        std::vector<BufferElement>::iterator begin() { return m_Elements.begin(); }
+  std::vector<BufferElement>::iterator begin() { return _M_elements.begin(); }
 
-        std::vector<BufferElement>::iterator end() { return m_Elements.end(); }
+  std::vector<BufferElement>::iterator end() { return _M_elements.end(); }
 
-        [[nodiscard]] std::vector<BufferElement>::const_iterator
-        begin() const { return m_Elements.begin(); }
+  [[nodiscard]] std::vector<BufferElement>::const_iterator begin() const {
+    return _M_elements.begin();
+  }
 
-        [[nodiscard]] std::vector<BufferElement>::const_iterator
-        end() const { return m_Elements.end(); }
+  [[nodiscard]] std::vector<BufferElement>::const_iterator end() const {
+    return _M_elements.end();
+  }
 
-    private:
-        void CalculateOffsetsAndStride() {
-            size_t offset = 0;
-            m_Stride = 0;
-            for (auto &element : m_Elements) {
-                element.m_Offset = offset;
-                offset += element.m_Size;
-                m_Stride += element.m_Size;
-            }
-        }
+private:
+  void CalculateOffsetsAndStride() {
+    size_t _offset = 0;
+    _M_stride = 0;
+    for (auto &_element : _M_elements) {
+      _element.offset = _offset;
+      _offset += _element.size;
+      _M_stride += _element.size;
+    }
+  }
 
-    private:
-        std::vector<BufferElement> m_Elements;
-        uint32_t m_Stride = 0;
-    };
+private:
+  std::vector<BufferElement> _M_elements;
+  uint32_t _M_stride = 0;
+};
 
-    /////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////
-    class vertex_buffer {
-    public:
-        virtual ~vertex_buffer() = default;
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+class vertex_buffer {
+public:
+  virtual ~vertex_buffer() = default;
 
-        virtual void Bind() const = 0;
+  virtual void Bind() const = 0;
 
-        virtual void Unbind() const = 0;
+  virtual void Unbind() const = 0;
 
-        virtual void SetData(const void *data, unsigned int size) = 0;
+  virtual void SetData(const void *data, unsigned int size) = 0;
 
-        [[nodiscard]] virtual const BufferLayout &GetBufferLayout() const = 0;
+  [[nodiscard]] virtual const BufferLayout &GetBufferLayout() const = 0;
 
-        virtual void SetBufferLayout(BufferLayout &layout) = 0;
-    };
-}
+  virtual void SetBufferLayout(BufferLayout &layout) = 0;
+};
+} // namespace stinky

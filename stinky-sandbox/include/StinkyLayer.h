@@ -5,7 +5,7 @@
 #include "event/event_controller.h"
 #include "event/layer.h"
 #include "scene/scene.h"
-#include "StinkyPrerequisites.h"
+#include "stinky_prerequisites.h"
 
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -14,11 +14,11 @@ namespace stinky {
         explicit StinkyLayer(graphic_layer_abstraction_factory *glaFactory, track_ball_camera *cameraController,
                              event_controller &eventController, unsigned width, unsigned height);
 
-        void OnAttach() override;
+        void on_attach() override;
 
-        void OnDetach() override;
+        void on_detach() override;
 
-        void OnUpdate(const time_frame &ts) override;
+        void on_update(const time_frame &ts) override;
 
     private:
         graphic_layer_abstraction_factory *m_GLAFactory;

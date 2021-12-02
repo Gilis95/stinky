@@ -6,22 +6,23 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    class texture {
-    public:
-        virtual ~texture() = default;
+class texture {
+public:
+  virtual ~texture() = default;
 
-        virtual void bind(uint32_t slot) const = 0;
+  virtual void bind(uint32_t slot) const = 0;
 
-        virtual void unbind(uint32_t slot) const = 0;
+  virtual void unbind(uint32_t slot) const = 0;
 
-        virtual void set_data(void *data) = 0;
+  virtual void set_data(void *data) = 0;
 
-        [[nodiscard]] virtual uint32_t get_width() const = 0;
+  [[nodiscard]] virtual uint32_t get_width() const = 0;
 
-        [[nodiscard]] virtual uint32_t get_height() const = 0;
-    public:
-        uint32_t _M_renderer_id = 0;
-    };
-}
+  [[nodiscard]] virtual uint32_t get_height() const = 0;
+
+public:
+  uint32_t _M_renderer_id = 0;
+};
+} // namespace stinky
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////

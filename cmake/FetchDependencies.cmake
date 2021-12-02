@@ -42,4 +42,17 @@ FetchContent_Declare(
         GIT_TAG yaml-cpp-0.7.0
 )
 
+FetchContent_Declare(
+        tinygltf
+        GIT_REPOSITORY https://github.com/Gilis95/tinygltf.git
+        GIT_TAG 1484fea15f09dfec9ad6c7e3496d8198eba6417e
+)
+
+FetchContent_GetProperties(tinygltf)
+if(NOT tinygltf_POPULATED)
+    FetchContent_Populate(tinygltf)
+    set(TINYGLTF_HEADER_ONLY ON)
+    add_subdirectory(${tinygltf_SOURCE_DIR} ${tinygltf_BINARY_DIR})
+endif()
+
 FetchContent_MakeAvailable(EnTT glad glfw glm spdlog tracy yaml)

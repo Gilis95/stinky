@@ -34,22 +34,22 @@ namespace stinky::hoatzin {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void HoatzinEditorLayer::OnAttach() {
+    void HoatzinEditorLayer::on_attach() {
         entity entity(m_Scene.CreateEntity());
         entity.AddComponent<camera_component>(m_Camera, true);
 
         m_Camera->set_position(glm::vec3(0.0f, 0.0f, 0.0f));
 
         m_SceneManager.LoadSceneFromFile("default");
-        m_EventController.RegisterEventHandler<window_close_event>(
+        m_EventController.register_event_handler<window_close_event>(
                 [this](const event &event) {
-                    OnClose();
+                    on_close();
                 }
         );
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void HoatzinEditorLayer::OnUpdate(const time_frame &ts) {
+    void HoatzinEditorLayer::on_update(const time_frame &ts) {
         {
             ZoneScopedN("FrameBufferSceneRender")
             const auto &frameBufferSpecification = m_FrameBuffer->get_specification();
@@ -63,33 +63,33 @@ namespace stinky::hoatzin {
             m_FrameBuffer->bind();
 
             m_Camera->on_update(ts);
-            m_Scene.Render();
+            m_Scene.on_update();
 
             m_FrameBuffer->unbind();
             /** Render current scene */
         }
 
         {
-            ZoneScopedN("ImGuiRender")
+            ZoneScopedN("im_gui_render")
             /** Render editor */
-            ImGuiBegin();
-            ImGuiRender();
-            ImGuiEnd();
+            im_gui_begin();
+            im_gui_render();
+            im_gui_end();
             /** Render editor */
         }
     }
 
-    void HoatzinEditorLayer::OnClose() {
+    void HoatzinEditorLayer::on_close() {
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
 
         m_FrameBuffer.reset();
-        m_Scene.OnClose();
+        m_Scene.on_close();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void HoatzinEditorLayer::ImGuiBegin() {
+    void HoatzinEditorLayer::im_gui_begin() {
         ZoneScopedN("ImGuiFrameCreation")
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
@@ -97,7 +97,7 @@ namespace stinky::hoatzin {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void HoatzinEditorLayer::ImGuiRender() {
+    void HoatzinEditorLayer::im_gui_render() {
         Workspace::Begin();
 
         SceneHierarchyPanel::Render(m_Scene, m_SelectedEntt);
@@ -111,7 +111,7 @@ namespace stinky::hoatzin {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void HoatzinEditorLayer::ImGuiEnd() {
+    void HoatzinEditorLayer::im_gui_end() {
         ZoneScopedN("ImGuiDraw")
         ImGuiIO &io = ImGui::GetIO();
         io.DisplaySize = ImVec2(1024, 720);

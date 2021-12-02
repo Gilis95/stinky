@@ -3,36 +3,33 @@
 //
 #pragma once
 
-#include <string>
 #include "gla/texture.h"
+#include <string>
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    class OpenGLTexture : public texture {
-    public:
-        explicit OpenGLTexture(const std::string &path);
+class OpenGLTexture : public texture {
+public:
+  explicit OpenGLTexture(const std::string &path);
 
-        OpenGLTexture(uint32_t width, uint32_t height);
+  OpenGLTexture(uint32_t width, uint32_t height);
 
-        ~OpenGLTexture() override;
+  ~OpenGLTexture() override;
 
-        void bind(unsigned int slot = 0) const override;
+  void bind(unsigned int slot = 0) const override;
 
-        void unbind(uint32_t slot) const override;
+  void unbind(uint32_t slot) const override;
 
-        void set_data(void *data) override;
+  void set_data(void *data) override;
 
-        [[nodiscard]] int GetWidth() const override {
-            return m_Width;
-        };
+  [[nodiscard]] uint32_t get_width() const override { return _M_width; };
 
-        [[nodiscard]] int GetHeight() const override {
-            return m_Height;
-        };
-    private:
-        int m_Width, m_Height;
-    };
-}
+  [[nodiscard]] uint32_t get_height() const override { return _M_height; };
+
+private:
+  int _M_width, _M_height;
+};
+} // namespace stinky
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////

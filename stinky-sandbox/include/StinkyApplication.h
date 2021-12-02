@@ -1,7 +1,6 @@
 #include <application/application.h>
 
-#include <StinkyPrerequisites.h>
-
+#include <stinky_prerequisites.h>
 
 namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////

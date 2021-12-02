@@ -3,12 +3,12 @@
 #include "application/application.h"
 
 int main(int argc, char **argv) {
-    auto app = stinky::create_application();
+  auto app = stinky::create_application();
 
-    app->register_event_handlers();
-    app->init();
+  app->register_event_handlers();
+  app->init();
 
-    app->run();
+  app->run();
 
-    delete app;
+  delete app;
 }

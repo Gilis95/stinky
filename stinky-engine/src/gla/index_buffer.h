@@ -4,19 +4,21 @@
 
 #pragma once
 
+#include "stinky_prerequisites.h"
+
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    class index_buffer {
-    public:
-        virtual ~index_buffer() = default;
+class index_buffer {
+public:
+  virtual ~index_buffer() = default;
 
-        virtual void bind() const = 0;
+  virtual void bind() const = 0;
 
-        virtual void unbind() const = 0;
+  virtual void unbind() const = 0;
 
-        virtual uint32_t get_count() const = 0;
-    };
-}
+  virtual uint32_t get_count() const = 0;
+};
+} // namespace stinky
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////

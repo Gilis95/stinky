@@ -3,18 +3,16 @@
 //
 #pragma once
 
-#include <memory>
-
 #include "core/stinky_logger.h"
 
 // Platform detection using predefined macros
 #ifdef _WIN32
 /* Windows x64/x86 */
 #ifdef _WIN64
-    /* Windows x64  */
+/* Windows x64  */
 #define SK_PLATFORM_WINDOWS
 #else
-    /* Windows x86 */
+/* Windows x86 */
 #error "x86 Builds are not supported!"
 #endif
 #elif defined(__APPLE__) || defined(__MACH__)
@@ -34,9 +32,9 @@
 #else
 #error "Unknown Apple platform!"
 #endif
- /* We also have to check __ANDROID__ before __linux__
-  * since android is based on the linux kernel
-  * it has __linux__ defined */
+/* We also have to check __ANDROID__ before __linux__
+ * since android is based on the linux kernel
+ * it has __linux__ defined */
 #elif defined(__ANDROID__)
 #define SK_PLATFORM_ANDROID
 #error "Android is not supported!"
@@ -65,25 +63,103 @@
 #define STINKY_BIND(function) std::bind(&function, this, std::placeholders::_1)
 
 #ifdef ENABLE_ASSERTS
-#define STINKY_LOG_ERROR_AND_BREAK(...) { STINKY_ERROR(__VA_ARGS__); DEBUGBREAK();}
+#define STINKY_LOG_ERROR_AND_BREAK(...)                                        \
+  {                                                                            \
+    STINKY_ERROR(__VA_ARGS__);                                                 \
+    DEBUGBREAK();                                                              \
+  }
 #else
 #define STINKY_LOG_ERROR_AND_BREAK(...)
 #endif
 
-#define AssertLogIf(x, ...) { if((x)) { STINKY_ERROR("Assertion Failed: {0}", __VA_ARGS__); } }
-#define AssertLogUnless(x, ...) { if(!(x)) { STINKY_ERROR("Assertion Failed: {0}", __VA_ARGS__); } }
+#define AssertLogIf(x, ...)                                                    \
+  {                                                                            \
+    if ((x)) {                                                                 \
+      STINKY_ERROR("Assertion Failed: {0}", __VA_ARGS__);                      \
+    }                                                                          \
+  }
+#define AssertLogUnless(x, ...)                                                \
+  {                                                                            \
+    if (!(x)) {                                                                \
+      STINKY_ERROR("Assertion Failed: {0}", __VA_ARGS__);                      \
+    }                                                                          \
+  }
 
-#define ReturnIf(x, ...) { if(x) { return __VA_ARGS__;}}
-#define ReturnUnless(x, ...) { if(!(x)) { return __VA_ARGS__;}}
+#define ReturnIf(x, ...)                                                       \
+  {                                                                            \
+    if (x) {                                                                   \
+      return __VA_ARGS__;                                                      \
+    }                                                                          \
+  }
+#define ReturnUnless(x, ...)                                                   \
+  {                                                                            \
+    if (!(x)) {                                                                \
+      return __VA_ARGS__;                                                      \
+    }                                                                          \
+  }
 
-#define AssertReturnIf(x, ...) { if(x) { STINKY_LOG_ERROR_AND_BREAK("Assertion Failed: {0} {1} {2}", __FILE__, __LINE__ , __FUNCTION__); return __VA_ARGS__;}}
-#define AssertReturnUnless(x, ...) { if(!(x)) { STINKY_LOG_ERROR_AND_BREAK("Assertion Failed: {0} {1} {2}", __FILE__, __LINE__ , __FUNCTION__); return __VA_ARGS__;}}
+#define AssertReturnIf(x, ...)                                                 \
+  {                                                                            \
+    if (x) {                                                                   \
+      STINKY_LOG_ERROR_AND_BREAK("Assertion Failed: {0} {1} {2}", __FILE__,    \
+                                 __LINE__, __FUNCTION__);                      \
+      return __VA_ARGS__;                                                      \
+    }                                                                          \
+  }
+#define AssertReturnUnless(x, ...)                                             \
+  {                                                                            \
+    if (!(x)) {                                                                \
+      STINKY_LOG_ERROR_AND_BREAK("Assertion Failed: {0} {1} {2}", __FILE__,    \
+                                 __LINE__, __FUNCTION__);                      \
+      return __VA_ARGS__;                                                      \
+    }                                                                          \
+  }
 
-#define ContinueIf(x) { if(x) { continue;}}
-#define ContinueUnless(x) { if(!(x)) { continue;}}
+#define ContinueIf(x)                                                          \
+  {                                                                            \
+    if (x) {                                                                   \
+      continue;                                                                \
+    }                                                                          \
+  }
+#define ContinueUnless(x)                                                      \
+  {                                                                            \
+    if (!(x)) {                                                                \
+      continue;                                                                \
+    }                                                                          \
+  }
 
-#define SERIALIZE(FIELD_NAME, PARENT_NODE, FIELD, TYPE, ...) { \
-        YAML::Node node = PARENT_NODE[FIELD_NAME]; \
-        ReturnUnless(node, __VA_ARGS__) \
-        FIELD = node.as<TYPE>();\
-        }
+#define BreakIf(x)                                                             \
+  {                                                                            \
+    if (x) {                                                                   \
+      break;                                                                   \
+    }                                                                          \
+  }
+#define BreakUnless(x)                                                         \
+  {                                                                            \
+    if (!(x)) {                                                                \
+      break;                                                                   \
+    }                                                                          \
+  }
+
+#define AssertBreakIf(x)                                                       \
+  {                                                                            \
+    if (x) {                                                                   \
+      STINKY_LOG_ERROR_AND_BREAK("Assertion Failed: {0} {1} {2}", __FILE__,    \
+                                 __LINE__, __FUNCTION__);                      \
+      break;                                                                   \
+    }                                                                          \
+  }
+#define AssertBreakUnless(x)                                                   \
+  {                                                                            \
+    if (!(x)) {                                                                \
+      STINKY_LOG_ERROR_AND_BREAK("Assertion Failed: {0} {1} {2}", __FILE__,    \
+                                 __LINE__, __FUNCTION__);                      \
+      break;                                                                   \
+    }                                                                          \
+  }
+
+#define DESERIALIZE(FIELD_NAME, PARENT_NODE, FIELD, TYPE, ...)                 \
+  {                                                                            \
+    YAML::Node node = PARENT_NODE[FIELD_NAME];                                 \
+    ReturnUnless(node, __VA_ARGS__) FIELD = node.as<TYPE>();                   \
+  }

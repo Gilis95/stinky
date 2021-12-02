@@ -74,13 +74,14 @@ namespace stinky {
               m_GLAFactory(glaFactory),
               m_Camera(camera),
               m_Scene(glaFactory) {
-        eventController.RegisterEventHandler<window_resize_event>([this](const window_resize_event &resizeEvent) -> void {
-            m_FrameBuffer->window_resize(resizeEvent.width, resizeEvent.height);
-        });
+        eventController.register_event_handler<window_resize_event>(
+                [this](const window_resize_event &resizeEvent) -> void {
+                    m_FrameBuffer->window_resize(resizeEvent.width, resizeEvent.height);
+                });
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void StinkyLayer::OnAttach() {
+    void StinkyLayer::on_attach() {
         entity cameraEntity(m_Scene.CreateEntity());
         cameraEntity.AddComponent<camera_component>(m_Camera, true);
 
@@ -136,15 +137,15 @@ namespace stinky {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void StinkyLayer::OnDetach() {
+    void StinkyLayer::on_detach() {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
-    void StinkyLayer::OnUpdate(const time_frame &ts) {
+    void StinkyLayer::on_update(const time_frame &ts) {
         m_FrameBuffer->unbind();
 
         m_Camera->on_update(ts);
-        m_Scene.Render();
+        m_Scene.on_update();
 
         m_FrameBuffer->bind();
     }

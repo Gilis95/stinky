@@ -4,39 +4,39 @@
 
 #pragma once
 
-#include <spdlog/spdlog.h>
 #include "core/stinky_memory.h"
+#include <spdlog/spdlog.h>
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    /////////////////////////////////////////////////////////////////////////////////////////
-    bool GLLogCall(const char *functionName, const char *fileName, int line);
+/////////////////////////////////////////////////////////////////////////////////////////
+bool GLLogCall(const char *functionName, const char *fileName, int line);
 
-    /////////////////////////////////////////////////////////////////////////////////////////
-    void GLClearError();
+/////////////////////////////////////////////////////////////////////////////////////////
+void GLClearError();
 
-    /////////////////////////////////////////////////////////////////////////////////////////
-    class Log {
-    public:
-        static void Init();
+/////////////////////////////////////////////////////////////////////////////////////////
+class Log {
+public:
+  static void Init();
 
-        static shared_ptr<spdlog::logger> &getClientLogger() {
-            return s_Logger;
-        }
+  static shared_ptr<spdlog::logger> &getClientLogger() { return s_Logger; }
 
-    private:
-        Log() = default;;
-        static shared_ptr<spdlog::logger> s_Logger;
-    };
-}
+private:
+  Log() = default;
+  ;
+  static shared_ptr<spdlog::logger> s_Logger;
+};
+} // namespace stinky
 
 #if defined(STINKY_ENABLE_LOG)
-#define STINKY_TRACE(...)         stinky::Log::getClientLogger()->trace(__VA_ARGS__)
-#define STINKY_INFO(...)          stinky::Log::getClientLogger()->info(__VA_ARGS__)
-#define STINKY_WARN(...)          stinky::Log::getClientLogger()->warn(__VA_ARGS__)
-#define STINKY_ERROR(...)         stinky::Log::getClientLogger()->error(__VA_ARGS__)
-#define STINKY_CRITICAL(...)      stinky::Log::getClientLogger()->critical(__VA_ARGS__)
+#define STINKY_TRACE(...) stinky::Log::getClientLogger()->trace(__VA_ARGS__)
+#define STINKY_INFO(...) stinky::Log::getClientLogger()->info(__VA_ARGS__)
+#define STINKY_WARN(...) stinky::Log::getClientLogger()->warn(__VA_ARGS__)
+#define STINKY_ERROR(...) stinky::Log::getClientLogger()->error(__VA_ARGS__)
+#define STINKY_CRITICAL(...)                                                   \
+  stinky::Log::getClientLogger()->critical(__VA_ARGS__)
 #else
 #define STINKY_TRACE(...)
 #define STINKY_INFO(...)
@@ -45,7 +45,7 @@ namespace stinky {
 #define STINKY_CRITICAL(...)
 #endif
 
-
-#define GLCall(x) GLClearError();\
-    x;\
-    GLLogCall(#x, __FILE__,__LINE__);
+#define GLCall(x)                                                              \
+  GLClearError();                                                              \
+  x;                                                                           \
+  GLLogCall(#x, __FILE__, __LINE__);

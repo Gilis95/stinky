@@ -20,7 +20,7 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     StinkyApplication::StinkyApplication()
             : application(time_frame(3333333)),
-              m_Camera(CreateScope<track_ball_camera>()),
+              m_Camera(create_scope<track_ball_camera>()),
               m_GLAFactory(graphic_layer_abstraction_factory::create(graphic_layer_abstraction_factory::API::OpenGL)),
               m_Window(window::Create(window::api::GLFW, m_EventController, {"Hoatzin", WIDTH, HEIGHT})) {
     }
@@ -28,31 +28,31 @@ namespace stinky {
     void StinkyApplication::register_event_handlers() {
         application::register_event_handlers();
 
-        m_EventController.RegisterEventHandler<mouse_scrolled_event>(
+        m_EventController.register_event_handler<mouse_scrolled_event>(
                 [cameraController = m_Camera.get()](const mouse_scrolled_event &event) {
                     cameraController->on_mouse_scrolled(event);
                 }
         );
 
-        m_EventController.RegisterEventHandler<mouse_button_pressed_event>(
+        m_EventController.register_event_handler<mouse_button_pressed_event>(
                 [cameraController = m_Camera.get()](const mouse_button_pressed_event &event) {
-                    cameraController->OnMousePressed(event);
+                    cameraController->on_mouse_pressed(event);
                 }
         );
 
-        m_EventController.RegisterEventHandler<mouse_moved_event>(
+        m_EventController.register_event_handler<mouse_moved_event>(
                 [cameraController = m_Camera.get()](const mouse_moved_event &event) {
-                    cameraController->OnMouseMoved(event);
+                    cameraController->on_mouse_moved(event);
                 }
         );
 
-        m_EventController.RegisterEventHandler<mouse_button_released_event>(
+        m_EventController.register_event_handler<mouse_button_released_event>(
                 [cameraController = m_Camera.get()](const mouse_button_released_event &event) {
-                    cameraController->OnMouseReleased(event);
+                    cameraController->on_mouse_released(event);
                 }
         );
 
-        m_EventController.RegisterEventHandler<key_pressed_event>(
+        m_EventController.register_event_handler<key_pressed_event>(
                 [cameraController = m_Camera.get()](const key_pressed_event &event) {
                     cameraController->on_keyboard_event(event);
                 }

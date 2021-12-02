@@ -8,27 +8,30 @@
 #include <string>
 
 namespace stinky {
-    struct project {
-        std::string name{};
-        std::string rootDir{};
-        std::string assetDir{};
-    };
+struct project {
+  std::string name{};
+  std::string rootDir{};
+  std::string assetDir{};
+};
 
-    class project_manager {
-    private:
-        project_manager() = default;
-        ~project_manager() = default;
-    public:
-        static project_manager& instance();
-        static void destroy();
+class project_manager {
+private:
+  project_manager() = default;
+  ~project_manager() = default;
 
-        bool deserialize(const std::string& projectFile);
-        void serialize(const std::string& projectFile) const;
-    public:
-        project project;
-    private:
-        static project_manager* s_Instance;
-    };
-}
+public:
+  static project_manager &instance();
+  static void destroy();
 
-#endif //STINKY_PROJECT_H
+  bool open(const std::string &projectFile);
+  void save(const std::string &projectFile) const;
+
+public:
+  project _M_project;
+
+private:
+  static project_manager *_S_Instance;
+};
+} // namespace stinky
+
+#endif // STINKY_PROJECT_H

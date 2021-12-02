@@ -8,30 +8,31 @@
 
 #include "ecs/entity.h"
 #include "renderer/renderer.h"
-#include "StinkyPrerequisites.h"
+#include "stinky_prerequisites.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    class entity;
+class entity;
 
-    class scene {
-    public:
-        explicit scene(const graphic_layer_abstraction_factory *rendererFactory);
-        ~scene() = default;
+class scene {
+public:
+  explicit scene(const graphic_layer_abstraction_factory *rendererFactory);
+  ~scene() = default;
 
-        void Render();
+  void on_update();
 
-        void OnClose();
+  void on_close();
 
-        /** NOTE:: maybe in separate class */
-        entity CreateEntity();
+  /** NOTE:: maybe in separate class */
+  entity CreateEntity();
 
-        void each(std::function<void (entity& entt)> func);
-    private:
-        entt::registry _M_registry;
-        unique_ptr<renderer> _M_renderer;
-    };
-}
+  void each(std::function<void(entity &entt)> func);
+
+private:
+  entt::registry _M_registry;
+  unique_ptr<renderer> _M_renderer;
+};
+} // namespace stinky
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////

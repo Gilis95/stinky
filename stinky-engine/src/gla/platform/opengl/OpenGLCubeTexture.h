@@ -10,15 +10,15 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    class OpenGLCubeTexture : public cube_texture {
-    public:
-        explicit OpenGLCubeTexture(std::string path);
-        ~OpenGLCubeTexture() override = default;
+class OpenGLCubeTexture : public cube_texture {
+public:
+  explicit OpenGLCubeTexture(std::string path);
+  ~OpenGLCubeTexture() override = default;
 
-        void bind(uint32_t slot) const override;
+  void bind(uint32_t slot) const override;
 
-        void unbind(uint32_t slot) const override;
-    };
-}
+  void unbind(uint32_t slot) const override;
+};
+} // namespace stinky
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////

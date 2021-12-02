@@ -16,8 +16,10 @@ namespace stinky {
 //    };
 //
 //    /////////////////////////////////////////////////////////////////////////////////////////
-//    Renderer2D::Renderer2D(const Ref<GraphicLayerAbstractionFactory> &rendererFactory)
-//            : Renderer(rendererFactory->CreateRendererApi()), m_RendererFactory(rendererFactory) {
+//    Renderer2D::Renderer2D(const Ref<GraphicLayerAbstractionFactory>
+//    &rendererFactory)
+//            : Renderer(rendererFactory->CreateRendererApi()),
+//            m_RendererFactory(rendererFactory) {
 //        Init();
 //    }
 //
@@ -59,8 +61,10 @@ namespace stinky {
 //
 //        Renderer::SceneNode rendererData;
 //
-//        glm::mat4 model =glm::translate(glm::mat4(1.0f), {translate.x, translate.y, 1.0})
-//                         * glm::scale(glm::mat4(1.0f), {scale.x, scale.y, 1.0f});
+//        glm::mat4 model =glm::translate(glm::mat4(1.0f), {translate.x,
+//        translate.y, 1.0})
+//                         * glm::scale(glm::mat4(1.0f), {scale.x,
+//                         scale.y, 1.0f});
 //
 //        for (auto &i : data) {
 //            i.coordinates = model * i.coordinates;
@@ -68,22 +72,26 @@ namespace stinky {
 //
 //        rendererData.vertexArray = m_RendererFactory->CreateVertexArray();
 //        //create array buffer, containing shape positions and bind it
-//        const auto positionBuffer = m_RendererFactory->CreateVertexBuffer(&data, sizeof(data), {
+//        const auto positionBuffer =
+//        m_RendererFactory->CreateVertexBuffer(&data, sizeof(data), {
 //                {  ShaderDataType::Float4, "position"}
 //                , {ShaderDataType::Float2, "texCoord"}
 //        });
 //
-//        //bind currently bound array buffer to first element of currently bound vertex array
+//        //bind currently bound array buffer to first element of currently
+//        bound vertex array
 //        rendererData.vertexArray->AddVertexBuffer(positionBuffer);
 //
 //        //Create index buffer, that will define shape vertex positions
-//        const auto indexBuffer = m_RendererFactory->CreateIndexBuffer(indices, 6);
+//        const auto indexBuffer = m_RendererFactory->CreateIndexBuffer(indices,
+//        6);
 //
 //        rendererData.vertexArray->SetIndexBuffer(indexBuffer);
 //
 //        //Parse fragment and vertex shader and bind them
 //        rendererData.texture = m_RendererFactory->CreateTexture(1, 1);
-////        rendererData.texture = m_RendererFactory->CreateTexture("/home/christian/workspace/stinky/stinky-sandbox/resources/mb.png");
+////        rendererData.texture =
+///m_RendererFactory->CreateTexture("/home/christian/workspace/stinky/stinky-sandbox/resources/mb.png");
 //        uint32_t defaultWhiteTextureData = 0xffffffff;
 //        rendererData.texture->SetData(&defaultWhiteTextureData);
 //        rendererData.texture->Bind(0);

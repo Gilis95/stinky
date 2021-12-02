@@ -7,19 +7,18 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
 
-    /////////////////////////////////////////////////////////////////////////////////////////
-    transform_component::transform_component(glm::vec3 &translation, glm::vec3 &scale, glm::vec3 &rotation)
-        : translation(translation)
-        , scale(scale)
-        , rotation(rotation){
-    }
+/////////////////////////////////////////////////////////////////////////////////////////
+transform_component::transform_component(glm::vec3 &translation,
+                                         glm::vec3 &scale, glm::vec3 &rotation)
+    : translation(translation), scale(scale), rotation(rotation) {}
 
-    /////////////////////////////////////////////////////////////////////////////////////////
-    transform_component::transform_component(glm::vec3 &&translation, glm::vec3 &&scale, glm::vec3 &&rotation)
-            : translation(std::forward<glm::vec3>(translation))
-            , scale(std::forward<glm::vec3>(scale))
-            , rotation(std::forward<glm::vec3>(rotation)) {
-    }
-}
+/////////////////////////////////////////////////////////////////////////////////////////
+transform_component::transform_component(glm::vec3 &&translation,
+                                         glm::vec3 &&scale,
+                                         glm::vec3 &&rotation)
+    : translation(std::forward<glm::vec3>(translation)),
+      scale(std::forward<glm::vec3>(scale)),
+      rotation(std::forward<glm::vec3>(rotation)) {}
+} // namespace stinky
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////

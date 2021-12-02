@@ -8,13 +8,29 @@ file(GLOB ASSET_HEADER ${ASSET_HDR_DIR}/*.h)
 file(GLOB ASSET_INLINE ${ASSET_HDR_DIR}/*.hpp)
 file(GLOB ASSET_SOURCE ${ASSET_SRC_DIR}/*.cpp)
 
-file(GLOB ASSET_MESH_HEADER ${ASSET_MESH_HDR_DIR}/*.h)
-file(GLOB ASSET_MESH_INLINE ${ASSET_MESH_HDR_DIR}/*.hpp)
-file(GLOB ASSET_MESH_SOURCE ${ASSET_MESH_SRC_DIR}/*.cpp)
+file(GLOB ASSET_ENTITY_HEADER ${ASSET_ENTITY_HDR_DIR}/*.h)
+file(GLOB ASSET_ENTITY_INLINE ${ASSET_ENTITY_HDR_DIR}/*.hpp)
+file(GLOB ASSET_ENTITY_SOURCE ${ASSET_ENTITY_SRC_DIR}/*.cpp)
 
-file(GLOB ASSET_SERIALIZER_HEADER ${ASSET_SERIALIZER_HDR_DIR}/*.h)
-file(GLOB ASSET_SERIALIZER_INLINE ${ASSET_SERIALIZER_HDR_DIR}/*.hpp)
-file(GLOB ASSET_SERIALIZER_SOURCE ${ASSET_SERIALIZER_SRC_DIR}/*.cpp)
+file(GLOB ASSET_ENTITY_GLTF_HEADER ${ASSET_ENTITY_GLTF_HDR_DIR}/*.h)
+file(GLOB ASSET_ENTITY_GLTF_INLINE ${ASSET_ENTITY_GLTF_HDR_DIR}/*.hpp)
+file(GLOB ASSET_ENTITY_GLTF_SOURCE ${ASSET_ENTITY_GLTF_SRC_DIR}/*.cpp)
+
+file(GLOB ASSET_ENTITY_STINKY_HEADER ${ASSET_ENTITY_STINKY_HDR_DIR}/*.cpp)
+file(GLOB ASSET_ENTITY_STINKY_INLINE ${ASSET_ENTITY_STINKY_HDR_DIR}/*.cpp)
+file(GLOB ASSET_ENTITY_STINKY_SOURCE ${ASSET_ENTITY_STINKY_SRC_DIR}/*.cpp)
+
+file(GLOB ASSET_HANDLER_HEADER ${ASSET_HANDLER_HDR_DIR}/*.h)
+file(GLOB ASSET_HANDLER_INLINE ${ASSET_HANDLER_HDR_DIR}/*.hpp)
+file(GLOB ASSET_HANDLER_SOURCE ${ASSET_HANDLER_SRC_DIR}/*.cpp)
+
+file(GLOB ASSET_HANDLER_GLTF_HEADER ${ASSET_HANDLER_GLTF_HDR_DIR}/*.h)
+file(GLOB ASSET_HANDLER_GLTF_INLINE ${ASSET_HANDLER_GLTF_HDR_DIR}/*.hpp)
+file(GLOB ASSET_HANDLER_GLTF_SOURCE ${ASSET_HANDLER_GLTF_SRC_DIR}/*.cpp)
+
+file(GLOB ASSET_HANDLER_STINKY_HEADER ${ASSET_HANDLER_STINKY_HDR_DIR}/*.h)
+file(GLOB ASSET_HANDLER_STINKY_INLINE ${ASSET_HANDLER_STINKY_HDR_DIR}/*.hpp)
+file(GLOB ASSET_HANDLER_STINKY_SOURCE ${ASSET_HANDLER_STINKY_SRC_DIR}/*.cpp)
 
 file(GLOB CAMERA_SOURCE ${CAMERA_SRC_DIR}/*.cpp)
 file(GLOB CAMERA_HEADER ${CAMERA_HDR_DIR}/*.h)
@@ -56,6 +72,8 @@ file(GLOB STB_SOURCE ${STB_DIR}/*.cpp)
 file(GLOB STB_HEADER ${STB_DIR}/*.h)
 file(GLOB STB_INLINE ${STB_DIR}/*.hpp)
 
+file(GLOB STINKY_TINY_GLTF_SOURCE ${STINKY_TINY_GLTF_DIR}/*.cpp)
+
 file(GLOB WINDOW_SOURCE ${WINDOW_SRC_DIR}/*.cpp)
 file(GLOB WINDOW_HEADER ${WINDOW_HDR_DIR}/*.h)
 file(GLOB WINDOW_INLINE ${WINDOW_HDR_DIR}/*.hpp)
@@ -72,13 +90,29 @@ source_group("Header Files/asset" FILES ${ASSET_HEADER})
 source_group("Inline Files/asset" FILES ${ASSET_INLINE})
 source_group("Source Files/asset" FILES ${ASSET_SOURCE})
 
-source_group("Header Files/asset/mesh" FILES ${ASSET_MESH_HEADER})
-source_group("Inline Files/asset/mesh" FILES ${ASSET_MESH_INLINE})
-source_group("Source Files/asset/mesh" FILES ${ASSET_MESH_SOURCE})
+source_group("Header Files/asset/entity" FILES ${ASSET_ENTITY_HEADER})
+source_group("Inline Files/asset/entity" FILES ${ASSET_ENTITY_INLINE})
+source_group("Source Files/asset/entity" FILES ${ASSET_ENTITY_SOURCE})
 
-source_group("Header Files/asset/serializer" FILES ${ASSET_SERIALIZER_HEADER})
-source_group("Inline Files/asset/serializer" FILES ${ASSET_SERIALIZER_INLINE})
-source_group("Source Files/asset/serializer" FILES ${ASSET_SERIALIZER_SOURCE})
+source_group("Header Files/asset/entity/gltf" FILES ${ASSET_ENTITY_GLTF_HEADER})
+source_group("Inline Files/asset/entity/gltf" FILES ${ASSET_ENTITY_GLTF_INLINE})
+source_group("Source Files/asset/entity/gltf" FILES ${ASSET_ENTITY_GLTF_SOURCE})
+
+source_group("Header Files/asset/entity/stinky" FILES ${ASSET_ENTITY_STINKY_HEADER})
+source_group("Inline Files/asset/entity/stinky" FILES ${ASSET_ENTITY_STINKY_INLINE})
+source_group("Source Files/asset/entity/stinky" FILES ${ASSET_ENTITY_STINKY_SOURCE})
+
+source_group("Header Files/asset/handler" FILES ${ASSET_HANDLER_HEADER})
+source_group("Inline Files/asset/handler" FILES ${ASSET_HANDLER_INLINE})
+source_group("Source Files/asset/handler" FILES ${ASSET_HANDLER_SOURCE})
+
+source_group("Header Files/asset/handler/gltf" FILES ${ASSET_HANDLER_GLTF_HEADER})
+source_group("Inline Files/asset/handler/gltf" FILES ${ASSET_HANDLER__GLTF_INLINE})
+source_group("Source Files/asset/handler/gltf" FILES ${ASSET_HANDLER_GLTF_SOURCE})
+
+source_group("Header Files/asset/handler/stinky" FILES ${ASSET_HANDLER_STINKY_HEADER})
+source_group("Inline Files/asset/handler/stinky" FILES ${ASSET_HANDLER_STINKY_INLINE})
+source_group("Source Files/asset/handler/stinky" FILES ${ASSET_HANDLER_STINKY_SOURCE})
 
 source_group("Header Files/camera" FILES ${CAMERA_HEADER})
 source_group("Inline Files/camera" FILES ${CAMERA_INLINE})
@@ -120,6 +154,8 @@ source_group("Header Files/stb" FILES ${STB_HEADER})
 source_group("Inline Files/stb" FILES ${STB_INLINE})
 source_group("Source Files/stb" FILES ${STB_SOURCE})
 
+source_group("Source Files/tinygltf" FILES ${STINKY_TINY_GLTF_SOURCE})
+
 source_group("Header Files/windows" FILES ${WINDOW_HEADER})
 source_group("Inline Files/windows" FILES ${WINDOW_INLINE})
 source_group("Source Files/window" FILES ${WINDOW_SOURCE})
@@ -132,10 +168,18 @@ set(STINKY_HEADERS
         ${APPLICATION_INLINE}
         ${ASSET_HEADER}
         ${ASSET_INLINE}
-        ${ASSET_MESH_HEADER}
-        ${ASSET_MESH_INLINE}
-        ${ASSET_SERIALIZER_HEADER}
-        ${ASSET_SERIALIZER_INLINE}
+        ${ASSET_ENTITY_HEADER}
+        ${ASSET_ENTITY_INLINE}
+        ${ASSET_ENTITY_GLTF_HEADER}
+        ${ASSET_ENTITY_GLTF_INLINE}
+        ${ASSET_ENTITY_STINKY_HEADER}
+        ${ASSET_ENTITY_STINKY_INLINE}
+        ${ASSET_HANDLER_HEADER}
+        ${ASSET_HANDLER_INLINE}
+        ${ASSET_HANDLER_GLTF_HEADER}
+        ${ASSET_HANDLER_GLTF_INLINE}
+        ${ASSET_HANDLER_STINKY_HEADER}
+        ${ASSET_HANDLER_STINKY_INLINE}
         ${CAMERA_HEADER}
         ${CAMERA_HEADER}
         ${CORE_HEADER}
@@ -165,8 +209,12 @@ set(STINKY_HEADERS
 set(STINKY_SOURCES
         ${APPLICATION_SOURCE}
         ${ASSET_SOURCE}
-        ${ASSET_MESH_SOURCE}
-        ${ASSET_SERIALIZER_SOURCE}
+        ${ASSET_ENTITY_SOURCE}
+        ${ASSET_ENTITY_GLTF_SOURCE}
+        ${ASSET_ENTITY_STINKY_SOURCE}
+        ${ASSET_HANDLER_SOURCE}
+        ${ASSET_HANDLER_GLTF_SOURCE}
+        ${ASSET_HANDLER_STINKY_SOURCE}
         ${CAMERA_SOURCE}
         ${CORE_SOURCE}
         ${ECS_SOURCE}
@@ -177,6 +225,7 @@ set(STINKY_SOURCES
         ${ROOT_SOURCE}
         ${SCENE_SOURCE}
         ${STB_SOURCE}
+        ${STINKY_TINY_GLTF_SOURCE}
         ${WINDOW_SOURCE}
         ${WINDOW_GLFW_SOURCE}
         )

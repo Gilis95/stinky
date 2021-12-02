@@ -7,44 +7,39 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 namespace stinky {
-    class cube_texture : public texture {
-    private:
-        typedef unsigned char byte;
+class cube_texture : public texture {
+private:
+  typedef unsigned char byte;
 
-        enum class InputImageFormat {
-            RGB = 0,
-            RGBA
-        };
-    public:
-        explicit cube_texture(std::string path);
+  enum class InputImageFormat { RGB = 0, RGBA };
 
-        ~cube_texture() override = default;
+public:
+  explicit cube_texture(std::string path);
 
-        void LoadFromSingleFile();
+  ~cube_texture() override = default;
 
-        void set_data(void *data) override;
+  void LoadFromSingleFile();
 
-        [[nodiscard]] uint32_t get_width() const override {
-            return _M_face_width;
-        }
+  void set_data(void *data) override;
 
-        [[nodiscard]] uint32_t get_height() const override {
-            return _M_face_height;
-        }
+  [[nodiscard]] uint32_t get_width() const override { return _M_face_width; }
 
-    protected:
-        byte *_M_left = nullptr;
-        byte *_M_right = nullptr;
-        byte *_M_top = nullptr;
-        byte *_M_bottom = nullptr;
-        byte *_M_back = nullptr;
-        byte *_M_front = nullptr;
+  [[nodiscard]] uint32_t get_height() const override { return _M_face_height; }
 
-        uint32_t _M_face_height, _M_face_width;
-        InputImageFormat _M_input_format = InputImageFormat::RGB;
-    private:
-        std::string _M_path;
-    };
-}
+protected:
+  byte *_M_left = nullptr;
+  byte *_M_right = nullptr;
+  byte *_M_top = nullptr;
+  byte *_M_bottom = nullptr;
+  byte *_M_back = nullptr;
+  byte *_M_front = nullptr;
+
+  uint32_t _M_face_height, _M_face_width;
+  InputImageFormat _M_input_format = InputImageFormat::RGB;
+
+private:
+  std::string _M_path;
+};
+} // namespace stinky
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////

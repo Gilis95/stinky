@@ -2,7 +2,7 @@
 
 #include <event/layer.h>
 #include <scene/scene.h>
-#include <StinkyPrerequisites.h>
+#include <stinky_prerequisites.h>
 
 #include "save/SaveManager.h"
 
@@ -13,17 +13,17 @@ namespace stinky::hoatzin {
         HoatzinEditorLayer(graphic_layer_abstraction_factory *glaFactory, fps_camera *camera,
                            event_controller &eventController, unsigned width, unsigned height);
 
-        void OnAttach() override;
+        void on_attach() override;
 
-        void OnUpdate(const time_frame &ts) override;
+        void on_update(const time_frame &ts) override;
 
-        void OnClose();
+        void on_close();
 
-        void ImGuiBegin();
+        void im_gui_begin();
 
-        void ImGuiRender();
+        void im_gui_render();
 
-        void ImGuiEnd();
+        void im_gui_end();
 
     private:
         graphic_layer_abstraction_factory *m_GLAFactory;

@@ -7,14 +7,14 @@
 #include <string>
 
 namespace stinky {
-    class tag_component {
-    public:
-        explicit tag_component() = default;
+class tag_component {
+public:
+  explicit tag_component() = default;
 
-        explicit tag_component(std::string name) : name(std::move(name)) {}
+  explicit tag_component(std::string name) : name(std::move(name)) {}
 
-        ~tag_component() = default;
+  ~tag_component() = default;
 
-        std::string name;
-    };
-}
+  std::string name;
+};
+} // namespace stinky

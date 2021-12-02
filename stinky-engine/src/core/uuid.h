@@ -5,38 +5,45 @@
 #ifndef STINKY_UUID_H
 #define STINKY_UUID_H
 
-
+#include <cstdint>
 namespace stinky {
 
-    // "UUID" (universally unique identifier) or GUID is (usually) a 128-bit integer
-    // used to "uniquely" identify information. In Hazel, even though we use the term
-    // GUID and UUID, at the moment we're simply using a randomly generated 64-bit
-    // integer, as the possibility of a clash is low enough for now.
-    // This may change in the future.
-    class uuid
-    {
-    public:
-        uuid();
-        explicit uuid(uint64_t uuid);
-        uuid(const uuid& other);
+/**
+ * Currently this class is just randomly generated 64-bit integer.
+ */
+class uuid {
+public:
+  uuid();
+  explicit uuid(uint64_t uuid);
+  uuid(const uuid &other);
+  uuid(uuid &&other) noexcept;
 
-        operator uint64_t () { return m_UUID; }
-        operator uint64_t () const { return m_UUID; }
-    private:
-        uint64_t m_UUID;
-    };
+  uuid &operator=(uint64_t uuid);
+  uuid &operator=(uuid &&uuid) noexcept;
+  bool operator==(const uuid &other) const;
+  explicit operator uint64_t() const;
 
-}
+public:
+  uint64_t value;
+};
+} // namespace stinky
+
+namespace YAML {
+class Node;
+template <typename T> struct convert;
+
+template <> struct convert<stinky::uuid> {
+  static Node encode(const stinky::uuid &rhs);
+
+  static bool decode(const Node &node, stinky::uuid &rhs);
+};
+} // namespace YAML
 
 namespace std {
+template <class T> struct hash;
 
-    template <>
-    struct hash<stinky::uuid>
-    {
-        std::size_t operator()(const stinky::uuid& uuid) const
-        {
-            return hash<uint64_t>()((uint64_t)uuid);
-        }
-    };
-}
-#endif //STINKY_UUID_H
+template <> struct hash<stinky::uuid> {
+  std::size_t operator()(const stinky::uuid &uuid) const;
+};
+} // namespace std
+#endif // STINKY_UUID_H

@@ -5,17 +5,29 @@
 #ifndef STINKY_ASSET_H
 #define STINKY_ASSET_H
 
+#include <type_traits>
 
 namespace stinky {
-    struct asset_metadata;
-    class asset {
-    public:
-        asset() = default;
+class asset {
+public:
+  asset() = default;
 
-        virtual ~asset() = default;
+  virtual ~asset() = default;
 
-        virtual bool load(const asset_metadata& assetMetadata) = 0;
-    };
-}
+  virtual void load() = 0;
 
-#endif //STINKY_ASSET_H
+  virtual constexpr int get_type() = 0;
+
+  template <class T, class Enable = void> T &as() { return nullptr; }
+
+  template <class T, std::enable_if_t<std::is_base_of<asset, T>::value>>
+  T &as() {
+    if constexpr (get_type() == T::type) {
+      return static_cast<T>(*this);
+    }
+    return nullptr;
+  }
+};
+} // namespace stinky
+
+#endif // STINKY_ASSET_H

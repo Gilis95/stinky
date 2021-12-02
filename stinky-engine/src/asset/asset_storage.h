@@ -5,41 +5,47 @@
 #ifndef STINKY_ASSET_STORAGE_H
 #define STINKY_ASSET_STORAGE_H
 
-#include <optional>
-#include <unordered_map>
-#include "asset/asset_metadata.h"
+#include "asset/asset.h"
 #include "core/stinky_macros.h"
-#include "core/stinky_memory.h"
+#include "core/uuid.h"
+#include <unordered_map>
+
+namespace std {
+template <class _Type> class optional;
+}
 
 namespace stinky {
-    template<class AssetType>
-    class asset_storage {
-    public:
-        asset_storage() = default;
-        ~asset_storage() = default;
-    public:
-        std::optional<std::reference_wrapper<const AssetType>> get(const uuid &guid) const {
-            auto element = storage.find(guid);
+class asset_storage {
+private:
+  asset_storage();
 
-            ReturnIf(element == storage.end(), std::nullopt)
+public:
+  ~asset_storage();
 
-            return {std::reference_wrapper<const AssetType>(**element)};
-        }
+public:
+  static asset_storage &instance();
 
-        template<class AssetTypeChild = AssetType>
-        bool load(const asset_metadata &assetMetadata) {
-            unique_ptr<AssetTypeChild> asset = CreateScope<AssetTypeChild>();
+public:
+  template <class _AssetType>
+  std::enable_if_t<std::is_base_of<asset, _AssetType>::value, _AssetType> *
+  get(const uuid &_guid) {
+    auto _element = _M_storage.find(_guid);
 
-            bool result = asset->load(assetMetadata);
-            if (result) {
-                storage.emplace(assetMetadata.guid, std::move(asset));
-            }
+    ReturnIf(_element == _M_storage.end(), nullptr);
 
-            return result;
-        }
+    auto _asset = _element->second.get();
+    return _asset == nullptr ? nullptr : _asset->as<_AssetType>();
+  }
 
-    private:
-        std::unordered_map<uuid, unique_ptr<AssetType>> storage;
-    };
-}
-#endif //STINKY_ASSET_STORAGE_H
+  bool emplace(uuid &&_guid, unique_ptr<asset> &&_asset);
+
+  const asset *get(const uuid &_guid) const;
+  asset *get(const uuid &_guid);
+  std::optional<uuid> generate_uuid();
+
+private:
+  static unique_ptr<asset_storage> _S_instance;
+  std::unordered_map<uuid, unique_ptr<asset>> _M_storage;
+};
+} // namespace stinky
+#endif // STINKY_ASSET_STORAGE_H
