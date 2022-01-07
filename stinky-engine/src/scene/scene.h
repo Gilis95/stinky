@@ -29,6 +29,7 @@ public:
 
   void each(std::function<void(entity &entt)> func);
 
+  bool load_scene(const uuid& guid);
 private:
   entt::registry _M_registry;
   unique_ptr<renderer> _M_renderer;

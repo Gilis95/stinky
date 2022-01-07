@@ -15,6 +15,7 @@ namespace stinky {
 class uuid;
 class asset_handler;
 class asset_metadata;
+class asset;
 
 class asset_manager {
 public:
@@ -31,8 +32,7 @@ public:
   void register_directory(const std::string &path);
   void register_file(const std::filesystem::path &file);
 
-  bool load(const uuid &guid);
-
+  asset* load(const uuid &guid);
 public:
   void register_asset_handler(const asset_handler &handler);
 

@@ -25,13 +25,6 @@ public:
   void serialize(const tinygltf::Model &_model, int meshIndex) const;
 };
 
-template <class _Tp>
-void load_bytes(std::vector<_Tp> &_out_vector, char *bytes, size_t offset,
-                size_t count) {
-  _out_vector.reserve(count);
-  memcpy(&_out_vector[0], bytes + offset, count * sizeof(_Tp::value_type));
-}
-
 } // namespace stinky
 
 #endif // STINKY_GLTF_MESH_ASSET_H

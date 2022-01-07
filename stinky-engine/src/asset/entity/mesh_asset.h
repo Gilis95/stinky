@@ -17,7 +17,7 @@ class mesh_asset : public asset {
 public:
   struct vertex {
     glm::vec3 position{0,0,0};
-    glm::vec2 texCoord{0,0};
+    glm::vec2 tex_coord{0,0};
     glm::vec3 normal{0,0,0};
     glm::vec4 tangent{0,0,0,0};
   };

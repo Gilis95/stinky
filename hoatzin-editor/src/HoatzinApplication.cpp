@@ -99,7 +99,7 @@ namespace stinky {
     /////////////////////////////////////////////////////////////////////////////////////////
     application *create_application() {
         auto& manager = project_manager::instance();
-        manager.open("/home/christian/gosho.yaml");
+        manager.open("/home/christian/workspace/games/stinky/first.stinky");
         return new hoatzin::HoatzinApplication();
     }
 }

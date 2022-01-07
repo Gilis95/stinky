@@ -67,12 +67,12 @@ void asset_manager::register_file(const std::filesystem::path &file) {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
-bool asset_manager::load(const uuid &guid) {
+asset* asset_manager::load(const uuid &guid) {
   auto *object = asset_storage::instance().get(guid);
-
-  ReturnUnless(object, false);
+  ReturnUnless(object, object);
 
   object->load();
+  return object;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
